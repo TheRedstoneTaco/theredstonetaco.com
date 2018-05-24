@@ -1,0 +1,23 @@
+{
+  "name": "theredstonetaco",
+  "version": "1.0.0",
+  "description": "this is the code that runs theredstonetaco.com",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheRedstoneTaco/theredstonetaco.com.git"
+  },
+  "author": "JesusAndTacos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheRedstoneTaco/theredstonetaco.com/issues"
+  },
+  "homepage": "https://github.com/TheRedstoneTaco/theredstonetaco.com#readme",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.3"
+  }
+}
