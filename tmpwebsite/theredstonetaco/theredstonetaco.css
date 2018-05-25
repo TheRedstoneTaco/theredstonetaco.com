@@ -1,0 +1,80 @@
+/* full page elements */
+.full-page {
+  margin: 0; border: 0; padding: 0;
+  width: 100%; height: 100%;
+}
+
+
+
+/* quote boxes */
+/* coloring */
+.quote-div-red {
+  --quote-div-theme-color: #ff2222;
+}
+.quote-div-orange {
+  --quote-div-theme-color: #ff5000;
+}
+.quote-div-yellow {
+  --quote-div-theme-color: #ffff00;
+}
+.quote-div-green {
+  --quote-div-theme-color: #00ff26;
+}
+.quote-div-blue {
+  --quote-div-theme-color: #00d0ff;
+}
+.quote-div-indigo {
+  --quote-div-theme-color: #000cff;
+}
+.quote-div-violet {
+  --quote-div-theme-color: #a100ff;
+}
+/* main properties */
+.quote-div {
+  margin: 2rem 0;
+  border: solid 10px var(--quote-div-theme-color);
+  padding: 0;
+  width: 100%;
+}
+/* text */
+.quote-text {
+  margin: 0; border: 0;
+  padding: 0 4.0rem;
+  width: 100%; height: 50%;
+}
+.quote-author {
+  margin: 0; border: 0;
+  padding: 0 4.0rem;
+  width: 100%; height: 50%;
+  background-color: var(--quote-div-theme-color);
+  text-align: right;
+}
+
+
+/* bottom */
+.bottom {
+  margin: 0; border: 0; padding: 0;
+  width: 100%;
+  display: flex; justify-content: flex-start; align-items: center;
+}
+.bottom-signature {
+  margin: 0; border: 0; padding: 0;
+  width: 50%;
+  text-align: center;
+}
+.bottom-logos {
+  margin: 0; border: 0; padding: 0;
+  width: 50%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.bottom-img-a {
+  margin: 2%;
+  border: 0; padding: 0;
+  display: block;
+}
+.bottom-img-a > img {
+  width: 100%; height: 100%;
+}

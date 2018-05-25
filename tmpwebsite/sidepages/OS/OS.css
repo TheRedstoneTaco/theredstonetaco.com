@@ -1,0 +1,28 @@
+/* boilerplate */
+html, body {
+  /* sizing */
+  border: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  /* positioning */
+  margin: 0;
+}
+
+.level1 {
+  /* coloring */
+  background-color: #F1F1F1;
+}
+
+.level2 {
+  /* coloring */
+  background-color: #E5E5E5;
+}
+
+iframe {
+  /* sizing */
+  height: 100vh;
+  max-height: 100vw;
+  width: 100vh;
+  max-width: 100vw;
+}

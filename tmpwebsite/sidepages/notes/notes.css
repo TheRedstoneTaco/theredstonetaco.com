@@ -1,0 +1,38 @@
+html, body {
+  margin: 0; border: 0; padding: 0;
+  width: 100%; height: 100%;
+}
+
+
+
+#Jesus {
+  margin: auto;
+  width: 100%;
+  text-align: center;
+  font-size: 2.0rem;
+  font-family: sans-serif;
+}
+#title {
+  margin: auto;
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+  font-family: cursive;
+}
+#description {
+  margin: auto;
+  width: 100%;
+  text-align: center;
+  font-size: 1.2rem;
+  font-family: monospace;
+}
+
+
+
+#notes {
+  background-color: #dddddd;
+}
+.note {
+  font-size: 1.2rem;
+  font-family: monospace;
+}
