@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  
+  <head>
+   
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" />
+    
+    <title>TheRedstoneTaco</title>
+    
+    <!--external-->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="icon" href="https://cdn0.iconfinder.com/data/icons/symbolicons-junk-food/28/taco-128.png">
+    
+    <!--internal-->
+    <link type="text/css" rel="stylesheet" href="stylesheets/preferences.css">
+    
+  </head>
+
+  <body>
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  
+      <a class="navbar-brand" href="/">TheRedstoneTaco</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+          <% if (currentUser) { %>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Signed in as '<%= currentUser.username %>'</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/account">Account</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          <% } else { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/register">Signup</a>
+            </li>
+          <% } %>
+        </ul>
+      </div>
+      
+    </nav>

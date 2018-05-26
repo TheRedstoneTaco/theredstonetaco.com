@@ -1,7 +1,7 @@
 // require boilerplate
 var passportLocalMongoose   = require("passport-local-mongoose"),
     methodOverride          = require("method-override"),
-    localStrategy           = require("passport-local"),
+    LocalStrategy           = require("passport-local"),
     bodyParser              = require("body-parser"),
     passport                = require("passport"),
     mongoose                = require("mongoose"),
@@ -12,8 +12,7 @@ var passportLocalMongoose   = require("passport-local-mongoose"),
     app                     = express();
 
 
-
-// routes
+// route requiring
 var historyofanythingRoutes = require("./routes/historyofanything.js"),
     authenticationRoutes    = require("./routes/authentication.js"),
     portfolioRoutes         = require("./routes/portfolio.js"),
@@ -24,39 +23,51 @@ var historyofanythingRoutes = require("./routes/historyofanything.js"),
     
 
 
-
-// mongoose.connect("mongodb://theredstonetaco:tacoman123@ds233970.mlab.com:33970/theredstonetaco");
-
+mongoose.connect("mongodb://theredstonetaco:tacoman123@ds233970.mlab.com:33970/theredstonetaco");
 
 
 
 
-// // url parsing
-// app.use(bodyParser.urlencoded({extended: true}));
-// // css
-// app.use(express.static(__dirname + "/public"));
-// // session
-// app.use(require("express-session")({
-//     secret: "1234567890",
-//     resave: false,
-//     saveUninitialized: false
-// }));
-// // passport
-// app.use(passport.initialize());
-// app.use(passport.session());
-// passport.use(new localStrategy(User.authenticate()));
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
-// // routes
-// app.use(function(request, response, next) {
-//     response.locals.currentUser = request.user;
-//     next();
-// });
-// // method overriding
-// app.use(methodOverride("_method"));
+
+// url parsing
+app.use(bodyParser.urlencoded({extended: true}));
+// css
+app.use(express.static(__dirname + "/public"));
+// session
+app.use(require("express-session")({
+    secret: "1234567890",
+    resave: false,
+    saveUninitialized: false
+}));
+// passport
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.findOne({ username: username }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      if (!user.validPassword(password)) {
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      return done(null, user);
+    });
+  }
+));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+// routes
+app.use(function(request, response, next) {
+    response.locals.currentUser = request.user;
+    next();
+});
+// method overriding
+app.use(methodOverride("_method"));
 
 
-// routes using
+// route using
 app.use(accountRoutes);
 app.use(authenticationRoutes);
 app.use(ballsRoutes);

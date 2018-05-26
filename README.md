@@ -9,11 +9,14 @@
     * Times liked
 
 * Header
+    * TheRedstoneTaco
+    * title
     * Show who's logged in + account, else login + register
     * Account goes to profile page
 
 * User
     * name
+    * email
     * password
     * date created
 

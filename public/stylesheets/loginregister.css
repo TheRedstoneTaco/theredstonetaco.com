@@ -1,0 +1,48 @@
+/*background and positioning*/
+body {
+  background: linear-gradient(to right, #09D8DC, #FC3EFB);
+}
+
+/*
+
+  form
+
+*/
+/*container*/
+#form {
+  margin: 10vh auto 10vh auto; border: 0; padding: 2vw;
+  box-sizing: border-box;
+  border-radius: 30px;
+  background-color: #fff;
+}
+@media (max-width: 799px) {
+  #form {
+    width: 80vw;
+  }
+}
+@media (min-width: 800px) {
+  #form {
+    width: 30vw;
+  }
+}
+
+/*title*/
+#form-title {
+  margin-top: 5%;
+  text-align: center;
+  font-size: 4.0vw;
+}
+
+/*inputs*/
+.form-input-group {
+  margin: 0; border: 0; padding: 0;
+  width: 90%;
+}
+.form-input-label {
+  width: 100%;
+  font-size: 1.0vw;
+}
+.form-input {
+  width: 100%;
+  display: block;
+}
