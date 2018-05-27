@@ -18,7 +18,8 @@
     * name
     * email
     * password
-    * date created
+    * date created (automatically filled out)
+    * ebooks (empty by default)
 
 * Account
     * only view if user
@@ -27,7 +28,8 @@
     * Password
     * Reset password
     * date created
-    * bought ebooks
+    * bought ebooks -> name, date, price, link
+    * purchase total
 
 * Ebook
     * name
@@ -47,6 +49,7 @@
     * amount of times liked
     * amount of accounts registered
     * setup for this website
+    * amount of times page was visited
 
 * Balls
     * amount of times balls have been clicked

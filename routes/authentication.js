@@ -11,13 +11,23 @@ router.get("/login", function(req, res) {
     res.render("authentication/login.ejs"); 
 });
 // POST - authentication - login: Log a user in
-router.post("/login", passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login"
-}), function(req, res) {
-    console.log(1);
+router.post("/login", function(req, res, next) {
+  passport.authenticate("local", function(err, user, info) {
+    if (err) {
+        return next(err);
+    }
+    if (!user) {
+        console.log("user not found in database!");
+        return res.redirect('/login');
+    }
+    req.logIn(user, function(err) {
+        if (err) {
+            return next(err);
+        }
+        return res.redirect("/");
+    });
+  })(req, res, next);
 });
-
 
 // GET - authentication - register: Show page to register
 router.get("/register", function(req, res) {
@@ -30,32 +40,27 @@ router.post("/register", function(req, res) {
     var newUser = new User({
         username: req.body.username,
         email: req.body.email,
-        created: dateTime(),
+        created: 'today',
         ebooks: []
     });
-
+    
     // create new user with object, setup password, register, all that stuff
-    User.register(newUser, req.body.password1, function(error, registeredUser) {
+    User.register(newUser, req.body.password, function(error, registeredUser) {
         
         if (error || !registeredUser) {
             console.log("ERROR in POST: /register trying to create user " + error);
             return res.redirect("/register");
         }
         
-        req.login(registeredUser, function(err) {
+        req.login(registeredUser, function (err) {
             if (err) {
-              console.log(err);
-              return res.redirect('/login');
+                console.log(err);
+                return res.redirect("/register");
             }
-            return res.redirect('/');
+            res.redirect("/");
         });
-        // passport.authenticate("local", {
-        //     successRedirect: "/",
-        //     failureRedirect: "/login"
-        // });
-        
+    
     });
-
 });
 
 

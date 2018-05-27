@@ -1,0 +1,124 @@
+<% include ../partials/header.ejs %>
+
+<link rel="stylesheet" href="stylesheets/home.css">
+<script type="text/javascript" src="scripts/home.js"></script>
+
+  </head>
+  <body>
+
+    <div id="page-container">
+
+      <!-- the title! -->
+      <p id="title">
+        Dustin's Ebooks!
+        <span class="fa fa-book"></span>
+      </p>
+
+      <!-- a lil bout me :) -->
+      <p id="about">
+        Hi! I'm Dustin, computer
+        scientist, web developer, aspiring Operating
+        System Engineer, and researcher. These E-books
+        are some of the research I have. I love Jesus,
+        I'm 15, I do calculus (diff is fun!), and
+        live in America. :) If you want to, especially
+        to talk about the books, contact ghostofmmo@gmail.com
+      </p>
+
+      <!-- proof/certs -->
+      <p id="proof">I've got a
+        <a class="cs50" href="https://courses.edx.org/certificates/626077ce7d1f4243b4e43b71c3f383f9">
+          Harvard Computer Science Certificate
+        </a>
+        , a <a class="freecodecamp" href="https://www.freecodecamp.org/theredstonetaco/front-end-certification">
+          freecodecamp
+        </a> front-end web development certificate, and have finished the front-end
+        web development section of <a href="https://www.udemy.com/the-web-developer-bootcamp/learn/v4/overview" class="wdb">
+          The Complete Web Developer Bootcamp
+        </a>
+      </p>
+
+      <!-- divider -->
+      <hr>
+
+      <!-- tell them the ebooks are here! -->
+      <p id="books_title">
+        Yay! Here are my Ebooks:
+      </p>
+
+      <!-- time for the ebooks! -->
+
+      <!-- Critical Thinking with Computer Science -->
+      <div class="ebook_div">
+        <p class="ebook_part ebook_title">
+          Critical Thinking with Computer Science
+        </p>
+        <p class="ebook_part ebook_view">
+          <a href="/ebooks/ctwcs" target="_blank">
+            <span class="fa fa-search"></span>
+            -View
+          </a>
+        </p>
+        <p class="ebook_part ebook_buy">
+          <a href="/ebooks/ctwcs/buy" target="_blank">
+            <span class="fa fa-dollar-sign"></span>
+            -Buy
+          </a>
+        </p>
+      </div>
+
+      <!-- Dustin's Research -->
+      <div class="ebook_div">
+        <p class="ebook_part ebook_title">
+          Dustin's Research
+        </p>
+        <p class="ebook_part ebook_view">
+          <a href="/ebooks/dr" target="_blank">
+            <span class="fa fa-search"></span>
+            -View
+          </a>
+        </p>
+        <p class="ebook_part ebook_buy">
+          <a href="/ebooks/dr/buy" target="_blank">
+            <span class="fa fa-dollar-sign"></span>
+            -Buy
+          </a>
+        </p>
+      </div>
+
+      <!-- divider -->
+      <hr>
+
+      <a id="to-homepage" class="btn btn-danger" href="/" target="_blank">
+        Back to Homepage!
+      </a>
+
+    </div> <!-- /page-contianer -->
+
+
+
+    <!-- bottom -->
+    <div id="bottom" class="bottom">
+      <div class="row">
+
+        <div class="col col-xs-12 col-md-6">
+          <p id="bottom_signature">- Dustin West</p>
+        </div>
+
+        <div id="bottom_cards" class="col col-xs-12 col-md-6">
+          <a class="card" href="https://www.facebook.com/profile.php?id=100008840418552" target="_blank">
+            <img class="card-img-top" src="/pictures/facebooklogo.png" alt="the facebook logo, it goes to my facebook profile">
+          </a>
+          <a class="card" href="https://courses.edx.org/u/ghostofmmo" target="_blank">
+            <img class="card-img-top" src="/pictures/edxlogo.png" alt="the ed x logo, it goes to my ed x profile">
+          </a>
+          <a class="card" href="https://www.udemy.com/user/dustin-west-2/" target="_blank">
+            <img class="card-img-top" src="/pictures/udemylogo.png" alt="a picture of the you deh me logo, it links to my you deh me profile">
+          </a>
+        </div>
+
+      </div>
+    </div> <!-- bottom -->
+
+
+<% include ../partials/footer.ejs %>

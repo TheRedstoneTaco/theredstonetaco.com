@@ -1,9 +1,9 @@
 var mongoose = require("mongoose");
 
 var pageSchema = new mongoose.Schema({
-    name: String,
-    timesViewed: Number,
-    timesLiked: Number,
+    title: String,
+    views: Number,
+    likes: Number,
 });
 
 module.exports = mongoose.model("Page", pageSchema);

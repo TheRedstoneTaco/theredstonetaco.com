@@ -1,0 +1,75 @@
+<% include ../partials/header.ejs %>
+
+<!--external-->
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+<link rel="stylesheet" href="/stylesheets/animate.css">
+<link href="https://fonts.googleapis.com/css?family=Exo|IBM+Plex+Mono|Lobster|Pangolin|Play|Russo+One|Titan+One" rel="stylesheet">
+
+<!--internal-->
+<link type="text/css" rel="stylesheet" href="/stylesheets/index.css">
+<script type="text/javascript" src="/scripts/index.js"></script>
+<!--<script type="text/javascript" src="/theredstonetaco/theredstonetaco.js"></script>-->
+<!--<link rel="stylesheet" href="/theredstonetaco/theredstonetaco.css">-->
+
+<!--https://www.deltaco.com/files/menu/item/The-Del-Taco-%28Soft%29.png-->
+
+
+<!--landing section-->
+<div id="landing" class="nonebox">
+  
+  <!--show this on large+ devices-->
+  <div id="landing_lgplus" class="lgplus nonebox">
+    <div id="landing_statstacotext" class="nonebox">
+      <div class="landing_stats" class="nonebox">
+        <div class="landing_stats_views" class="nonebox">
+          <p class="landing_stats_views_text" class="nonebox">
+            <%= page.views %>
+          </p>
+        </div>
+        <div class="landing_stats_likes" class="nonebox">
+          <p class="landing_stats_likes_text" class="nonebox">
+            <%= page.likes %>
+          </p>
+        </div>
+      </div>
+      <div class="landing_taco" class="nonebox">
+        <img src="http://pixelartmaker.com/art/c2825a310898079.png">
+      </div>
+      <div class="landing_text" class="nonebox">
+        
+      </div>
+    </div>
+    <div class="landing_arrows" class="nonebox">
+      
+    </div>
+  </div>
+  
+  <!--show this on medium- devices-->
+  <div id="landing_mdminus" class="mdminus nonebox">
+    <!--the stats and taco-->
+    <div id="landing_statstaco" class="nonebox">
+      <!--the stats-->
+      <div class="landing_stats" class="nonebox">
+        
+      </div>
+      <!--the taco-->
+      <div class="landing_taco" class="nonebox">
+        <img src="http://pixelartmaker.com/art/c2825a310898079.png">
+      </div>
+    </div>
+    <!--the text and arrows-->
+    <div id="landing_textarrows" class="nonebox">
+      <div class="landing_text" class="nonebox">
+        
+      </div>
+      <div class="landing_arrows" class="nonebox">
+        
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+
+<% include ../partials/footer.ejs %>

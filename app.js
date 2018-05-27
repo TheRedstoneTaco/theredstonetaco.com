@@ -1,7 +1,7 @@
 // require boilerplate
 var passportLocalMongoose   = require("passport-local-mongoose"),
     methodOverride          = require("method-override"),
-    LocalStrategy           = require("passport-local"),
+    LocalStrategy           = require("passport-local").Strategy,
     bodyParser              = require("body-parser"),
     passport                = require("passport"),
     mongoose                = require("mongoose"),
@@ -13,19 +13,14 @@ var passportLocalMongoose   = require("passport-local-mongoose"),
 
 
 // route requiring
-var historyofanythingRoutes = require("./routes/historyofanything.js"),
-    authenticationRoutes    = require("./routes/authentication.js"),
-    portfolioRoutes         = require("./routes/portfolio.js"),
+var authenticationRoutes    = require("./routes/authentication.js"),
     accountRoutes           = require("./routes/account.js"),
-    indexRoutes             = require("./routes/index.js"),
-    ballsRoutes             = require("./routes/balls.js"),
-    osRoutes                = require("./routes/os.js");
+    ebooksRoutes            = require("./routes/ebooks.js"),
+    indexRoutes             = require("./routes/index.js");
     
 
 
 mongoose.connect("mongodb://theredstonetaco:tacoman123@ds233970.mlab.com:33970/theredstonetaco");
-
-
 
 
 
@@ -43,13 +38,24 @@ app.use(require("express-session")({
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(
-  function(username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
-      if (err) { return done(err); }
+  function(login, password, done) {
+    // to login by either username or email
+    var findBy;
+    if (login.indexOf("@") == -1) {
+        findBy = {username: login};
+    } else {
+        findBy = {email: login};
+    }
+    // now login
+    User.findOne(findBy, function (err, user) {
+        console.log(user);
+      if (err) {
+          return done(err);
+      }
       if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
       }
-      if (!user.validPassword(password)) {
+      if (password == user.password) {
         return done(null, false, { message: 'Incorrect password.' });
       }
       return done(null, user);
@@ -70,11 +76,8 @@ app.use(methodOverride("_method"));
 // route using
 app.use(accountRoutes);
 app.use(authenticationRoutes);
-app.use(ballsRoutes);
-app.use(historyofanythingRoutes);
+app.use(ebooksRoutes);
 app.use(indexRoutes);
-app.use(osRoutes);
-app.use(portfolioRoutes);
 
 
 
