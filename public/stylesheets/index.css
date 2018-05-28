@@ -33,6 +33,16 @@ html, body {
     display: none;
   }
 }
+/*helper "disabled" class*/
+.disabled {
+  background-color: #444444 !important;
+  cursor: not-allowed;
+}
+/*preferences*/
+.like-form {
+  margin: 0; border: 0; padding: 0;
+  width: 100%;
+}
 
 
 
@@ -140,7 +150,7 @@ html, body {
   }
   /*the arrows*/
   .landing_arrows {
-    width: 19vw; height: 90vh;
+    width: 18vw; height: 90vh;
   }
   
 }
@@ -181,6 +191,6 @@ html, body {
   }
   /*the arrows*/
   .landing_arrows {
-    width: 24vw; height: 40vh;
+    width: 22vw; height: 40vh;
   }
 }

@@ -9,11 +9,6 @@
 <!--internal-->
 <link type="text/css" rel="stylesheet" href="/stylesheets/index.css">
 <script type="text/javascript" src="/scripts/index.js"></script>
-<!--<script type="text/javascript" src="/theredstonetaco/theredstonetaco.js"></script>-->
-<!--<link rel="stylesheet" href="/theredstonetaco/theredstonetaco.css">-->
-
-<!--https://www.deltaco.com/files/menu/item/The-Del-Taco-%28Soft%29.png-->
-
 
 <!--landing section-->
 <div id="landing" class="nonebox">
@@ -25,27 +20,29 @@
       
       <!--the stats-->
       <div class="landing_stats" class="nonebox">
-        <div class="landing_stats" class="nonebox">
-          <div class="landing_stats_views" class="nonebox">
-            <p class="landing_stats_views_text" class="nonebox">
-              Views: <span class="landing_stats_views_count"><%= page.views %></span>
-            </p>
-          </div>
-          <a href="#" class="landing_stats_likes" class="nonebox">
+        <div class="landing_stats_views" class="nonebox">
+          <p class="landing_stats_views_text" class="nonebox">
+            Views: <span class="landing_stats_views_count"><%= page.views %></span>
+          </p>
+        </div>
+        <form class="like-form" action="/index/like" method="POST">
+          <button href="#" class="landing_stats_likes" class="nonebox">
             <p class="landing_stats_likes_text" class="nonebox">
               Likes: <span class="landing_stats_likes_count"><%= page.likes %></span>
             </p>
             <p class="landing_stats_likes_info">
               (click to like this page!)
             </p>
-          </a>
-        </div>
+          </button>
+        </form>
       </div>
       
       <!--the taco-->
       <div class="landing_taco" class="nonebox">
         <img src="http://pixelartmaker.com/art/c2825a310898079.png">
         <img src="http://www.emoji.co.uk/files/phantom-open-emojis/food-drink-phantom/12570-burrito.png">
+        <img src="http://producemomentum.com/wp-content/uploads/2015/11/The-Whole-Enchilada.png">
+        <img src="https://vignette.wikia.nocookie.net/clubpenguin/images/1/12/FestiveSombrero.png">
       </div>
       
       <!--the text-->
@@ -69,6 +66,8 @@
     
   </div>
   
+  
+  
   <!--show this on medium- devices-->
   <div id="landing_mdminus" class="mdminus nonebox">
     
@@ -77,26 +76,29 @@
       
       <!--the stats-->
       <div class="landing_stats" class="nonebox">
-        <div class="landing_stats" class="nonebox">
-          <div class="landing_stats_views" class="nonebox">
-            <p class="landing_stats_views_text" class="nonebox">
-              Views: <span class="landing_stats_views_count"><%= page.views %></span>
-            </p>
-          </div>
-          <a href="#" class="landing_stats_likes" class="nonebox">
+        <div class="landing_stats_views" class="nonebox">
+          <p class="landing_stats_views_text" class="nonebox">
+            Views: <span class="landing_stats_views_count"><%= page.views %></span>
+          </p>
+        </div>
+        <form class="like-form" action="/index/like" method="POST">
+          <button href="#" class="landing_stats_likes" class="nonebox">
             <p class="landing_stats_likes_text" class="nonebox">
               Likes: <span class="landing_stats_likes_count"><%= page.likes %></span>
             </p>
             <p class="landing_stats_likes_info">
               (click to like this page!)
             </p>
-          </a>
-        </div>
+          </button>
+        </form>
       </div>
       
       <!--the taco-->
       <div class="landing_taco" class="nonebox">
         <img src="http://pixelartmaker.com/art/c2825a310898079.png">
+        <img src="http://www.emoji.co.uk/files/phantom-open-emojis/food-drink-phantom/12570-burrito.png">
+        <img src="http://producemomentum.com/wp-content/uploads/2015/11/The-Whole-Enchilada.png">
+        <img src="https://vignette.wikia.nocookie.net/clubpenguin/images/1/12/FestiveSombrero.png">
       </div>
     </div>
     
