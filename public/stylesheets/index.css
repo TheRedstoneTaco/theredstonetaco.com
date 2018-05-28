@@ -56,17 +56,59 @@ html, body {
 /*the stats!*/
 /*stats container*/
 .landing_stats {
-  display: flex; justify-content: flex-start; align-items: space-between;
+  display: flex; justify-content: space-around; flex-direction: column; align-items: flex-start;
 }
 /*likes*/
-.landing_stats_views {
-  
-  background-color: #ff2222;
+.landing_stats_likes {
+  width: 90%;
+  padding-top: 2%;
+  background-color: #bb00ff;
+  border-radius: 0% 30px 30px 0%;
+  display: block;
 }
-.landing_stats_views_text {
+.landing_stats_likes_text, .landing_stats_likes_info {
+  margin: 0 auto 2% auto;
+  width: 90%;
+  color: white;
+  text-align: center;
+}
+.landing_stats_likes_info {
   font-size: 2.0vw;
 }
+/*views*/
+.landing_stats_views {
+  width: 90%;
+  display: flex; justify-content: center; align-items: center;
+  background-color: #ff2222;
+}
+/*both! :D*/
+.landing_stats_views_text, .landing_stats_likes_text {
+  width: 80%;
+  color: white;
+  text-align: center;
+  font-size: 4.0vw;
+}
 
+/*the arrows*/
+.landing_arrows {
+  display: flex; justify-content: center; align-items: center; flex-wrap: wrap;
+}
+.landing_arrow {
+  width: 100%;
+  color: #f48642;
+  text-align: center;
+  font-size: 5.0vw;
+}
+
+/*the text*/
+.landing_text {
+  display: flex; justify-content: center; align-items: center;
+}
+.landing_text_text {
+  margin: auto;
+  width: 80%;
+  color: white;
+}
 
 /*the landing section on large+ screens*/
 @media (min-width: 992px) {
@@ -92,12 +134,13 @@ html, body {
   /*the text*/
   .landing_text {
     width: 80vw; height: 30vh;
-    background-color: white;
+  }
+  .landing_text_text {
+    font-size: 3.0vw;
   }
   /*the arrows*/
   .landing_arrows {
     width: 19vw; height: 90vh;
-    background-color: blue;
   }
   
 }
@@ -109,24 +152,35 @@ html, body {
     width: 99vw;
     display: flex; justify-content: flex-start;
   }
+  /*the stats*/
   .landing_stats {
     width: 75vw; height: 50vh;
     position: absolute; z-index: 2;
-    opacity: 0.5;
   }
+  .landing_stats_views_text, .landing_stats_likes_text {
+    font-size: 7.0vw;
+  }
+  .landing_stats_likes_info {
+    font-size: 4.0vw;
+  }
+  /*the taco*/
   .landing_taco {
     width: 99vw; height: 50vh;
   }
+  /*the text and arrows*/
   #landing_textarrows {
     width: 99vw;
     display: flex; justify-content: flex-start;
   }
+  /*the text*/
   .landing_text {
-    width: 75vw; height: 50vh;
-    background-color: indigo;
+    width: 75vw; height: 40vh;
   }
+  .landing_text_text {
+    font-size: 6.0vw;
+  }
+  /*the arrows*/
   .landing_arrows {
-    width: 24vw; height: 50vh;
-    background-color: white;
+    width: 24vw; height: 40vh;
   }
 }
