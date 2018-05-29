@@ -1,6 +1,7 @@
 var User     = require("../models/user.js"),
     passport = require("passport"),
-    dateTime = require('date-time');
+    dateTime = require('date-time'),
+    Page     = require('../models/page.js');
 var express = require("express"),
     router  = express.Router();
 
@@ -8,7 +9,17 @@ var express = require("express"),
 
 // GET - authentication - login: Show page to login
 router.get("/login", function(req, res) {
-    res.render("authentication/login.ejs"); 
+    Page.findOne({
+        title: "login"
+    }, function(err, foundPage) {
+        if (err) {
+            console.log(err);
+            return res.redirect("back");
+        }
+        res.render("authentication/login.ejs", {
+            page: foundPage
+        }); 
+    });
 });
 // POST - authentication - login: Log a user in
 router.post("/login", function(req, res, next) {
@@ -31,7 +42,17 @@ router.post("/login", function(req, res, next) {
 
 // GET - authentication - register: Show page to register
 router.get("/register", function(req, res) {
-    res.render("authentication/register.ejs"); 
+    Page.findOne({
+        title: "register"
+    }, function(err, foundPage) {
+        if (err) {
+            console.log(err);
+            return res.redirect("back");
+        }
+        res.render("authentication/register.ejs", {
+            page: foundPage
+        });
+    });
 });
 // POST - authentication - register: Register a user
 router.post("/register", function(req, res) {

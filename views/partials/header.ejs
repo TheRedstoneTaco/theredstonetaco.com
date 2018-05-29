@@ -6,7 +6,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width" />
     
-    <title>TheRedstoneTaco</title>
+    <% if (page) { %>
+      <title>
+        <%= page.title %>
+      </title>
+    <% } else { %>
+      <title>
+        TheRedstoneTaco
+      </title>
+    <% } %>
     
     <!--external-->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -31,26 +39,50 @@
       </button>
     
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto">
+        
           <% if (currentUser) { %>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Signed in as '<%= currentUser.username %>'</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/account">Account</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/logout">Logout</a>
-            </li>
+          
+            <ul class="navbar-nav w-100">
+              
+              <% if (page != "undefined") { %>
+                <li class="nav-item w-50 mx-auto">
+                  <a class="nav-link text-center" href="#">
+                    You are looking at: <%= page.title %>
+                  </a>
+                </li>
+              <% } %>
+              
+              <li class="nav-item">
+                <a class="nav-link" href="#">Signed in as '<%= currentUser.username %>'</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/account">Account</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+              </li>
+            </ul>
+            
           <% } else { %>
-            <li class="nav-item">
-              <a class="nav-link" href="/login">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/register">Signup</a>
-            </li>
+            
+            <ul class="navbar-nav w-100">
+              <% if (page != "undefined") { %>
+                <li class="nav-item w-50 mx-auto">
+                  <a class="nav-link text-center" href="#">
+                    You are looking at: <%= page.title %>
+                  </a>
+                </li>
+              <% } %>
+              <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/register">Signup</a>
+              </li>
+            </ul>
+          
           <% } %>
-        </ul>
+          
       </div>
       
     </nav>

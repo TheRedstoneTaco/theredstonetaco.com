@@ -3,11 +3,14 @@ var like_doSubmit = true;
 
 $(document).ready(function() {
    
+    // initialize liking ability
+    init_liking();
+    
     // animate the landing section
     animate_landing();
     
-    // initialize liking ability
-    init_liking();
+    // animate the extras section
+    animate_extras();
     
 });
 
@@ -56,6 +59,7 @@ function animate_landing() {
     var curArrow = 0;
     setInterval(function() {
         $(".landing_arrow").css("color", "#f48642");
+        $($(".landing_arrow")[curArrow]).css("color", "white");
         $($(".landing_arrow")[curArrow + 5]).css("color", "white");
         curArrow = (curArrow + 1) % ($(".landing_arrow").length / 2);
     }, 1000 / 10);
@@ -104,7 +108,6 @@ function init_liking() {
     // when form submits
     $(".like-form").submit(function(e) {
         
-        console.log(1);
         // dont refresh the page
         e.preventDefault();
         // if we don't want more of this nonsense, stop it here
@@ -113,7 +116,6 @@ function init_liking() {
         }
         // stop nonsense after first offense
         like_doSubmit = false;
-        console.log(2);
 
         // do some nonsense on the database
         $.ajax({
@@ -134,4 +136,25 @@ function init_liking() {
         $(".landing_stats_likes_info").text("YOU HAVE LIKED THIS PAGE!").css("color", "red");
         
     });
+}
+
+function animate_extras() {
+    
+    $(".extras_social").flickity({
+        wrapAround: true,
+        freescroll: true,
+        autoplay: true,
+        contain: true,
+        accessibility: true,
+        pageDots: false
+    });
+    $(".extras_links").flickity({
+        wrapAround: true,
+        freescroll: true,
+        autoplay: true,
+        contain: true,
+        accessibility: true,
+        pageDots: false
+    });
+    
 }

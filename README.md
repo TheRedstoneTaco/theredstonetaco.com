@@ -32,10 +32,13 @@
     * purchase total
 
 * Ebook
-    * name
+    * title
     * created
     * users
     * timesBought
+    * likes
+    * price
+    * rating
 
 * Index
     * amount of times page was visited

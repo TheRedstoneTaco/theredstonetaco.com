@@ -19,10 +19,7 @@ var authenticationRoutes    = require("./routes/authentication.js"),
     indexRoutes             = require("./routes/index.js");
     
 
-
 mongoose.connect("mongodb://theredstonetaco:tacoman123@ds233970.mlab.com:33970/theredstonetaco");
-
-
 
 // url parsing
 app.use(bodyParser.urlencoded({extended: true}));
@@ -78,8 +75,6 @@ app.use(accountRoutes);
 app.use(authenticationRoutes);
 app.use(ebooksRoutes);
 app.use(indexRoutes);
-
-
 
 // listen
 app.listen(process.env.PORT, process.env.IP, function() {

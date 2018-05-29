@@ -72,8 +72,9 @@ html, body {
 .landing_stats_likes {
   width: 90%;
   padding-top: 2%;
-  background-color: #bb00ff;
+  border: 0;
   border-radius: 0% 30px 30px 0%;
+  background-color: #bb00ff;
   display: block;
 }
 .landing_stats_likes_text, .landing_stats_likes_info {
@@ -193,4 +194,153 @@ html, body {
   .landing_arrows {
     width: 22vw; height: 40vh;
   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+
+  about
+
+**/
+
+/*social*/
+.extras_social .carousel-cell {
+  margin: 0 5vw 0 5vw;
+}
+.extras_social .carousel-cell a {
+  width: 100%; height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.extras_social .carousel-cell a img {
+  max-width: 100%; max-height: 100%;
+}
+
+/*links*/
+.extras_links .carousel-cell a {
+  width: 100%; height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.extras_links .carousel-cell a img {
+  max-width: 100%; max-height: 100%;
+}
+
+/*text*/
+.extras_text {
+  border: solid 10px white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*style like this on large+ devices*/
+@media (min-width: 992px) {
+  
+  /*container*/
+  #extras_lgplus {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  
+  /*social*/
+  .extras_social {
+    width: 99vw;
+    height: 20vh;
+  }
+  .extras_social .carousel-cell {
+    width: 19vh;
+    height: 19vh;
+  }
+  
+  /*links and text*/
+  #extras_linkstext {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  /*links*/
+  .extras_links {
+    margin-right: 5vw;
+    width: 55vw;
+    height: 75vh;
+  }
+  .extras_links .carousel-cell {
+    margin-right: 5vw;
+    width: 35vw;
+    height: 74vh;
+  }
+  /*text*/
+  .extras_text {
+    width: 38vw;
+    height: 75vh;
+  }
+  .extras_text_text {
+    width: 80%;
+    height: 80%;
+    color: white;
+    font-size: 1.8vw;
+  }
+  
+}
+
+/*style like this on medium- devices*/
+@media (max-width: 991px) {
+  
+  /*container*/
+  #extras_dminus {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  
+  /*text*/
+  .extras_text {
+    width: 99vw;
+    height: 30vh;
+  }
+  .extras_text_text {
+    width: 80%;
+    height: 80%;
+    color: white;
+    font-size: 3.5vw;
+  }
+  
+  /*social*/
+  .extras_social {
+    width: 99vw;
+    height: 20vh;
+  }
+  .extras_social .carousel-cell {
+    width: 19vw;
+    height: 19vh;
+  }
+  
+  /*links*/
+  .extras_links {
+    width: 99vw;
+    height: 49vh;
+  }
+  .extras_links .carousel-cell {
+    margin-right: 5vw;
+    width: 70vw;
+    height: 49vh;
+  }
+  
+  
 }

@@ -1,13 +1,26 @@
 var mongoose = require("mongoose");
 
 var ebookSchema = new mongoose.Schema({
-    name: String,
+    title: String,
     created: String,
-    timesBought: String,
+    timesBought: Number,
     users: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-    }]
+    }],
+    price: Number,
+    ratings: [{
+        value: Number,
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    }],
+    rating: Number,
+    likes: Number,
+    views: Number,
+    reviews: [],
+    description: String
 });
 
 module.exports = mongoose.model("Ebook", ebookSchema);

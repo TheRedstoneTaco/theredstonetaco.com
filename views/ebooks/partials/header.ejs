@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  
+  <head>
+   
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" />
+    
+    <% if (ebook) { %>
+      <title>
+        <%= ebook.title %>
+      </title>
+    <% } else { %>
+      <title>
+        TheRedstoneTaco
+      </title>
+    <% } %>
+
+    <!--external-->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+    <link rel="icon" href="https://cdn0.iconfinder.com/data/icons/symbolicons-junk-food/28/taco-128.png">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/tippy.css">
+    <script type="text/javascript" src="/scripts/tippy.all.js"></script>
+    
+    <!--internal-->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/book.css">
+    <script type="text/javascript" src="/scripts/book.js"></script>
+    
+    <!--if book not bought, restrict-->
+    <% if (!(currentUser && currentUser.ebooks && currentUser.ebooks.indexOf(ebooks._id) != -1)) { %>
+      <script type="text/javascript" src="/scripts/book-unbought.js"></script>
+    <% } %>
+
+  </head>
+  
+  <body>
+
+    <!-- top bar -->
+    <div class="top-bar">
+      <div class="top-bar_back">
+        <a href="/ebooks">
+          <span class="fa fa-arrow-left"></span>
+          Back to Ebooks
+        </a>
+      </div>
+      <div class="top-bar_title">
+        <a href="#">
+          <% if (ebook) { %>
+            <%= ebook.title %>
+          <% } else { %>
+            <p class="alert alert-danger">
+              Error! Book not found!
+            </p>
+          <% } %>
+        </a>
+      </div>
+      <% if (currentUser && currentUser.ebooks && currentUser.ebooks.indexOf(ebook._id) != -1) { %>
+        <div class="top-bar_bought">
+          <a href="#">
+            <span class="fas fa-thumbs-up"></span>
+            Already Bought!
+          </a>
+        </div>
+      <% } else { %>
+        <div class="top-bar_buy">
+          <a href="/ebooks/<%= ebook._id %>/buy">
+            <span class="fas fa-dollar-sign"></span>
+            -Buy
+          </a>
+        </div>
+      <% } %>
+    </div>

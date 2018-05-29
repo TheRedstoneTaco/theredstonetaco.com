@@ -1,0 +1,118 @@
+<% include ../partials/header.ejs %>
+
+
+
+<!--external-->
+<link rel="stylesheet" type="text/css" href="/stylesheets/buttons.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+<!--internal-->
+<link rel="stylesheet" type="text/css" href="/stylesheets/ebooks-show.css">
+<script type="text/javascript" src="/scripts/ebook-show.js"></script>
+
+
+
+<!--display like this on large+ screens-->
+<div id="container-lgplus" class="lgplus nonebox">
+  
+  <!--likes-->
+  <div class="likes nonebox">
+    <br><br>
+    <p class="likes_title">
+      Likes
+    </p>
+    <p class="likes_count">
+      <%= ebook.likes %>
+    </p>
+    <br>
+    <form class="like-form" action="/ebooks/<%= ebook._id %>/like" method="POST">
+      <button href="http://unicorn-ui.com/" class="like_button d-block m-auto button button-3d button-giant button-primary button-rounded">
+        Like this Ebook <span class="fa fa-thumbs-up"></span>
+      </button>
+    </form>
+  </div>
+  
+  <!--main-->
+  <div class="main nonebox">
+    <h3 class="main_title">
+      <%= ebook.title %>
+    </h3>
+    <hr>
+    <p class="main_created">
+      <%= ebook.created %>
+    </p>
+    <p class="main_description">
+      <%= ebook.description %>
+    </p>
+  </div>
+  
+  <!--views-->
+  <div class="views nonebox">
+    <br><br><br>
+    <p class="views_title">
+      Views
+    </p>
+    <p class="views_count">
+      <%= ebook.views %>
+    </p>
+    <br>
+    <button href="http://unicorn-ui.com/" class="d-block m-auto button button-3d button-giant button-royal button-rounded">
+        Viewed <span class="fa fa-eye"></span>
+      </button>
+  </div>
+  
+  <!--actions-->
+  <div class="actions nonebox row">
+  
+    <!--preview-->
+    <div class="preview col-6">
+      <p class="preview_title">
+        Preview this Ebook
+      </p>
+      <a class="d-block m-auto preview_button button button-glow button-border button-rounded button-giant button-highlight" href="/ebooks/<%= ebook._id %>">
+        Preview <span class="fa fa-search"></span>
+      </a>
+    </div>
+    
+    <div class="buy col-6">
+      <p class="buy_title">
+        Buy this Ebook
+      </p>
+      <a class="d-block m-auto button button-glow button-border button-rounded button-giant button-action" href="/ebooks/<%= ebook._id %>">
+        Buy <span class="fa fa-dollar-sign"></span>
+      </a>
+    </div>
+    
+  </div>
+  
+</div>
+
+<!--display like this on medium- screens-->
+<div id="container-mdminus" class="md-minus nonebox">
+  
+</div>
+
+<!--Rating-->
+<p id="rating_title">
+  Rating:
+</p>
+<div id="rating_live" class="nonebox">
+  <% for (var i = 0; i < Math.round(ebook.rating * 5); i++) { %>
+    <img class="rating_live_taco" src="https://cdn0.iconfinder.com/data/icons/junk-food-emoji-set/100/Taco-512.png">
+  <% } %>
+  <% for (var i = 0; i < (5 - Math.round(ebook.rating * 5)); i++) { %>
+    <img class="rating_live_taco" src="https://cdn4.iconfinder.com/data/icons/dottie-food/24/food_012-taco-fast_food-eat-tortilla-512.png"> 
+  <% } %>
+</div>
+<% if (ebook.ratings.indexOf(user._id) == -1) { %>
+  <p id="rating_add_text">
+    Rate (0-5):
+  </p>
+  <form id="rating_add" action="/ebooks/<%= ebook._id %>/ratings">
+    <input name="rating" type="text" placeholder="number between 1 and 5">
+  </form>
+<% } else { %>
+<% } %>
+
+
+<% include ../partials/footer.ejs %>

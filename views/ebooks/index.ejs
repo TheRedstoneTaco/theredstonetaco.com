@@ -1,7 +1,6 @@
 <% include ../partials/header.ejs %>
 
-<link rel="stylesheet" href="stylesheets/home.css">
-<script type="text/javascript" src="scripts/home.js"></script>
+<link rel="stylesheet" href="stylesheets/ebooks.css">
 
   </head>
   <body>
@@ -16,26 +15,15 @@
 
       <!-- a lil bout me :) -->
       <p id="about">
-        Hi! I'm Dustin, computer
-        scientist, web developer, aspiring Operating
+        Hi! I'm Dustin, Computer
+        Scientist, Full-Stack Web Developer, aspiring Operating
         System Engineer, and researcher. These E-books
         are some of the research I have. I love Jesus,
         I'm 15, I do calculus (diff is fun!), and
         live in America. :) If you want to, especially
         to talk about the books, contact ghostofmmo@gmail.com
-      </p>
-
-      <!-- proof/certs -->
-      <p id="proof">I've got a
-        <a class="cs50" href="https://courses.edx.org/certificates/626077ce7d1f4243b4e43b71c3f383f9">
-          Harvard Computer Science Certificate
-        </a>
-        , a <a class="freecodecamp" href="https://www.freecodecamp.org/theredstonetaco/front-end-certification">
-          freecodecamp
-        </a> front-end web development certificate, and have finished the front-end
-        web development section of <a href="https://www.udemy.com/the-web-developer-bootcamp/learn/v4/overview" class="wdb">
-          The Complete Web Developer Bootcamp
-        </a>
+        Make sure to drop by my <a href="/portfolio">Portfolio</a>
+        for my qualifications!
       </p>
 
       <!-- divider -->
@@ -47,44 +35,27 @@
       </p>
 
       <!-- time for the ebooks! -->
-
-      <!-- Critical Thinking with Computer Science -->
-      <div class="ebook_div">
-        <p class="ebook_part ebook_title">
-          Critical Thinking with Computer Science
-        </p>
-        <p class="ebook_part ebook_view">
-          <a href="/ebooks/ctwcs" target="_blank">
-            <span class="fa fa-search"></span>
-            -View
-          </a>
-        </p>
-        <p class="ebook_part ebook_buy">
-          <a href="/ebooks/ctwcs/buy" target="_blank">
-            <span class="fa fa-dollar-sign"></span>
-            -Buy
-          </a>
-        </p>
-      </div>
-
-      <!-- Dustin's Research -->
-      <div class="ebook_div">
-        <p class="ebook_part ebook_title">
-          Dustin's Research
-        </p>
-        <p class="ebook_part ebook_view">
-          <a href="/ebooks/dr" target="_blank">
-            <span class="fa fa-search"></span>
-            -View
-          </a>
-        </p>
-        <p class="ebook_part ebook_buy">
-          <a href="/ebooks/dr/buy" target="_blank">
-            <span class="fa fa-dollar-sign"></span>
-            -Buy
-          </a>
-        </p>
-      </div>
+      <% if (ebooks) { %>
+        <% for (var i = 0; i < ebooks.length; i++) { %>
+          <div class="ebook_div">
+            <p class="ebook_part ebook_title">
+              <%= ebooks[i]["title"] %>
+            </p>
+            <p class="ebook_part ebook_view">
+              <a href="/ebooks/<%= ebooks[i]["_id"] %>">
+                <span class="fa fa-search"></span>
+                -View
+              </a>
+            </p>
+            <p class="ebook_part ebook_buy">
+              <a href="/ebooks/<%= ebooks[i]["_id"] %>/buy">
+                <span class="fa fa-dollar-sign"></span>
+                -Buy
+              </a>
+            </p>
+          </div>
+        <% } %>
+      <% } %>
 
       <!-- divider -->
       <hr>
