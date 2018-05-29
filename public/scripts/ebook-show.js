@@ -43,6 +43,24 @@ function initOnceForm(selector, method, callback) {
 
 function initRating() {
     $("#rating_add").submit(function(e) {
-        e
+        
+        e.preventDefault();
+        
+        var val = parseInt($("#rating_add").val());
+        if (val < 0 || val > 5) {
+            return alert("Please enter a value between 0 and 5!");
+        }
+        
+        $.ajax({
+            url: $("#rating_add").attr("action"),
+            type: "POST",
+            error: function (jXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            },
+            data: $("#rating_add").serialize()
+        });
+        
+        $("#rating_add").remove();
+        
     });
 }

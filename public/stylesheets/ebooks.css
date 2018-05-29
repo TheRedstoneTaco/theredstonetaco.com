@@ -88,12 +88,12 @@ html, body {
 .ebook_title {
   width: 60%;
 }
-.ebook_view {
+.ebook_read {
   width: 20%;
   background-color: #00aaaa;
   color: white;
 }
-.ebook_buy {
+.ebook_view {
   width: 20%;
   background-color: #00aa00;
   color: white;

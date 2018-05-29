@@ -41,16 +41,16 @@
             <p class="ebook_part ebook_title">
               <%= ebooks[i]["title"] %>
             </p>
-            <p class="ebook_part ebook_view">
-              <a href="/ebooks/<%= ebooks[i]["_id"] %>">
+            <p class="ebook_part ebook_read">
+              <a href="/ebooks/<%= ebooks[i]["_id"] %>/read">
                 <span class="fa fa-search"></span>
-                -View
+                -Read
               </a>
             </p>
-            <p class="ebook_part ebook_buy">
-              <a href="/ebooks/<%= ebooks[i]["_id"] %>/buy">
-                <span class="fa fa-dollar-sign"></span>
-                -Buy
+            <p class="ebook_part ebook_view">
+              <a href="/ebooks/<%= ebooks[i]["_id"] %>">
+                <span class="fa fa-eye"></span>
+                -View
               </a>
             </p>
           </div>

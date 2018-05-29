@@ -11,7 +11,7 @@ var ebookSchema = new mongoose.Schema({
     price: Number,
     ratings: [{
         value: Number,
-        id: {
+        author: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         }
@@ -19,7 +19,13 @@ var ebookSchema = new mongoose.Schema({
     rating: Number,
     likes: Number,
     views: Number,
-    reviews: [],
+    reviews: [{
+        content: String,
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    }],
     description: String
 });
 

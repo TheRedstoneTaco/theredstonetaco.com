@@ -69,7 +69,7 @@
       <p class="preview_title">
         Preview this Ebook
       </p>
-      <a class="d-block m-auto preview_button button button-glow button-border button-rounded button-giant button-highlight" href="/ebooks/<%= ebook._id %>">
+      <a class="d-block m-auto preview_button button button-glow button-border button-rounded button-giant button-highlight" href="/ebooks/<%= ebook._id %>/read">
         Preview <span class="fa fa-search"></span>
       </a>
     </div>
@@ -78,7 +78,7 @@
       <p class="buy_title">
         Buy this Ebook
       </p>
-      <a class="d-block m-auto button button-glow button-border button-rounded button-giant button-action" href="/ebooks/<%= ebook._id %>">
+      <a class="d-block m-auto button button-glow button-border button-rounded button-giant button-action" href="/ebooks/<%= ebook._id %>/buy">
         Buy <span class="fa fa-dollar-sign"></span>
       </a>
     </div>
@@ -92,6 +92,8 @@
   
 </div>
 
+<hr>
+
 <!--Rating-->
 <p id="rating_title">
   Rating:
@@ -104,14 +106,29 @@
     <img class="rating_live_taco" src="https://cdn4.iconfinder.com/data/icons/dottie-food/24/food_012-taco-fast_food-eat-tortilla-512.png"> 
   <% } %>
 </div>
-<% if (ebook.ratings.indexOf(user._id) == -1) { %>
-  <p id="rating_add_text">
-    Rate (0-5):
-  </p>
-  <form id="rating_add" action="/ebooks/<%= ebook._id %>/ratings">
-    <input name="rating" type="text" placeholder="number between 1 and 5">
-  </form>
-<% } else { %>
+
+<!--ratings-->
+
+<!--add/edit rating-->
+<% if (currentUser) { %>
+  <% if (ebook.ratings.filter(rating => rating.author.equals(currentUser._id)).length == 0) { %>
+    <p id="rating_add_text">
+      Rate (0-5):
+    </p>
+    <form id="rating_add" action="/ebooks/<%= ebook._id %>/ratings">
+      <input id="rating_add_input" class="form-control" name="value" type="text" placeholder="5"> / 5
+    </form>
+  <% } else { %>
+    <p id="rating_current">
+      You rated this Ebook: <%= ebook.ratings.filter(rating => rating.author.equals(currentUser._id))[0].value %>
+    </p>
+    <p id="rating_edit_text">
+      Edit Rating:
+    </p>
+    <form id="rating_edit" class="nonebox" actions="/ebooks/<% ebook._id %>/ratings/<%= currentUser._id %>/edit">
+      <input id="rating_edit_input" class="form-control" name="value" type="text" placeholder="5"> / 5
+    </form>
+  <% } %>
 <% } %>
 
 

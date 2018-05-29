@@ -72,6 +72,24 @@ router.get("/ebooks/:ebookId", function(req, res) {
     });
 });
 
+// SHOW: to show for reading, an ebook
+router.get("/ebooks/:ebookId/read", function(req, res) {
+    Ebook.findById(req.params.ebookId, function(err, foundEbook) {
+        if (err) {
+            console.log(err);
+            return res.redirect("back");
+        }
+        if (!foundEbook) {
+            console.log("coulddndt find ebook");
+            return res.redirect("back");
+        }
+        var initials = foundEbook.title.split(" ").map((n)=>n[0].toLowerCase()).join("");
+        res.render("ebooks/" + initials + "/index.ejs", {
+            ebook: foundEbook
+        });
+    });
+});
+
 // UPDATE: to like an ebook
 router.put("/ebooks/:ebookId/like", function(req, res) {
     Ebook.findById(req.params.ebookId, function(err, foundEbook) {
@@ -85,7 +103,29 @@ router.put("/ebooks/:ebookId/like", function(req, res) {
 
 // CREATE: to rate an ebook
 router.post("/ebooks/:ebookId/ratings", function(req, res) {
+    Ebook.findById(req.params.ebookId, function(err, foundEbook) {
+        if (err) {
+            return console.log(err);
+        }
+        if (!foundEbook) {
+            return console.log("CoulNDT find ebook");
+        }
+        foundEbook.ratings.push({
+            value: req.body.value,
+            author: req.user._id
+        });
+        foundEbook.save();
+    });
+});
+
+// UPDATE: to update an ebook rating
+router.post("/ebooks/:ebookId/rating/:userId/edit", function(req, res) {
     
+});
+
+// SHOW: to show buy page of an ebook
+router.get("/ebooks/:ebookdId/buy", function(req, res) {
+    res.send("page under construction");
 });
 
 module.exports = router;
