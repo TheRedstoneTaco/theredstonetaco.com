@@ -76,6 +76,13 @@ app.use(authenticationRoutes);
 app.use(ebooksRoutes);
 app.use(indexRoutes);
 
+Ebook.find({}, function(err, foundEbooks) {
+    foundEbooks.forEach(function(ebook) {
+        ebook.ratings = [];
+        ebook.save();
+    });
+});
+
 // listen
 app.listen(process.env.PORT, process.env.IP, function() {
    console.log("I really love Jesus + theredstonetaco server started >.< [_-}] ?.? (-_||");

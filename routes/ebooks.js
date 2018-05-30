@@ -100,9 +100,10 @@ router.put("/ebooks/:ebookId/like", function(req, res) {
         foundEbook.save();
     });
 });
-
+// YOU SMELL
 // CREATE: to rate an ebook
 router.post("/ebooks/:ebookId/ratings", function(req, res) {
+    // find ebook to rate
     Ebook.findById(req.params.ebookId, function(err, foundEbook) {
         if (err) {
             return console.log(err);
@@ -110,18 +111,67 @@ router.post("/ebooks/:ebookId/ratings", function(req, res) {
         if (!foundEbook) {
             return console.log("CoulNDT find ebook");
         }
+        // rate ebook
         foundEbook.ratings.push({
-            value: req.body.value,
+            value: req.body.value / 5.0,
             author: req.user._id
         });
+        // update ebook's average rating
+        var sum = 0;
+        for (var i = 0; i < foundEbook.ratings.length; i++) {
+            sum += foundEbook.ratings[i].value;
+        }
+        var avg = sum / (((foundEbook.ratings.length == 0) * 1) + ((foundEbook.ratings.length != 0) * foundEbook.ratings.length));
+        foundEbook.rating = avg;
+        // save an ebook
         foundEbook.save();
     });
 });
 
 // UPDATE: to update an ebook rating
-router.post("/ebooks/:ebookId/rating/:userId/edit", function(req, res) {
+router.post("/ebooks/:ebookId/ratings/:userId/edit", function(req, res) {
+    // find ebook
+    Ebook.findById(req.params.ebookId, function(err, foundEbook) {
+        if (err) {
+            return console.log(err);
+        }
+        if (!foundEbook) {
+            return console.log("Ccouldn't find Ebook");
+        }
+        // update that one individual rating
+        var whichRating = -1;
+        for (var i = 0; i < foundEbook.ratings.length; i++) {
+            if (foundEbook.ratings[i].author.equals(req.user._id)) {
+                whichRating = i;
+                break;
+            }
+        }
+        if (whichRating == -1) {
+            return console.log("couldn't find a matching rating to the user that tried to edit theirs");
+        }
+        foundEbook.ratings[whichRating].value = parseInt(req.body.value) / 5.0;
+        // update ebook's average rating
+        var sum = 0;
+        for (var i = 0; i < foundEbook.ratings.length; i++) {
+            sum += foundEbook.ratings[i].value;
+        }
+        var avg = sum / (((foundEbook.ratings.length == 0) * 1) + ((foundEbook.ratings.length != 0) * foundEbook.ratings.length));
+        foundEbook.rating = avg;
+        // save ebook
+        foundEbook.save();
+    });
+});
+
+// CREATE: to review an ebook
+router.post("/ebooks/:ebookId/reviews", function(req, res) {
     
 });
+
+// UPDATE: to update a review
+router.put("/ebooks/:ebookId/review", function(req, res) {
+    
+});
+
 
 // SHOW: to show buy page of an ebook
 router.get("/ebooks/:ebookdId/buy", function(req, res) {

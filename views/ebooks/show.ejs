@@ -107,29 +107,57 @@
   <% } %>
 </div>
 
+<hr>
+
+<h1 class="text-center">
+  Rating Stats
+</h1>
+
 <!--ratings-->
+<div id="ratings">
+  <% for (var i = 5; i >= 0; i--) { %>
+    <div class="row w-50 m-auto">
+      <% for (var j = 0; j < 5; j++) { %>
+        <div class="rating_col col-2">
+          <% if (j < i) { %>
+            <img class="rating_taco" src="https://cdn0.iconfinder.com/data/icons/junk-food-emoji-set/100/Taco-512.png">
+          <% } %>
+        </div>
+      <% } %>
+      <div class="rating_col col-2">
+        <p class="rating_type_count col-2">
+          <%= ebook.ratings.filter(rating => Math.round(rating.value * 5) == i).length; %>
+        </p>
+      </div> 
+    </div>
+  <% } %>
+</div>
 
 <!--add/edit rating-->
 <% if (currentUser) { %>
+  <!--if not rated yet-->
   <% if (ebook.ratings.filter(rating => rating.author.equals(currentUser._id)).length == 0) { %>
     <p id="rating_add_text">
       Rate (0-5):
     </p>
-    <form id="rating_add" action="/ebooks/<%= ebook._id %>/ratings">
+    <form id="rating_add" action="/ebooks/<%= ebook._id %>/ratings" method="POST">
       <input id="rating_add_input" class="form-control" name="value" type="text" placeholder="5"> / 5
     </form>
   <% } else { %>
+    <!--if already rated-->
     <p id="rating_current">
       You rated this Ebook: <%= ebook.ratings.filter(rating => rating.author.equals(currentUser._id))[0].value %>
     </p>
     <p id="rating_edit_text">
       Edit Rating:
     </p>
-    <form id="rating_edit" class="nonebox" actions="/ebooks/<% ebook._id %>/ratings/<%= currentUser._id %>/edit">
+    <form id="rating_edit" class="nonebox" action="/ebooks/<%= ebook._id %>/ratings/<%= currentUser._id %>/edit" method="POST">
       <input id="rating_edit_input" class="form-control" name="value" type="text" placeholder="5"> / 5
     </form>
   <% } %>
 <% } %>
+
+<hr>
 
 
 <% include ../partials/footer.ejs %>

@@ -11,7 +11,19 @@ $(document).ready(function() {
     });
     
     // initialize the rating stuffs
-    initRating();
+    ajaxSubmit("#rating_add", function() {
+        return $("#rating_add_input").val() >= 0 && $("#rating_add_input").val() <= 5;
+    }, function() {
+        $("#rating_add_text").text("RATED: " + $("#rating_add_input").val());
+        $("#rating_add").remove();
+    });
+    ajaxSubmit("#rating_edit", function() {
+        return $("#rating_edit_input").val() >= 0 && $("#rating_edit_input").val() <= 5;
+    }, function() {
+        $("#rating_current").text("RATED: " + $("#rating_edit_input").val());
+        $("#rating_edit_text").remove();
+        $("#rating_edit").remove();
+    });
     
 });
 
@@ -41,26 +53,26 @@ function initOnceForm(selector, method, callback) {
     
 }
 
-function initRating() {
-    $("#rating_add").submit(function(e) {
-        
+function ajaxSubmit(selector, check, afterSubmit) {
+    $(selector).submit(function(e) {
         e.preventDefault();
-        
-        var val = parseInt($("#rating_add").val());
-        if (val < 0 || val > 5) {
-            return alert("Please enter a value between 0 and 5!");
+        if (check) {
+            if (!check()) {
+                return;
+            }
         }
-        
+        console.log(1);
+        console.log($(selector).attr("method"));
         $.ajax({
-            url: $("#rating_add").attr("action"),
-            type: "POST",
+            url: $(selector).attr("action"),
+            type: $(selector).attr("method"),
             error: function (jXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
             },
-            data: $("#rating_add").serialize()
+            data: $(selector).serialize()
         });
-        
-        $("#rating_add").remove();
-        
+        if (afterSubmit) {
+            afterSubmit();
+        }
     });
 }

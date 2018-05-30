@@ -21,10 +21,11 @@ var ebookSchema = new mongoose.Schema({
     views: Number,
     reviews: [{
         content: String,
-        id: {
+        author: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
-        }
+        },
+        created: String
     }],
     description: String
 });
