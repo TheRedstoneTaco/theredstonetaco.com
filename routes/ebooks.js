@@ -1,5 +1,6 @@
 var express = require("express");
 var router  = express.Router();
+var middleware = require("../middleware/index.js");
 var Ebook   = require("../models/ebook.js"),
     Page    = require("../models/page.js");
 
@@ -102,7 +103,7 @@ router.put("/ebooks/:ebookId/like", function(req, res) {
 });
 
 // CREATE: to rate an ebook
-router.post("/ebooks/:ebookId/ratings", function(req, res) {
+router.post("/ebooks/:ebookId/ratings", middleware.isLoggedIn, function(req, res) {
     // find ebook to rate
     Ebook.findById(req.params.ebookId, function(err, foundEbook) {
         if (err) {
@@ -149,7 +150,7 @@ router.post("/ebooks/:ebookId/ratings/:userId/edit", function(req, res) {
             }
         }
         if (whichRating == -1) {
-            return console.log("couldn't find a matching rating to the user that tried to edit theirs");
+            return console.log("unauthorized rating edit by: " + req.user._id);
         }
         foundEbook.ratings[whichRating].value = parseInt(req.body.value) / 5.0;
         // update ebook's average rating
@@ -165,7 +166,7 @@ router.post("/ebooks/:ebookId/ratings/:userId/edit", function(req, res) {
 });
 
 // CREATE: to review an ebook
-router.post("/ebooks/:ebookId/reviews", function(req, res) {
+router.post("/ebooks/:ebookId/reviews", middleware.isLoggedIn, function(req, res) {
     // find ebook to review
     Ebook.findById(req.params.ebookId, function(err, foundEbook) {
         if (err) {
@@ -195,6 +196,10 @@ router.put("/ebooks/:ebookId/reviews", function(req, res) {
         if (!foundEbook) {
             return console.log("couDSDnt find ebook");
         }
+        // make sure editor is an author
+        if (foundEbook.reviews.filter(review => review.author.equals(req.user._id)).length < 1) {
+            return console.log("unauthorized review edit by: " + req.user._id);
+        }
         // update necessary review
         foundEbook.reviews.filter(review => review.author.equals(req.user._id))[0].content = req.body.content;
         foundEbook.save();
@@ -202,7 +207,7 @@ router.put("/ebooks/:ebookId/reviews", function(req, res) {
 });
 
 // SHOW: to show buy page of an ebook
-router.get("/ebooks/:ebookdId/buy", function(req, res) {
+router.get("/ebooks/:ebookdId/buy", middleware.isLoggedIn, function(req, res) {
     res.send("page under construction");
 });
 

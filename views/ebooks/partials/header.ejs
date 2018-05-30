@@ -31,7 +31,7 @@
     <script type="text/javascript" src="/scripts/book.js"></script>
     
     <!--if book not bought, restrict-->
-    <% if (!(currentUser && currentUser.ebooks && currentUser.ebooks.indexOf(ebooks._id) != -1)) { %>
+    <% if (!(currentUser && currentUser.ebooks && currentUser.ebooks.indexOf(ebook._id) != -1)) { %>
       <script type="text/javascript" src="/scripts/book-unbought.js"></script>
     <% } %>
 
