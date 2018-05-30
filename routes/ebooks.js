@@ -55,7 +55,7 @@ router.get("/ebooks/:ebookId", function(req, res) {
         if (!foundPage) {
             return console.log("COULDNT FIND PAGe");
         }
-        Ebook.findById(req.params.ebookId, function(err, foundEbook) {
+        Ebook.findById(req.params.ebookId).populate({ path: "reviews.author" }).exec(function(err, foundEbook) {
             if (err) {
                 console.log(err);
                 return res.redirect("back");
@@ -100,7 +100,7 @@ router.put("/ebooks/:ebookId/like", function(req, res) {
         foundEbook.save();
     });
 });
-// YOU SMELL
+
 // CREATE: to rate an ebook
 router.post("/ebooks/:ebookId/ratings", function(req, res) {
     // find ebook to rate
@@ -116,6 +116,7 @@ router.post("/ebooks/:ebookId/ratings", function(req, res) {
             value: req.body.value / 5.0,
             author: req.user._id
         });
+        console.log("BEFORE PUTTING RATING: " + foundEbook);
         // update ebook's average rating
         var sum = 0;
         for (var i = 0; i < foundEbook.ratings.length; i++) {
@@ -125,6 +126,7 @@ router.post("/ebooks/:ebookId/ratings", function(req, res) {
         foundEbook.rating = avg;
         // save an ebook
         foundEbook.save();
+        console.log("AFTER PUTTING RATING: " + foundEbook);
     });
 });
 
@@ -164,14 +166,40 @@ router.post("/ebooks/:ebookId/ratings/:userId/edit", function(req, res) {
 
 // CREATE: to review an ebook
 router.post("/ebooks/:ebookId/reviews", function(req, res) {
-    
+    // find ebook to review
+    Ebook.findById(req.params.ebookId, function(err, foundEbook) {
+        if (err) {
+            return console.log(err);
+        }
+        if (!foundEbook) {
+            return console.log("coulDnt find ebook");
+        }
+        // add review
+        var newReview = {
+            author: req.user._id,
+            content: req.body.content,
+            created: new Date()
+        }
+        foundEbook.reviews.push(newReview);
+        foundEbook.save();
+    });
 });
 
 // UPDATE: to update a review
-router.put("/ebooks/:ebookId/review", function(req, res) {
-    
+router.put("/ebooks/:ebookId/reviews", function(req, res) {
+    // find ebook to update review on
+    Ebook.findById(req.params.ebookId, function(err, foundEbook) {
+        if (err) {
+            return console.log(err);
+        }
+        if (!foundEbook) {
+            return console.log("couDSDnt find ebook");
+        }
+        // update necessary review
+        foundEbook.reviews.filter(review => review.author.equals(req.user._id))[0].content = req.body.content;
+        foundEbook.save();
+    });
 });
-
 
 // SHOW: to show buy page of an ebook
 router.get("/ebooks/:ebookdId/buy", function(req, res) {

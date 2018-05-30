@@ -109,8 +109,9 @@
 
 <hr>
 
+<!--ratings title-->
 <h1 class="text-center">
-  Rating Stats
+  Ratings: <span class="badge badge-success"><%= ebook.ratings.length %></span>
 </h1>
 
 <!--ratings-->
@@ -125,11 +126,12 @@
         </div>
       <% } %>
       <div class="rating_col col-2">
-        <p class="rating_type_count col-2">
+        <p class="rating_type_count col-2 nonebox">
           <%= ebook.ratings.filter(rating => Math.round(rating.value * 5) == i).length; %>
         </p>
-      </div> 
+      </div>
     </div>
+    <hr class="w-50 d-block m-auto">
   <% } %>
 </div>
 
@@ -158,6 +160,82 @@
 <% } %>
 
 <hr>
+
+<!--reviews-->
+<div id="reviews" class="container">
+  
+  <!--"reviews" title-->
+  <h1 id="reviews_title" class="text-center">
+    Reviews: <span class="badge badge-primary"> <%= ebook.reviews.length %> </span>
+  </h1>
+  
+  <!--leave a review-->
+  <% if (currentUser) { %>
+    <% if (ebook.reviews.filter(review => review.author.equals(currentUser._id)).length == 0) { %>
+      <p id="review_added" class="text-center w-100 d-block"></p>
+      <h3 id="review_leave_title" class="text-center">
+        Leave a Review:
+      </h3>
+      <form id="review_add" class="w-100" action="/ebooks/<%= ebook._id %>/reviews" method="POST">
+        <textarea name="content" id="review_add_content" class="form-control w-75 m-auto"></textarea>
+        <br>
+        <button class="button button-raised button-caution d-block button-large w-50 m-auto"><i class="fa fa-plus"></i> Add</button>
+      </form>
+    <% } else { %>
+      <h3 id="review_edited_title" class="text-center w-100 d-block"></h3>
+      <p id="review_edited" class="text-center w-100 d-block"></p>
+      <h3 id="review_edit_title" class="text-center">
+        Edit Review:
+      </h3>
+      <form id="review_edit" class="w-100" action="/ebooks/<%= ebook._id %>/reviews?_method=PUT" method="POST">
+        <textarea name="content" id="review_edit_content" class="form-control w-75 m-auto">
+          <%= ebook.reviews.filter(review => review.author.equals(currentUser._id))[0].content %>
+        </textarea>
+        <br>
+        <button class="button button-raised button-caution d-block button-large w-50 m-auto"><i class="fa fa-edit"></i> Edit</button>
+      </form>
+    <% } %>
+  <% } %>
+  
+  <br><br>
+  
+  <!--actual reviews-->
+  <ul class="list-group">
+    <% ebook.reviews.forEach(function(review) { %>
+      <li class="list-group-item">
+        <h2 class="text-center">Content</h2>
+        <hr>
+        <p>
+          <%= review.content %>
+        </p>
+        <div class="row">
+          <div class="col-6">
+            <h4 class="text-center">
+              Created
+            </h4>
+            <hr>
+            <h6 class="text-center">
+              <%= review.created %>
+            </h6>
+          </div>
+          <div class="col-6">
+            <h4 class="text-center">
+              Author
+            </h4>
+            <hr>
+            <h6 class="text-center">
+              <%= review.author.username %>
+            </h6>
+          </div>
+        </div>
+      </li>
+      <br>
+    <% }); %>
+  </ul>
+  
+</div>
+
+<br>
 
 
 <% include ../partials/footer.ejs %>

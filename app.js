@@ -45,7 +45,6 @@ passport.use(new LocalStrategy(
     }
     // now login
     User.findOne(findBy, function (err, user) {
-        console.log(user);
       if (err) {
           return done(err);
       }
@@ -75,13 +74,6 @@ app.use(accountRoutes);
 app.use(authenticationRoutes);
 app.use(ebooksRoutes);
 app.use(indexRoutes);
-
-Ebook.find({}, function(err, foundEbooks) {
-    foundEbooks.forEach(function(ebook) {
-        ebook.ratings = [];
-        ebook.save();
-    });
-});
 
 // listen
 app.listen(process.env.PORT, process.env.IP, function() {

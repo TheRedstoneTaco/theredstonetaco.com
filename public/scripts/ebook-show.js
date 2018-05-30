@@ -25,6 +25,17 @@ $(document).ready(function() {
         $("#rating_edit").remove();
     });
     
+    // initialize all the review stuffs
+    ajaxSubmit("#review_add", null, function() {
+        $("#review_added").addClass("review_added_text").text($("#review_add_content").val());
+        $("#review_leave_title, #review_add").remove();
+    });
+    ajaxSubmit("#review_edit", null, function() {
+        $("#review_edited_title").text("You edited your review!");
+        $("#review_edited").addClass("review_edited_text").text($("#review_edit_content").val());
+        $("#review_edit_title, #review_edit").remove();
+    });
+    
 });
 
 // to submit a form only once

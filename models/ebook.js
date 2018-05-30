@@ -25,7 +25,10 @@ var ebookSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         },
-        created: String
+        created: {
+            type: Date,
+            default: Date.now
+        }
     }],
     description: String
 });

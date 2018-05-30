@@ -167,3 +167,16 @@
   display: inline;
   font-size: 4.0vw;
 }
+
+
+
+/**
+
+  reviews
+
+*/
+.review_added_text, .review_edited_text {
+  margin: auto; border: 0; padding: 2%;
+  border-radius: 20px;
+  background-color: #ddd;
+}
