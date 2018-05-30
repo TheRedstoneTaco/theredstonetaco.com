@@ -7,15 +7,38 @@ hr {
   border-top: 3px solid rgba(0, 0, 0, 0.2);
 }
 
-/*helper "lgplus" class and responsive sizing*/
+/*responsive sizing for mdminus+ and helper "lgplus" class*/
 @media (max-width: 991px) {
   .lgplus {
     display: none;
   }
+  /*main*/
+  .main_description {
+    margin: auto; border: 0; padding: 0;
+    width: 90%;
+  }
+  /*likes and views*/
+  .likes_title, .likes_count, .views_title, .views_count {
+    text-align: center;
+    font-size: 9.0vw;
+  }
+  .like_button, .views_button {
+    margin: auto;
+    display: block;
+    width: 90%;
+  }
+  /*actions*/
+  .preview_button, .buy_button {
+    width: 90%;
+  }
+  /*nice sizing*/
+  hr {
+    width: 75%;
+  }
 }
 
 
-/*helper "mdminus" class and responsive sizing*/
+/*responsive sizing for large+ and helper "mdminus" class*/
 @media (min-width: 992px) {
   .mdminus {
     display: none;
@@ -128,7 +151,10 @@ hr {
   max-height: 100%;
 }
 .rating_type_count {
-  font-size: 2.0vw;
+  font-size: 4.0vw;
+}
+.col-2 {
+  padding: 0;
 }
 /*add a rating*/
 #rating_add_text {

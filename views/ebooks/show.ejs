@@ -55,8 +55,8 @@
     </p>
     <br>
     <button href="http://unicorn-ui.com/" class="d-block m-auto button button-3d button-giant button-royal button-rounded">
-        Viewed <span class="fa fa-eye"></span>
-      </button>
+      Viewed <span class="fa fa-eye"></span>
+    </button>
   </div>
   
   <div class="w-50 m-auto">
@@ -84,6 +84,7 @@
       </a>
     </div>
     
+    <!--buy-->
     <div class="buy col-6">
       <p class="buy_title">
         Buy this Ebook
@@ -98,11 +99,94 @@
 </div>
 
 <!--display like this on medium- screens-->
-<div id="container-mdminus" class="md-minus nonebox">
+<div id="container-mdminus" class="mdminus nonebox">
+  
+  <!--main-->
+  <div class="main nonebox">
+    <h3 class="main_title text-center">
+      <%= ebook.title %>
+    </h3>
+    <hr class="w-75">
+    <p class="main_created text-center">
+      <%= ebook.created %>
+    </p>
+    <p class="main_description">
+      <%= ebook.description %>
+    </p>
+  </div>
+  
+  <br>
+  <hr>
+  
+  <!--likes-->
+  <div class="likes nonebox">
+    <p class="likes_title">
+      Likes
+    </p>
+    <p class="likes_count">
+      <%= ebook.likes %>
+    </p>
+    <form class="like-form" action="/ebooks/<%= ebook._id %>/like" method="POST">
+      <button href="http://unicorn-ui.com/" class="like_button d-block m-auto button button-3d button-giant button-primary button-rounded">
+        Like <span class="fa fa-thumbs-up"></span>
+      </button>
+    </form>
+  </div>
+  
+  <br>
+  <hr>
+  
+  <!--views-->
+  <div class="views nonebox">
+    <p class="views_title">
+      Views
+    </p>
+    <p class="views_count">
+      <%= ebook.views %>
+    </p>
+    <button href="http://unicorn-ui.com/" class="views_button d-block m-auto button button-3d button-giant button-royal button-rounded">
+      Viewed <span class="fa fa-eye"></span>
+    </button>
+  </div>
+  
+  <div class="w-100">
+    <br>
+    <hr>
+    <br>
+    <h2 class="text-center">
+      <%= ebook.users.length %> Sold so far :)
+    </h2>
+    <br>
+    <hr>
+    <br>
+  </div>
+  
+  <!--preview-->
+  <div class="preview">
+    <h4 class="preview_title text-center">
+      Preview this Ebook
+    </h4>
+    <a class="d-block m-auto preview_button button button-glow button-border button-rounded button-giant button-highlight" href="/ebooks/<%= ebook._id %>/read">
+      Preview <span class="fa fa-search"></span>
+    </a>
+  </div>
+  
+  <br>
+  
+  <!--buy-->
+  <div class="buy">
+    <h4 class="buy_title text-center">
+      Buy this Ebook
+    </h4>
+    <a class="d-block m-auto buy_button button button-glow button-border button-rounded button-giant button-action" href="/ebooks/<%= ebook._id %>/buy">
+      Buy <span class="fa fa-dollar-sign"></span>
+    </a>
+  </div>
+  
+  <br><hr>
   
 </div>
-
-<hr>
+  
 
 <!--Rating-->
 <p id="rating_title">
@@ -127,7 +211,7 @@
 <!--ratings-->
 <div id="ratings">
   <% for (var i = 5; i >= 0; i--) { %>
-    <div class="row w-50 m-auto">
+    <div class="row w-75 m-auto">
       <% for (var j = 0; j < 5; j++) { %>
         <div class="rating_col col-2">
           <% if (j < i) { %>
@@ -136,12 +220,12 @@
         </div>
       <% } %>
       <div class="rating_col col-2">
-        <p class="rating_type_count col-2 nonebox">
-          <%= ebook.ratings.filter(rating => Math.round(rating.value * 5) == i).length; %>
+        <p class="rating_type_count nonebox">
+          <%= ebook.ratings.filter(rating => Math.round(rating.value * 5) == i).length / ebook.ratings.length * 100; %> %
         </p>
       </div>
     </div>
-    <hr class="w-50 d-block m-auto">
+    <hr class="w-75 d-block m-auto">
   <% } %>
 </div>
 
