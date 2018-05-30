@@ -207,8 +207,38 @@ router.put("/ebooks/:ebookId/reviews", function(req, res) {
 });
 
 // SHOW: to show buy page of an ebook
-router.get("/ebooks/:ebookdId/buy", middleware.isLoggedIn, function(req, res) {
-    res.send("page under construction");
+router.get("/ebooks/:ebookId/buy", middleware.isLoggedIn, function(req, res) {
+    // find page to put into template
+    Page.findOne({
+        title: "buy ebook"
+    }, function(err1, foundPage) {
+        if (err1) {
+            console.log(err1);
+            return res.redirect("back");
+        }
+        if (!foundPage) {
+            console.log("couldnt find page diggityar");
+            return res.redirect("back");
+        }
+        // find book to put into template
+        Ebook.findById(req.params.ebookId, function(err2, foundEbook) {
+            if (err2) {
+                console.log(err2);
+                return res.redirect("back");
+            }
+            if (!foundEbook) {
+                console.log("couldnasdt find ebook");
+                return res.redirect("back");
+            }
+            // now render template with page and book
+            res.render("ebooks/buy.ejs", {
+                page: foundPage,
+                ebook: foundEbook
+            });
+        });
+    });
 });
+
+
 
 module.exports = router;

@@ -68,7 +68,6 @@ app.use(function(request, response, next) {
 // method overriding
 app.use(methodOverride("_method"));
 
-
 // route using
 app.use(accountRoutes);
 app.use(authenticationRoutes);

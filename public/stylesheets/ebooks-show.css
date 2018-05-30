@@ -2,7 +2,10 @@
 .nonebox {
     margin: 0; border: 0; padding: 0;
 }
-
+/*helper hr modifications*/
+hr {
+  border-top: 3px solid rgba(0, 0, 0, 0.2);
+}
 
 /*helper "lgplus" class and responsive sizing*/
 @media (max-width: 991px) {
