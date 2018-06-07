@@ -1,6 +1,8 @@
 var express = require("express");
 var router  = express.Router();
 var Page    = require("../models/page.js");
+var Conversation = require("../models/conversation.js");
+var middleware = require("../middleware/index.js");
 
 // GET - root route - '/': redirect to index route
 router.get("/", function(req, res) {
@@ -9,29 +11,31 @@ router.get("/", function(req, res) {
 
 // GET - index - '/:pageTitle': Show page of some route
 router.get("/:pageTitle", function(req, res) {
-    // find index page info in database
-    Page.findOne({
+    // find the index page in the database
+    Page.findOneAndUpdate({
         title: req.params.pageTitle
-    }, function(err1, foundPage) {
+    }, {
+        $inc: {
+            views: 1
+        }
+    }).populate([
+        {
+            path: "conversation",
+            populate: {
+                path: "author",
+                model: "User"
+            }
+        }
+    ]).exec(function(err1, finalPage) {
         if (err1) {
             return console.log(err1);
         }
-        if (!foundPage) {
+        if (!finalPage) {
             return res.redirect("/");
         }
-        // now that you've visited, update info
-        var views = foundPage.views;
-        var id = foundPage._id;
-        Page.findByIdAndUpdate(id, {
-            views: (views + 1)
-        }, function(err2, updatedPage) {
-            if (err2) {
-                return console.log(err2);
-            }
-            // render page with found and updated info
-            res.render(req.params.pageTitle + "/index.ejs", {
-                page: updatedPage
-            });
+        // now render page with updated views
+        res.render(req.params.pageTitle + "/index.ejs", {
+            page: finalPage,
         });
     });
 });
@@ -60,6 +64,34 @@ router.put("/:pageTitle/like", function(req, res) {
         });
     });
      
+});
+
+// POST - index - '/:pageTitle/conversation': add conversation to a page
+router.post("/:pageTitle/conversation", middleware.isLoggedIn, function(req, res) {
+    // find page to update
+    Page.findOne({
+        title: req.params.pageTitle
+    }, function(err1, foundPage) {
+        if (err1) {
+            return console.log(err1);
+        }
+        // add conversation to the page!
+        var newConversation = Conversation.create({
+            title: req.body.title,
+            content: req.body.content,
+            category: req.body.category,
+            author: req.user._id,
+            yes: 0,
+            no: 0
+        }, function(err2, newConversation) {
+            if (err2) {
+                return console.log(err2);
+            }
+            console.log(newConversation);
+            foundPage.conversation.push(newConversation);
+            foundPage.save();
+        });
+    });
 });
 
 module.exports = router;

@@ -2,6 +2,7 @@
 var passportLocalMongoose   = require("passport-local-mongoose"),
     methodOverride          = require("method-override"),
     LocalStrategy           = require("passport-local").Strategy,
+    Conversation            = require("./models/conversation.js"),
     bodyParser              = require("body-parser"),
     passport                = require("passport"),
     mongoose                = require("mongoose"),

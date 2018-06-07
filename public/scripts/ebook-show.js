@@ -72,8 +72,6 @@ function ajaxSubmit(selector, check, afterSubmit) {
                 return;
             }
         }
-        console.log(1);
-        console.log($(selector).attr("method"));
         $.ajax({
             url: $(selector).attr("action"),
             type: $(selector).attr("method"),

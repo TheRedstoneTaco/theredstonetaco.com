@@ -1,12 +1,123 @@
 <% include ../partials/header.ejs %>
 
+<!--external-->
 <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+
+<!--internal-->
 <link rel="stylesheet" href="stylesheets/os.css">
 <script type="text/javascript" src="scripts/os.js"></script>
 
+
+<!--page container-->
+<div class="row" id="pageContainer">
+  
+  <!--menu-->
+  <div class="col-3" id="menu">
+    <div id="menu" class="ui secondary vertical pointing menu">
+      <a class="item active" href="#">
+        Topics
+      </a>
+      <a class="item" href="#">
+        Rules
+      </a>
+    </div>
+  </div>
+  
+  <!--content-->
+  <div class="col-9" id="content">
+    
+    <!--topics-->
+    <div id="topics">
+      
+      <!--to add a topic-->
+      <% if (currentUser && currentUser.authorization == 1) { %>
+        <br>
+        <div class="container card">
+          <h1 id="topicAddAlert" class="text-center alert alert-success">Topic Added!</h1>
+          <form id="topicForm" action="/os/conversation" method="POST">
+            <h2 class="text-center">
+              Hello! Add a topic mr. fancy pants!
+            </h2>
+            <h4>Title: </h4>
+            <input type="text" name="title" class="form-control" required placeholder="title...">
+            <h4>Content: </h4>
+            <input type="text" name="content" class="form-control" required placeholder="content...">
+            <h4>Category: </h4>
+            <input type="text" name="category" class="form-control" required placeholder="category...">
+            <h4></h4>
+            <button class="btn w-50 m-auto d-block btn-success">
+              <h1>Add topic!</h1>
+            </button>
+            <br>
+          </form>  
+        </div>
+        <br>
+      <% } %>
+      
+      <!--to display the topics-->
+      <div id="topics-list">
+        <% page.conversation.forEach(function(conversation) { %>
+          <div class="topic ui link cards">
+            <div class="card w-100">
+              <div class="content">
+                <h1 class="header text-center">
+                  <%= conversation.title %>
+                </h1>
+                <div class="meta">
+                  <a href="#">
+                    <h4 class="d-inline">
+                      <% if (conversation.author && conversation.author.username) { %>
+                        <%= conversation.author.username %>
+                      <% } else { %>
+                        <p class="alert alert-warning">No author (and therefore)/(or at least no) author username :?</p>
+                      <% } %>
+                    </h4>
+                  </a>
+                  <br>
+                  <a>
+                    <h4 class="d-inline">
+                      <% if (conversation.author && conversation.author.email) { %>
+                        <%= conversation.author.email %>
+                      <% } else { %>
+                        <p class="alert alert-warning">No author (and therefore)/(or at least no) author email ?:</p>
+                      <% } %>
+                    </h4>
+                  </a>
+                </div>
+                <div class="description">
+                  <%= conversation.content %>
+                </div>
+              </div>
+              <div class="extra content">
+                <form action="/os/conversation/<%= conversation._id %>/yes?_method=PUT" method="POST">
+                  <button class="left floated d-block w-50 text-center">
+                    <i class="fa fa-thumbs-up"></i>
+                    <%= conversation.yes %>
+                  </button>
+                </form>
+                <form action="/os/conversation/<%= conversation._id %>/no?_method=PUT" method="POST">
+                  <button class="right floated d-block w-50 text-center">
+                    <i class="fa fa-thumbs-down"></i>
+                    <%= conversation.no %>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+      
+    </div>
+      
+  </div>
+  
+</div>
+
 <div class="container">
 
-  <h3>I love Jesus and He changed my life!</h3>
+  
   <h3>(Click list titles to hide them)</h3>
 
   <div class="level1" id="ideas">
@@ -51,6 +162,14 @@
             <li>partitions?</li>
             <li>what does sleep? hibernate? shut down? do. different kinds of booting? saving or pausing machine state?</li>
             <li>Support Virtual Machines in your OS, so make sure to add permissions and abstractions where necessary like CPU access and shared folders and using one file explorer for everything from choosing a file to upload to just browsing straight from the app, so implement the kernel to be abstracted and generalized for browsing, also maybe being able to run every command from the command line. Can you think of anything besides the usual command line?</li>
+            <li>In a User->Kernel thread model, a problem is the kernel threads having no information to work with. What if there was a code sent by each user-level thread to convert into and work with a kernel-level thread?</li>
+            <li>File structure? Needs to support authorization, reading, writing, and a bunch of useful functions. What about kernel databases - JSON format?</li>
+            <li>WHAT ABOUT STRUCTS IN THE FORM OF A JSON FORMATTED STRING. more compact and flexible?</li>
+            <li>Keep in mind metric measuring, resource usage, accounting, same thing. A passive background task to do it.</li>
+            <li>Allow multiple accounts on the device or even rethink it</li>
+            <li>Support virtualization</li>
+            <li>Support screensharing/recording/streaming</li>
+            <li>Support remote control, even on a phone, so treat lots of operations as servers?</li>
           </ol>
         </div>
       </li>

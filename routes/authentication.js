@@ -59,6 +59,7 @@ router.post("/register", function(req, res) {
 
     // create temporary, blank user object
     var newUser = new User({
+        authorization: 0,
         username: req.body.username,
         email: req.body.email,
         created: 'today',
