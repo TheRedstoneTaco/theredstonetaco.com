@@ -1,0 +1,76 @@
+I'm trying to deep populate (any level) some conversation models so I can have conversations inside of conversations ins... and actually pull all that out from the database and hand it to and ejs template to use. I am trying the npm library "mongoose-deep-populate". 
+When a user visits the page, the route handler pulls the page's object from the database, populates it *deeply* with models of type "conversation", and renders an ejs template with the end result page.
+
+The page schema has some fields but the critical part is the conversation attribute which we are trying to deeply populate:
+var pageSchema = new mongoose.Schema({
+    ...
+    conversation: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Conversation"
+    }]
+    ...
+});
+The conversation schema looks approximately like this too:
+var conversationSchema = new mongoose.Schema({
+    ...
+    conversation: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Conversation"
+    }]
+    ...
+});
+
+Now we are trying to go into the page that we get from the database and deeply populate it's conversation field
+so we will end up with a page object that has any amount and level of nested conversation objects. I tried doing this
+in my routes with approximately (shortened) this code:
+
+Page.findOne({
+    title: req.params.pageTitle
+}).deepPopulate("conversation").exec(function(err1, foundPage) {
+    res.render(req.params.pageTitle + "/index.ejs", {
+        page: foundPage
+    });
+});
+
+But when I console.log the page object from the ejs file, it gives this approximate output:
+{
+    some attributes like id and title
+    ...
+    "conversation": [{
+        stuff like
+        "upvotes": 12,
+        ...
+        "conversation" : ["5b1a029994ee700731996535"],
+        ...
+        some other stuff like
+        "created": "today",
+    }]
+    ...
+    more attributes
+}
+
+The target output is:
+{
+    stuff
+    ...
+    "conversation": [{
+        something
+        ...
+        "conversation": [{
+            a whole bunch of attributes and in this case the nested stuff stop here so it will just look like this
+            "conversation": [],
+            "id": "123",
+            ...
+        }, {
+            "conversation": [],
+            "id": "456",
+            ...
+        }]
+        ...
+        some more somethings
+    }]
+    ...
+    more stuff
+}
+
+I want the target output! Thanks and Jesus loves you guys!

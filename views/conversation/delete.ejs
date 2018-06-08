@@ -1,0 +1,27 @@
+<% include ../partials/header.ejs %>
+
+<!--external-->
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+
+<h2 class="text-center">
+  Delete "<%= conversation.title %>"!
+</h2>
+
+<br>
+
+<h1 class="alert alert-danger m-auto w-75">
+  WARNING!!! : : : THIS IS SCARY!
+</h1>
+
+<br>
+
+<form id="conversation-edit" action="/conversation/<%= conversation._id %>?_method=DELETE" method="POST">
+
+  <button class="ui inverted red massive button d-block w-50 m-auto">
+    DELETE IT
+  </button>
+  
+</form>
+
+<% include ../partials/footer.ejs %>

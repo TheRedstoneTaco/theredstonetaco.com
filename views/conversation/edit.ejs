@@ -1,0 +1,39 @@
+<% include ../partials/header.ejs %>
+
+<!--external-->
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+
+<!--internal-->
+<script src="/scripts/conversation.js"></script>
+
+<h2 class="text-center">
+  Edit "<%= conversation.title %>"
+</h2>
+
+<form id="conversation-edit" action="/conversation/<%= conversation._id %>?_method=PUT" method="POST">
+  
+  <h4 class="text-center">
+    Title:
+  </h4>
+  <input type="text" name="title" class="form-control w-75 m-auto" required value="<%= conversation.title %>">
+  
+  <h4 class="text-center">
+    Content:
+  </h4>
+  <input type="text" name="content" class="form-control w-75 m-auto" required value="<%= conversation.content %>">
+  
+  <h4 class="text-center">
+    Category
+  </h4>
+  <input type="text" name="category" class="form-control w-75 m-auto" required value="<%= conversation.category %>">
+  
+  <br>
+  
+  <button class="ui inverted green button d-block w-50 m-auto">
+    Edit
+  </button>
+  
+</form>
+
+<% include ../partials/footer.ejs %>

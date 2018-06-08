@@ -15,6 +15,7 @@ var passportLocalMongoose   = require("passport-local-mongoose"),
 
 // route requiring
 var authenticationRoutes    = require("./routes/authentication.js"),
+    conversationRoutes      = require("./routes/conversation.js"),
     accountRoutes           = require("./routes/account.js"),
     ebooksRoutes            = require("./routes/ebooks.js"),
     indexRoutes             = require("./routes/index.js");
@@ -74,6 +75,7 @@ app.use(accountRoutes);
 app.use(authenticationRoutes);
 app.use(ebooksRoutes);
 app.use(indexRoutes);
+app.use(conversationRoutes);
 
 // listen
 app.listen(process.env.PORT, process.env.IP, function() {

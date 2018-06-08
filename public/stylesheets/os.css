@@ -9,18 +9,60 @@ html, body {
   margin: 0;
 }
 
+/*helper "w-95" class to make the stuff 95% width*/
+.w-95 {
+  width: 95%;
+}
+
+
+
+
+
 /*menu*/
 #menu {
   width: auto;
 }
 
+
+
+
+
+/*content*/
+#content {
+  background-color: #eeeeee;
+}
+
+
+
+
+
+
+
+
+
 /*topics*/
 #topics-list {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
   align-items: center;
 }
 .topic {
-  width: 45%;
+  margin-bottom: 10vh !important;
+  width: 90%;
+}
+.topicvoterform {
+  text-align: center;
+}
+.topicvoter {
+  width: 70%;
+}
+.yes, .no {
+  width: 75%;
+}
+.yes-right, .no-right {
+  width: 25%;
+}
+.description {
+  font-size: 1.5rem;
 }

@@ -10,4 +10,8 @@ var pageSchema = new mongoose.Schema({
     }]
 });
 
+// CHANGE from 1.x: need to pass in mongoose instance
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
+pageSchema.plugin(deepPopulate);
+
 module.exports = mongoose.model("Page", pageSchema);

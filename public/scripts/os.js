@@ -8,43 +8,47 @@ $(document).ready(function() {
 
 var setupPage = function() {
   
+  // computer, setup the accordion dropdowns!
+  $('.ui.accordion').accordion();
+  
   // computer, setup the vertical menu for clicking
   $('.ui.menu').on('click', '.item', function() {
     if(!$(this).hasClass('dropdown')) {
       $(this)
-        .addClass('active')
-        .siblings('.item')
-        .removeClass('active');
+            .addClass('active')
+            .siblings('.item')
+            .removeClass('active');
     }
   });
   
-  // computer, stop forms from redirecting us! (also intialize animations)
+  // computer, stop topic form from redirecting us! (also intialize animations)
   $("#topicAddAlert").hide();
-  ajaxSubmit("#topicForm", null, function() {
+  $("#topicForm").submit(ajaxSubmit);
+  $("#topicForm").submit(function(event) {
     $("#topicAddAlert").show();
     $("#topicForm").hide();
   });
   
+  // computer, enable all the voting functionality!
+  $(".yesform, .noform").click(function() {
+    $(this).submit();
+    $(this).css({
+      backgroundColor: "#444444",
+      color: "#ff2222"
+    }).text("VOTED!");
+  });
+  $(".yesform, .noform").submit(ajaxSubmit);
+  
 }
 
-function ajaxSubmit(selector, check, afterSubmit) {
-    $(selector).submit(function(e) {
-        e.preventDefault();
-        if (check) {
-            if (!check()) {
-                return;
-            }
-        }
-        $.ajax({
-            url: $(selector).attr("action"),
-            type: $(selector).attr("method"),
-            error: function (jXHR, textStatus, errorThrown) {
-                console.log(errorThrown);
-            },
-            data: $(selector).serialize()
-        });
-        if (afterSubmit) {
-            afterSubmit();
-        }
-    });
+function ajaxSubmit(event) {
+  event.preventDefault();
+  $.ajax({
+      url: $(this).attr("action"),
+      type: "POST",
+      error: function (jXHR, textStatus, errorThrown) {
+          console.log(errorThrown);
+      },
+      data: $(this).serialize()
+  });
 }
