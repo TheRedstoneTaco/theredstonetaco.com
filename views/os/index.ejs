@@ -68,168 +68,75 @@
     <div id="topics-list">
       
       <!--each topic-->
-      <%
-      
+      <!-- Remember! EJS is synchronous! :D -->
+      <%      
       // courtesy of: https://stackoverflow.com/questions/5432967/how-to-iterate-over-inner-objects-property-in-an-object
-      function properties(obj) {
-        for (var property in obj) {
-          if (obj.hasOwnProperty(property)){
-            if (obj[property].constructor == Object) {
-              console.log('**Object -> '+property+': ');
-              properties(obj[property]);
-            } else {
-              console.log(property + " " + obj[property]);
-            }
-          }
+      function recursor(obj, callback) {
+        if (Array.isArray(obj)) {
+      %>
+        <div class="ui comments">
+      <%
+          obj.forEach(function(conversation) {
+            recursor(conversation, null);
+          });
+      %>
+        </div>
+      <%
+        } else {
+      %>
+        <div class="comments">
+          <div class="content">
+            <a class="author">
+              <%= obj.author.username %>
+            </a>
+            <div></div>
+          </div>
+      <%
+          recursor(obj.conversation, function() {
+      %>  
+        </div>  
+      <%
+          });
+        }
+        if (callback) {
+          callback();
         }
       }
-      
-      // properties(page.conversation);
-      console.log(page.conversation);
-      
+      var conversation = page.conversation.filter(function(conversation) { return conversation.category == "topic"; } );
+      recursor(conversation, null);
       %>
-      <% page.conversation.filter(function(conversation) { return conversation.category == "topic"; } ).forEach(function(conversation) { %>
-        
-        <div class="topic ui cards">
-          <div class="card w-100">
-    
-            <!--the title and content-->
-            <div class="content">
-              <h1 class="header text-center">
-                <%= conversation.title %>
-              </h1>
-              <div class="meta">
-                <a href="#">
-                  <h4 class="d-inline">
-                    <% if (conversation.author && conversation.author.username) { %>
-                      <%= conversation.author.username %>
-                    <% } else { %>
-                      <p class="alert alert-warning">No author (and therefore)/(or at least no) author username :?</p>
-                    <% } %>
-                  </h4>
-                </a>
-                <br>
-                <a>
-                  <h4 class="d-inline">
-                    <% if (conversation.author && conversation.author.email) { %>
-                      <%= conversation.author.email %>
-                    <% } else { %>
-                      <p class="alert alert-warning">No author (and therefore)/(or at least no) author email ?:</p>
-                    <% } %>
-                  </h4>
-                </a>
-              </div>
-              <div class="description">
-                <%= conversation.content %>
-              </div>
+      
+      <div class="ui comments">
+        <div class="comment">
+          <div class="content">
+            <a class="author">Elliot Fu</a>
+            <div class="metadata">
+              <span class="date">Yesterday at 12:30AM</span>
             </div>
-    
-            <!--the voting-->
-            <div class="ui accordion extra content">
-              <h1 class="text-center title">
-                Vote
-                <i class="dropdown icon"></i>
-              </h1>
+            <div class="text">
+              <p>This has been very useful for my research. Thanks as well!</p>
+            </div>
+            <div class="actions">
+              <a class="reply">Reply</a>
+            </div>
+          </div>
+          <div class="ui comments">
+            <div class="comment">
               <div class="content">
-                <form class="w-100 topicvoterform yesform" action="conversation/<%= conversation._id %>/yes" method="POST">
-                  <div class="ui labeled button topicvoter" tabindex="0">
-                    <div class="ui red button yes">
-                      <i class="heart icon"></i> Yes!
-                    </div>
-                    <div class="ui basic red left pointing label yes-right">
-                      <% if (conversation.yes) { %>
-                        <%= conversation.yes %>
-                      <% } else { %>
-                        0
-                      <% } %>
-                    </div>
-                  </div>
-                </form>
-                <br>
-                <form class="w-100 topicvoterform noform" action="conversation/<%= conversation._id %>/no" method="POST">
-                  <div class="ui labeled button topicvoter" tabindex="0">
-                    <div class="ui yellow button no">
-                      <i class="thumbs down outline icon"></i> No.
-                    </div>
-                    <div class="ui basic left pointing yellow label no-right">
-                      <% if (conversation.no) { %>
-                        <%= conversation.no %>
-                      <% } else { %>
-                        0
-                      <% } %>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-    
-            <!--the editing and deleting, only for high authorization users-->
-            <% if (currentUser && currentUser.authorization == 1) { %>
-              <div class="extra content ui accordion">
-                <h1 class="title text-center">
-                  Updating
-                  <i class="dropdown icon"></i>
-                </h1>
-                <div class="ui two buttons content">
-                  <a class="ui basic yellow button w-50" href="conversation/<%= conversation._id %>/edit">
-                    Edit
-                  </a>
-                  <a class="ui basic red button w-50" href="conversation/<%= conversation._id %>/delete">
-                    Delete
-                  </a>
+                <a class="author">Jenny Hess</a>
+                <div class="metadata">
+                  <span class="date">Just now</span>
+                </div>
+                <div class="text">
+                  Elliot you are always so right :)
+                </div>
+                <div class="actions">
+                  <a class="reply">Reply</a>
                 </div>
               </div>
-            <% } %>
-            
-            <!--the topics' conversations-->
-            <% if (currentUser) { %>
-              <!--to add to a topic and child conversation-->
-              <div class="ui accordion">
-                <h1 class="text-center title">
-                  Talk
-                  <i class="dropdown icon"></i>
-                </h1>
-                <form class="content w-100 text-center" action="conversation/<%= conversation._id %>" method="POST" class="w-75 m-auto">
-                  <h2 class="m-auto w-95 text-left">
-                    Title:
-                  </h2>
-                  <div class="ui input icon w-95">
-                    <input type="text" name="title" required placeholder="A critica...">
-                    <i class="heading icon"></i>
-                  </div>
-                  <br>
-                  <br>
-                  <h2 class="m-auto w-95 text-left">
-                    Content:
-                  </h2>
-                  <div class="ui input icon w-95">
-                    <input type="text" name="content" required placeholder="If you l...">
-                    <i class="book icon"></i>
-                  </div>
-                  <br>
-                  <br>
-                  <button class="inverted green right labeled ui icon button d-block m-auto">
-                    add conversation!
-                    <i class="plus square outline icon"></i>
-                  </button>
-                </form>
-              </div>
-              <br>
-              <br>
-            <% } %>
-            <div class="ui stacked segments topic-conversations">
-              <% conversation.conversation.forEach(function(conversation) { %>
-                <div class="ui segment">
-                  <%= conversation.title %>
-                  <%= conversation.content %>
-                </div>
-              <% }); %>
             </div>
-            
           </div>
         </div>
-    
-      <% }); %>
       
     </div>
     

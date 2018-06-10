@@ -12,6 +12,8 @@ var passportLocalMongoose   = require("passport-local-mongoose"),
     Page                    = require("./models/page.js"),
     app                     = express();
 
+// this stuff :(
+mongoose.Promise = global.Promise;
 
 // route requiring
 var authenticationRoutes    = require("./routes/authentication.js"),
@@ -20,7 +22,18 @@ var authenticationRoutes    = require("./routes/authentication.js"),
     ebooksRoutes            = require("./routes/ebooks.js"),
     indexRoutes             = require("./routes/index.js");
     
+// robots.txt requests bother me
+// https://stackoverflow.com/questions/15119760/what-is-the-smartest-way-to-handle-robots-txt-in-express
+app.use(function (req, res, next) {
+    if ('/robots.txt' == req.url) {
+        res.type('text/plain')
+        res.send("User-agent: *\nDisallow: /");
+    } else {
+        next();
+    }
+});
 
+// database
 mongoose.connect("mongodb://theredstonetaco:tacoman123@ds233970.mlab.com:33970/theredstonetaco");
 
 // url parsing

@@ -1,76 +1,94 @@
-I'm trying to deep populate (any level) some conversation models so I can have conversations inside of conversations ins... and actually pull all that out from the database and hand it to and ejs template to use. I am trying the npm library "mongoose-deep-populate". 
-When a user visits the page, the route handler pulls the page's object from the database, populates it *deeply* with models of type "conversation", and renders an ejs template with the end result page.
-
-The page schema has some fields but the critical part is the conversation attribute which we are trying to deeply populate:
-var pageSchema = new mongoose.Schema({
-    ...
-    conversation: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Conversation"
-    }]
-    ...
-});
-The conversation schema looks approximately like this too:
-var conversationSchema = new mongoose.Schema({
-    ...
-    conversation: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Conversation"
-    }]
-    ...
-});
-
-Now we are trying to go into the page that we get from the database and deeply populate it's conversation field
-so we will end up with a page object that has any amount and level of nested conversation objects. I tried doing this
-in my routes with approximately (shortened) this code:
-
-Page.findOne({
-    title: req.params.pageTitle
-}).deepPopulate("conversation").exec(function(err1, foundPage) {
-    res.render(req.params.pageTitle + "/index.ejs", {
-        page: foundPage
+I have a page model that has a conversation field which is an array of conversation id's.
+Each conversation is an array of other conversation id's.
+I want to deep populate the page model to replace the id's in it's conversation array with the actual conversation objects and then the conversation id's in those conversations with more actual conversation objects and then the conversation id's in tho... however far deep it goes, I want the "foundPage" variable to be fully populated so I can render the template with it like I'm trying to do at the bottom of the code.
+However, since Node.js functions are asynchronous, the render statement at the bottom runs before the recursive population function runs, so the server just renders a page with conversation id's instead of the actual conversations.
+I think if I did something with promises in my recursive function, I could implement it so that when the recursive function is completely done running and doing it's business, then we will have a callback that renders the template with the now fully populated page. But how do I implement the promises?
+```
+// GET - index - '/:pageTitle': Show page of some route
+router.get("/:pageTitle", function(req, res) {
+    Page.findOne({
+        title: req.params.pageTitle
+    }, function(err1, foundPage) {
+        foundPage.populate("conversation", function(err2, populatedPage) {
+            r(foundPage.conversation);
+            function r(obj) {
+                if (Array.isArray(obj)) {
+                    for (var i = 0; i < obj.length; i++) {
+                        r(obj[i]);
+                    }
+                } else {var finalPage;
+    var i = -1;
+    function recursor(obj) {
+        return new Promise((resolve, reject) => {
+            console.log("========================================");
+            console.log("                " + (++i)  + "                     ");
+            log(obj);
+            populateConversation(obj).then(function() {
+                console.log("past populateConversation");
+                populateAuthor(obj).then(function() {
+                    console.log("past populateAuthor");
+                    iterativeRecurse(obj).then(function() {
+                        finalPage = foundPage;
+                        i++;
+                        // console.log("========================================");
+                        // console.log("                " + i  + "                     ");
+                        // log(obj);
+                        return resolve();
+                    });
+                });
+            });
+        });
+    }
+    function populateConversation(obj) {
+        return new Promise((resolve, reject) => {
+            console.log("in populateConversation");
+            obj.populate("conversation", (err, p1) => {
+                console.log("done with populateConversation");
+                return resolve();
+            })
+        })
+    }
+    function populateAuthor(obj) {
+        return new Promise((resolve, reject) => {
+            obj.populate("author", function(err, p2) {
+                return resolve();
+            });
+        });
+    }
+    function iterativeRecurse(obj) {
+        return new Promise((resolve, reject) => {
+            console.log("0000000000000000000000000000000000000000000000000");
+            console.log("                            " + i + "                           ");
+            log(obj);
+            var proceed;
+            for (var j = 0; j < obj.conversation.length; j++) {
+                proceed = false;
+                recursor(obj.conversation[j]).then(function() {
+                    proceed = true;
+                });
+                for (; proceed == false;) {}
+            }
+            console.log("//////////////////////////////////////////////////////////////");
+            console.log("                            " + i + "                           ");
+            log(obj);
+            return resolve();
+        });
+    }
+    recursor(foundPage).then(function() {
+        console.log("++++++++++++++             " + (++i) + "                   +++++++++++++++++++++");
+        log("final: ", finalPage);
+    });
+                    obj.populate("conversation", function(err, populatedObj) {
+                        populatedObj.conversation.forEach(function(conversation) {
+                            r(conversation);
+                        });
+                    });
+                }
+            }
+            res.render(req.params.pageTitle + "/index.ejs", {
+                page: foundPage
+            });
+        });
     });
 });
-
-But when I console.log the page object from the ejs file, it gives this approximate output:
-{
-    some attributes like id and title
-    ...
-    "conversation": [{
-        stuff like
-        "upvotes": 12,
-        ...
-        "conversation" : ["5b1a029994ee700731996535"],
-        ...
-        some other stuff like
-        "created": "today",
-    }]
-    ...
-    more attributes
-}
-
-The target output is:
-{
-    stuff
-    ...
-    "conversation": [{
-        something
-        ...
-        "conversation": [{
-            a whole bunch of attributes and in this case the nested stuff stop here so it will just look like this
-            "conversation": [],
-            "id": "123",
-            ...
-        }, {
-            "conversation": [],
-            "id": "456",
-            ...
-        }]
-        ...
-        some more somethings
-    }]
-    ...
-    more stuff
-}
-
-I want the target output! Thanks and Jesus loves you guys!
+```

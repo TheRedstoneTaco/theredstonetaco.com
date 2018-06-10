@@ -1,4 +1,6 @@
 var mongoose = require("mongoose");
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
+var Conversation = require("./conversation.js");
 
 var pageSchema = new mongoose.Schema({
     title: String,
@@ -9,9 +11,5 @@ var pageSchema = new mongoose.Schema({
         ref: "Conversation"
     }]
 });
-
-// CHANGE from 1.x: need to pass in mongoose instance
-var deepPopulate = require('mongoose-deep-populate')(mongoose);
-pageSchema.plugin(deepPopulate);
 
 module.exports = mongoose.model("Page", pageSchema);

@@ -14,38 +14,33 @@ router.get("/", function(req, res) {
 router.get("/:pageTitle", function(req, res) {
     Page.findOne({
         title: req.params.pageTitle
-    }).deepPopulate("conversation").then(function(err1, foundPage) {
-        console.log(foundPage);
-        Page.findOne({
-            title: req.params.pageTitle
-        }).populate("conversation").exec(function(err1, foundPage) {
-            console.log(foundPage);
-        });
-        res.render(req.params.pageTitle + "/index.ejs", {
-            page: foundPage
-        });
+    }, function(err_1, foundPage) {
+        // recursively populate page's nested conversation
+        function recursor(obj) {
+            obj.populate("conversation", function(err_2, p1) {
+                obj.populate("author", function(err_3, p2) {
+                    obj.conversation.forEach(function(conversation) {
+                        recursor(conversation);
+                    });
+                });
+            });
+        }
+        recursor(foundPage);
+        var doneware = {
+            req: req,
+            res: res,
+            render: function() {
+                this.res.render(this.req.params.pageTitle + "/index.ejs", {
+                    page: foundPage
+                });
+            }
+        };
+        // when we are PROBABLY finished grabbing and populating from the database
+        setTimeout(function() {
+            // render!
+            doneware.render();
+        }, 500);
     });
-    // // find the index page in the database and increment "views"
-    // Page.findOne({
-    //     title: req.params.pageTitle
-    // }).deepPopulate("conversation").exec(function(err1, foundPage) {
-    //     if (err1) {
-    //         console.log(err1);
-    //         return res.redirect("/");
-    //     }
-    //     if (!foundPage) {
-    //         console.log("Couldnt find page, itssss not found!! :/");
-    //         return res.redirect("/");
-    //     }
-    //     // increment "views" on visit
-    //     foundPage.views ++;
-    //     foundPage.save();
-    //     // now render final page
-    //     console.log("0: " + foundPage);
-    //     res.render(req.params.pageTitle + "/index.ejs", {
-    //         page: foundPage
-    //     });
-    // });
 });
 
 // PUT - index - '/:pageTitle/like': like a page

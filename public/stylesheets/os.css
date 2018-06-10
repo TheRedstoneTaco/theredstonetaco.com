@@ -41,12 +41,6 @@ html, body {
 
 
 /*topics*/
-#topics-list {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  align-items: center;
-}
 .topic {
   margin-bottom: 10vh !important;
   width: 90%;
