@@ -8,11 +8,13 @@ var middleware = require("../middleware/index.js");
 router.post("/conversation/:conversationId", function(req, res) {
     // create new conversation
     Conversation.create({
-        title: req.params.title,
-        content: req.params.content,
-        category: req.params.category
+        title: req.body.title,
+        content: req.body.content,
+        category: req.body.category,
+        author: req.user._id
     }, function(err1, createdConversation) {
         if (err1) {
+            console.log(createdConversation);
             return console.log(err1);
         }
         if (!createdConversation) {
@@ -64,15 +66,22 @@ router.get("/conversation/:conversationId/edit", middleware.isLoggedIn, function
         title: "os"
     }, function(err1, foundPage) {
         if (err1) {
-            return console.log(foundPage);
+            console.log(foundPage);
+            return res.redirect("back");
         }
         if (!foundPage) {
-            return console.log("couldaNNt find page!");
+            console.log("couldaNNt find page!");
+            return res.redirect("back");
         }
         // find conversation to be edited
         Conversation.findById(req.params.conversationId).populate("author").exec(function(err2, foundConversation) {
             if (err2) {
-                return console.log(err2);
+                console.log(err2);
+                return res.redirect("back");
+            }
+            if (!foundConversation) {
+                console.log("coulUnt U find conversation!");
+                return res.redirect("back");
             }
             // only allow owners or high authorization users to edit
             if (!foundConversation.author._id.equals(req.user._id) && req.user.authorization != 1) {
@@ -81,7 +90,8 @@ router.get("/conversation/:conversationId/edit", middleware.isLoggedIn, function
             // show form
             res.render("conversation/edit.ejs", {
                 page: foundPage,
-                conversation: foundConversation
+                conversation: foundConversation,
+                redirect: req.query.redirect || ""
             });
         }); 
     });
@@ -92,13 +102,15 @@ router.put("/conversation/:conversationId", middleware.isLoggedIn, function(req,
     // find conversation and update it
     Conversation.findByIdAndUpdate(req.params.conversationId, req.body, function(err1, updatedConversation) {
         if (err1) {
-            return console.log(err1);
+            console.log(err1);
+            return res.redirect("back");
         }
         if (!updatedConversation) {
-            return console.log("Couldnatm update conversation!`");
+            console.log("Couldnatm update conversation!`");
+            return res.redirect("back");
         }
         // then redirect back!
-        res.redirect("/");
+        res.redirect("/" + (req.query.redirect || ""));
     });
 });
 
@@ -118,14 +130,19 @@ router.get("/conversation/:conversationId/delete", middleware.isLoggedIn, functi
             if (err2) {
                 return console.log(err2);
             }
+            if (!foundConversation) {
+                console.log("1 + 1 couldn't find conversation!");
+                return res.redirect("back");
+            }
             // only allow owners or high authorization users to delete
             if (!foundConversation.author._id.equals(req.user._id) && req.user.authorization != 1) {
-                res.redirect("back");
+                return res.redirect("back");
             }
             // show form
             res.render("conversation/delete.ejs", {
                 page: foundPage,
-                conversation: foundConversation
+                conversation: foundConversation,
+                redirect: req.query.redirect || ""
             });
         }); 
     });
@@ -145,7 +162,7 @@ router.delete("/conversation/:conversationId", middleware.isLoggedIn, function(r
         // now delete!
         foundConversation.remove();
         // redirect...
-        res.redirect("/");
+        res.redirect("/" + (req.query.redirect || ""));
     }); 
 });
 

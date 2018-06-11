@@ -15,6 +15,14 @@ router.get("/:pageTitle", function(req, res) {
     Page.findOne({
         title: req.params.pageTitle
     }, function(err_1, foundPage) {
+        if (err_1) {
+            console.log(err_1);
+            res.send("please send this error to ghostofmmo@gmail.com : ", err_1);
+        }
+        if (!foundPage) {
+            res.send("couldn't find page!");
+            return console.log("      c      ouldnt find page!");
+        }
         // recursively populate page's nested conversation
         function recursor(obj) {
             obj.populate("conversation", function(err_2, p1) {

@@ -1,3 +1,5 @@
+var form;
+
 // on ready
 $(document).ready(function() {
   
@@ -8,17 +10,21 @@ $(document).ready(function() {
 
 var setupPage = function() {
   
+  // computer, hide all elements that are shy!
+  $(".hideme").hide();
+  
   // computer, setup the accordion dropdowns!
   $('.ui.accordion').accordion();
   
   // computer, setup the vertical menu for clicking
-  $('.ui.menu').on('click', '.item', function() {
-    if(!$(this).hasClass('dropdown')) {
-      $(this)
-            .addClass('active')
-            .siblings('.item')
-            .removeClass('active');
-    }
+  $('.ui.menu').on('click', '.item', function(e) {
+    $(this)
+      .addClass('active')
+      .siblings('.item')
+      .removeClass('active');
+    $(".section").hide();
+    $($(this).attr("href")).show();
+    e.preventDefault();
   });
   
   // computer, stop topic form from redirecting us! (also intialize animations)
@@ -32,10 +38,12 @@ var setupPage = function() {
   // computer, enable all the voting functionality!
   $(".yesform, .noform").click(function() {
     $(this).submit();
-    $(this).css({
-      backgroundColor: "#444444",
-      color: "#ff2222"
-    }).text("VOTED!");
+  });
+  $(".yesform").click(function() {
+    $(this).replaceWith("<h1 class=\"alert alert-danger\">YES! :D</h1>");
+  });
+  $(".noform").click(function() {
+    $(this).replaceWith("<h1 class=\"alert alert-primary\">no :(</h1>");
   });
   $(".yesform, .noform").submit(ajaxSubmit);
   

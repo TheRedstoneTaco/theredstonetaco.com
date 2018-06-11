@@ -11,7 +11,13 @@
   Edit "<%= conversation.title %>"
 </h2>
 
-<form id="conversation-edit" action="/conversation/<%= conversation._id %>?_method=PUT" method="POST">
+<% 
+var goto = "";
+if (redirect) {
+  goto = redirect
+}
+%>
+<form id="conversation-edit" action="/conversation/<%= conversation._id %>?_method=PUT&redirect=<%= goto %>" method="POST">
   
   <h4 class="text-center">
     Title:
