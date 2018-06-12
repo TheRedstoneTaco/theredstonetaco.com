@@ -3,14 +3,26 @@
 <!--external-->
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
 <!--internal-->
 <link rel="stylesheet" href="stylesheets/os.css">
 <script type="text/javascript" src="scripts/os.js"></script>
 
+<!--global variables (for passing backend information to javascript files! :D)-->
+<%
+  var conversationCount = 0;
+%>
+
 <h1 class="text-center">
   Jesus loves you guys!
 </h1>
+
+<a class="massive inverted purple ui button d-block m-auto w-50" href="mailto:ghostofmmo@gmail.com" style="font-size: 5.0rem;">
+  Join me!
+</a>
+
+<br>
 
 <!--menu-->
 <div class="m-auto w-75 massive ui pointing menu">
@@ -25,13 +37,8 @@
   </a>
 </div>
 
-<br><br>
-
 <!--content-->
 <div class="w-100" id="content">
-  
-  <br>
-  <br>
   
   <!--topics-->
   <div id="topics" class="section">
@@ -72,120 +79,141 @@
       <%      
       // courtesy of: https://stackoverflow.com/questions/5432967/how-to-iterate-over-inner-objects-property-in-an-object
       function recursor(obj, depth) {
+        // if it's an array of conversations
         if (Array.isArray(obj)) {
       %>
-        <div class="ui comments">
+      <div class="ui comments">
       <%
           obj.forEach(function(conversation) {
             recursor(conversation, depth);
           });
       %>
-        </div>
+      </div> <!-- /comments -->
       <%
+        // else it must be a conversation
         } else {
+          conversationCount ++;
+          var outermostClasses;
+          var titleFontSize;
+          var titleClasses;
+          var authorClasses;
+          var dateClasses;
+          var contentClasses;
+          var accordionClasses;
+          if (obj.category == "topic") {
+            outermostClasses = "comment topic";
+            titleFontSize = 1.5 + (1 / depth);
+            titleClasses = "topic_title text-center";
+            authorClasses = "topic_author";
+            dateClasses = "topic_date";
+            contentClasses = "topic_content";
+            accordionClasses = "ui accordion";
+          } else {
+            outermostClasses = "comment";
+            titleFontSize = 1 + (0.9 / depth);
+            titleClasses = "";
+            authorClasses = "";
+            dateClasses = "comment_date";
+            contentClasses = "";
+            accordionClasses = "accordion";
+          }
       %>
         <!--main + content-->
-        <% if (obj.category == "topic") { %>
-          <div class="comment topic">
+        <br>
+        <div class="<%= outermostClasses %> <%= accordionClasses %>">
+          <h1 class="<%= titleClasses %> title" style="font-size: <%= titleFontSize %>rem;">
+            <%- obj.title %>
+            <i class="dropdown icon"></i>
+          </h1>
+          <div class="content">
             <div class="contentvote">
-              <div class="content conversation_content">
-                <h1 class="topic_title text-center" style="font-size: <%= 1.5 + (1 / depth) %>rem;">
-                  <%- obj.title %>
-                </h1>
-        <% } else { %>
-          <div class="comment">
-            <div class="contentvote">
-              <div class="content conversation_content">
-                <h1 style="font-size: <%= 1.2 + (1 / depth) %>rem;">
-                  <%- obj.title %>
-                </h1>
-        <% } %>
-            <hr>
-            <a class="topic_author" style="font-size: <%= 1 + (0.9 / depth) %>rem;">
-              <%- obj.author.username %>
-            </a>
-            <p class="topic_date" style="font-size: <%= 1 + (0.9 / depth) %>rem;">
-              <%- obj.created %>
-            </p>
-            <div class="text">
-              <p class="topic_content" style="font-size: <%= 1 + (0.8 / depth) %>rem;">
-                <%- obj.content %>
-              </p>
-            </div>
-            <!--conversing-->
-            <% if (currentUser) { %>
-              <div class="w-75 m-auto ui accordion">
-                <form action="/conversation/<%= obj._id %>" class="w-100" method="POST">
-                  <h1 class="blue ui button text-center title d-block m-auto w-75" style="font-size: <%= 1 + (1 / depth) %>rem;">
-                    Converse
-                    <i class="dropdown icon"></i>
-                  </h1>
-                  <div class="content">
-                    <h4>Title: </h4>
-                    <input type="text" name="title" class="form-control" required placeholder="title...">
-                    <h4>Content: </h4>
-                    <input type="text" name="content" class="form-control" required placeholder="content...">
-                    <input name="category" type="hidden" value="topic_conversation">
-                    <br>
-                    <button class="inverted blue ui button w-50 m-auto d-block">
-                      Conversate
-                    </button>
-                  </div>
-                </form>
-              </div>
-            <% } else { %>
-                <h4 class="text-center">
-                  Please login to converse.
-                </h4>
-            <% } %>
-            <br>
-            <!--actions-->
-            <% if ((currentUser && currentUser.authorization == 1) || (currentUser && obj.author._id.equals(currentUser._id))) { %>
-              <div class="w-75 m-auto ui accordion">
-                <h1 class="orange ui button text-center title d-block m-auto w-75" style="font-size: <%= 1 + (1 / depth)%>rem;">
-                  Actions
-                  <i class="dropdown icon"></i>
-                </h1>
-                <div class="content">
-                  <div class="w-75 m-auto text-center">
-                    <a class="big yellow inverted ui button w-100" href="/conversation/<%= obj._id %>/edit?redirect=os">
-                      Edit
-                    </a>
-                  </div>
-                  <br>
-                  <div class="w-75 m-auto text-center">
-                    <a class="big red inverted ui button w-100" href="/conversation/<%= obj._id %>/delete?redirect=os">
-                      Delete
-                    </a>
-                  </div>
+              <div class="conversation_content w-75">
+                <a class="<%= authorClasses %>" style="font-size: <%= 1 + (0.9 / depth) %>rem;">
+                  <%- obj.author.username %>
+                </a>
+                <p class="<%= dateClasses %>" style="font-size: <%= 1 + (0.9 / depth) %>rem;">
+                  <%- obj.created %>
+                </p>
+                <div class="text">
+                  <p class="<%= contentClasses %>" style="font-size: <%= 1 + (0.8 / depth) %>rem;">
+                    <%- obj.content %>
+                  </p>
                 </div>
-              </div>
-            <% } %>
-          </div> <!-- /content -->
-          <br>
-          <!--voting-->
-          <div class="w-25 m-auto voting">
-            <form action="/conversation/<%= obj._id %>/yes" method="POST" class="labeled ui button w-50 m-auto voting_form yesform" tabindex="0">
-              <div class="red ui button w-50 yesbutton">
-                <i class="heart icon"></i> Yes!
-              </div>
-              <a class="basic red left pointing ui label w-50 yescounter">
-                <%= obj.yes || "0" %>
-              </a>
-            </form>
+                <!--conversing-->
+                <% if (currentUser) { %>
+                  <div class="w-75 m-auto accordion">
+                    <form action="/conversation/<%= obj._id %>" class="w-100" method="POST">
+                      <h1 class="blue ui button text-center title d-block m-auto w-75" style="font-size: <%= 1 + (1 / depth) %>rem;">
+                        Converse
+                        <i class="dropdown icon"></i>
+                      </h1>
+                      <div class="content">
+                        <h4>Title: </h4>
+                        <input type="text" name="title" class="form-control" required placeholder="title...">
+                        <h4>Content: </h4>
+                        <textarea name="content" class="form-control" required></textarea>
+                        <input name="category" type="hidden" value="topic_conversation">
+                        <br>
+                        <button class="inverted blue ui button w-50 m-auto d-block">
+                          Conversate
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                <% } else { %>
+                    <h4 class="text-center">
+                      Please login to converse.
+                    </h4>
+                <% } %>
+                <br>
+                <!--actions-->
+                <% if ((currentUser && currentUser.authorization == 1) || (currentUser && obj.author._id.equals(currentUser._id))) { %>
+                  <div class="w-75 m-auto ui accordion">
+                    <h1 class="orange ui button text-center title d-block m-auto w-75" style="font-size: <%= 1 + (1 / depth)%>rem;">
+                      Actions
+                      <i class="dropdown icon"></i>
+                    </h1>
+                    <div class="content">
+                      <div class="w-75 m-auto text-center">
+                        <a class="big yellow inverted ui button w-100" href="/conversation/<%= obj._id %>/edit?redirect=os">
+                          Edit
+                        </a>
+                      </div>
+                      <br>
+                      <div class="w-75 m-auto text-center">
+                        <a class="big red inverted ui button w-100" href="/conversation/<%= obj._id %>/delete?redirect=os">
+                          Delete
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                <% } %>
+              </div> <!-- /content -->
             <br>
-            <form action="/conversation/<%= obj._id %>/no" method="POST" class="labeled ui button w-50 m-auto voting_form noform" tabindex="0">
-              <div class="blue ui button w-50 nobutton">
-                <i class="thumbs down icon"></i> no...
-              </div>
-              <a class="basic blue left pointing ui label w-50 nocounter">
-                <%= obj.no || "0" %>
-              </a>
-            </form>
-          </div>
-          </div> <!-- /contentvote -->
-          <!--nested comments-->
-          <% recursor(obj.conversation, depth + 1); %>
+            <!--voting-->
+            <div class="w-25 m-auto voting">
+              <form action="/conversation/<%= obj._id %>/yes" method="POST" class="labeled ui button w-50 m-auto voting_form yesform" tabindex="0">
+                <div class="red ui button w-50 yesbutton">
+                  <i class="heart icon"></i> Yes!
+                </div>
+                <a class="basic red left pointing ui label w-50 yescounter">
+                  <%= obj.yes || "0" %>
+                </a>
+              </form>
+              <br>
+              <form action="/conversation/<%= obj._id %>/no" method="POST" class="labeled ui button w-50 m-auto voting_form noform" tabindex="0">
+                <div class="blue ui button w-50 nobutton">
+                  <i class="thumbs down icon"></i> no...
+                </div>
+                <a class="basic blue left pointing ui label w-50 nocounter">
+                  <%= obj.no || "0" %>
+                </a>
+              </form>
+            </div>
+            </div> <!-- /contentvote -->
+            <!--nested comments-->
+            <% recursor(obj.conversation, depth + 1); %>
+          </div> <!-- /content -->
         </div>  <!-- /comment -->
       <%
         }
@@ -196,158 +224,82 @@
     </div>
     
   </div>
-  
-</div>
 
-  </div>
-  
-  <div id="rules" class="section hideme">
+
+
+  <div id="rules" class="section hideme container">
     <h1 class="text-center">
       Yes, we have rules!
     </h1>
-    <ol>
-      <li>
-        Keep it G for Godly!
-      </li>
-      <li>
-        Keep it relevant, make sure to 
-      </li>
-    </ol>
+    
+    <!--the rules-->
+    <h1 class="ui top attached header">
+      Keep it G for Godly!
+      <br>
+      Godly means:
+    </h1>
+    <div class="ui attached segment">
+      <h2 class="noweight">
+        Respect
+      </h2>
+      <h2 class="noweight">
+        Clean speech
+      </h2>
+      <h2 class="noweight">
+        Jesus-oriented or nothing-oriented
+      </h2>
+    </div>
+    
+    <h1 class="ui top attached header">
+      Keep it either relevant or in the "unrelated"
+    </h1>
+    
+    <h1 class="ui top attached header">
+      No trolling, which includes:
+    </h1>
+    <div class="ui attached segment">
+      <h2 class="noweight">
+        Session stealing
+      </h2>
+      <h2 class="noweight">
+        Information stealing
+      </h2>
+      <h2 class="noweight">
+        Breaking the app if I'm not cool with it (but not handsome, I'm always handsome)
+      </h2>
+      <h2 class="noweight">
+        Trying to/Successfully bypass/ing a ban in any way to get back your banned priveleges
+      </h2>
+      <h2 class="noweight">
+        Purposeful unhelpful information
+      </h2>
+      <h2 class="noweight">
+        snackpack sticks and cheese dip thingies
+      </h2>
+      <h2 class="noweight">
+        Well, I think that's it, but uh just be respectful and stuff and don't try to pull off any shenanigans or anything :/
+      </h2>
+    </div>
+
   </div>
   
-  <div id="stats" class="section hideme"></div>
-
-<div class="container">
-
   
-  <h3>(Click list titles to hide them)</h3>
 
-  <div class="level1" id="ideas">
-    <h3>Ideas:</h3>
-    <ol>
-      <li>
-        <div class="level2">
-          <h3 id="Development-title">Developement:</h3>
-          <ol id="Development-list">
-            <li>In a User->Kernel thread model, a problem is the kernel threads having no information to work with. What if there was a code sent by each user-level thread to convert into and work with a kernel-level thread?</li>
-            <li>File structure? Needs to support authorization, reading, writing, and a bunch of useful functions. What about kernel databases - JSON format?</li>
-            <li>WHAT ABOUT STRUCTS IN THE FORM OF A JSON FORMATTED STRING. more compact and flexible?</li>
-            <li>Keep in mind metric measuring, resource usage, accounting, same thing. A passive background task to do it.</li>
-            <li>Allow multiple accounts on the device or even rethink it</li>
-            <li>Support virtualization</li>
-            <li>Support screensharing/recording/streaming</li>
-            <li>Support remote control, even on a phone, so treat lots of operations as servers?</li>
-          </ol>
-        </div>
-      </li>
-      <li>
-        <div class="level2">
-          <h3 id="Core-title">Core:</h3>
-          <ol id="Core-list">
-            <li>Needs to support backups to and restoring from.</li>
-            <li>able to be installed on any device</li>
-            <li>what will the name be?</li>
-            <li>I need a core idea. I think adaptability for overall, performance for database and business and the GUI for home, learner, library, store, etc. is my core idea.</li>
-            <li>I want every flavor for every hardware architecture, even security on a car. lol.</li>
-            <li>will it be based off another OS or from scratch?</li>
-            <li>own boot-loader?</li>
-            <li>I need to decide on a design for my kernel, monolithic, micro, etc.</li>
-            <li>will need to know about every driver out there in order to make a fully capable OS, so maybe: abstraction with drivers?</li>
-            <li>I must decide on important decisions such as my file system. Multiple drives? One file system? How will files happen across multiple users? Everything a file or no?</li>
-            <li>start small</li>
-            <li>I want every flavor (UX, speed, simplicity, security, abstract/adaptable/build-off-of-able) to be deployed to every hardware (cross-endian, cross-bit, cross-architecture, cross-spec) for every kind of device (server, car, remote, library, baby) even if this statement has overlaps.</li>
-            <li>Compatability and Adaptability are the core of my OS. With compatability comes deploying to everything and with adaptability becomes use for everything.</li>
-            <li>Am I going to make it compatible with every charger and mouse and headset or make my own?</li>
-            <li>Game changer, this is important even though I haven't updated the CSS for it. Compatability is for the common user, Adaptability is for the developers, and Uniqueness is for the success. Those are right now my three core attributes.</li>
-            <li>Remember, the whole point is to process information. Create, delete, move, copy, paste, join, seperate, lookup, or a multiple of each.</li>
-            <li><b>I want to be announcing to the public: get this phone, retinal scanning, fingerprint scanning, voice scanning, face scanning, 2x
-            (or more, can purchase more) faster processer than the other phones, 4x more RAM, want storage? Take 1TB or 2TB freely, plus compatible with
-            any external hard drive you have, bringing us to one main and one sub port, you can buy near free military grade adapters for usb 1.0, 2.0,
-            3.0, mini, C, firewire, ethernet, every single computer charger ever made, the charger for your washing machine, every millimeter audio jack,
-            and now with customizable port racks to plug in your wifi, usb-C charger, headphones, and your file transfering usb 3.0 or anything else you
-            want at the snap on or off an extra block in the port line. Moving to a 120-hour battery life on max performance, wireless charging, solar charging,
-            built-in silent cooling, bluetooth, wifi-direct, every single mouse ever but you're going to want to purchase from our custom line of optimized
-            mice, every keyboard ever, hooks up to every display ever, works with microsoft, apple, and samsung's cast to phone and cast to pc features,
-            share screen features, and a new user-interface set apart from anything you've ever put your fingers on. Shatter-proof, shock-proof, water-proof,
-            dont' forget to buy our custom cases, more and less brighter than any other phone, more and less silent than any other phone, options for 4k filming,
-            options for 240 fps, options for 640kbps audio, and NOW WITH INTEGRATED SUPPORT FOR EVERY CELL COMPANY ON THE PLANET. Also buy a stylus. Also 30-day
-            money back plus shipping garuntee, 4-year warranty, and 36-month extended payment at 10% simple interest.</b></li>
-            <li>Create a course on Operating Systems by using Linux as the exhibit and a lot of examples, and needs to be not specialized. Talk about how
-            CPU's process stuff, how info can be stored with logic gates, and then a complete restart of the entire course with my operating system as the
-            exhibity.</li>
-          </ol>
-        </div>
-      </li>
-      <li>
-        <div class="level2">
-          <h3 id="Garble-title">Garble:</h3>
-          <ol id="Garble-list">
-            <li>what programming language?</li>
-            <li>need people to test it! YAY!</li>
-            <li>Compatability can still be achieved even if I use a different file system or process manager</li>
-            <li>supposedly BASIC knowledge is a must for some parts of the OS</li>
-            <li>remember to dual-boot into my OS for testing or even use a VM</li>
-            <li>consider working on a team?</li>
-            <li>We have to do something about big Operating Systems buying out our abilities to thrive under open source or collaborative or free or even just community-focused development.</li>
-            <li>It seems an operating system is more than a kernel. I must decide whether I want my OS to be set apart from all others or be UNIX based.</li>
-            <li>I need to know source control (maybe Git?) to keep backups and versions of last working program stuff</li>
-            <li>WAIT A MOMENT. IF I MAKE AN OS THAT ITS ONLY PURPOSE IS TO RUN EVERY PROGRAM THAT WILL ONLY GO SO FAR. I NEED IT TO BOTH RUN EVERY PROGRAM AND BE UNIQUE.</li>
-            <li>After some discussion, it appears time is a major issue. Perhaps I do not understand the task of writing a kernel? (according to talking with others)</li>
-            <li>Someone suggested making my OS different. I have to make a decision whether I want it to be compatible or unique.</li>
-            <li><b>Record everything.</b></li>
-            <li>Potential ebook on critical thinking with programs</li>
-            <li>Potential Udemy course on operating systems with linux as the standard and that phone ebook you read on linux.</li>
-          </ol>
-        </div>
-      </li>
-    </ol>
+  <div id="stats" class="section hideme">
+    
+    <canvas id="myChart"></canvas>
+    
   </div>
 
-  <hr>
-
-  <div class="level1" id="learning">
-    <h3>Learning:</h3>
-    <p>I want to read (or have read) these books:
-      <ol>
-        <li><a href="http://iips.icci.edu.iq/images/exam/Abraham-Silberschatz-Operating-System-Concepts---9th2012.12.pdf">Operating system concepts, 9th edition</a></li>
-        <li><a href="https://wiki.osdev.org/Memory_management#Virtual_Memory">Wikipedia article on virtual memory</a></li>
-      </ol>
-    <p>
-      I want to take (or have taken) this:
-      <ol>
-        <li><a href="https://classroom.udacity.com/courses/ud923">Udacity course on Operating Systems</a></li>
-      </ol>
-    </p>
-    <p>I want to learn rust and read a blog posted by a guy building an OS</p>
-  </div>
-
-  <hr>
-
-  <div class="level1" id="notes">
-    <h3>Notes:</h3>
-    <ol>
-      <li>
-        <p>
-          so there is this thing called virtual memory where each process has a set amount of virtual memory and can do pointer stuffs with it like usual BUT THERE'S MORE. behind the scenes, the OS and kernel work together to partition/split up that virtual memory
-          into various spots in real memory and disk. So every time the process makes a pointer, that pointer is actually pointing to somewhere else in real memory but there is still some contiguous blocks of real memory allocated for certain parts of virtual
-          memory. For example, the process might make a pointer that points to 0x00000008 in the processes's virtual memory but the OS has a table that says the pointer actually points to 0xafe102f9 in real memory or even real disk
-        	So virtual memory is where a program operates isolated and A-OK as if it was working with real memory, while behind the scenes the OS determines what pieces of real memory and real disk to allocate to the process.
-        	And the OS does this by juggling multiple processes at once and giving purposeful amounts of disk and ram to each program (the programs will not see what is going on) based on whatever algorithms the developers wrote into the OS.
-        	By "giving certain disk and ram" to each process I mean that the OS will control the swap table of each process and have some virtual addresses being swapped for RAM addresses and other virtual addresses being swapped for Disk addresses. Isn't that how swapping works?
-        </p>
-      </li>
-      <li>
-        <p>
-          so there is this thing called the process control block (PCB) that stores a bunch of information about a process such as the location on the stack, the amount of virtual memory allocated, the process number, and more
-        </p>
-      </li>
-      <li>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/txxfhBX3S6E" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-      </li>
-    </ol>
-  </div>
-
-</p>
 </div>
+
+<pageJSON>
+  <views>
+    <%= page.views %>
+  </views>
+  <conversation>
+    <%= conversationCount %>
+  </conversation>
+</pageJSON>
 
 <% include ../partials/footer.ejs %>

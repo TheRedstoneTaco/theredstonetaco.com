@@ -27,7 +27,9 @@ if (redirect) {
   <h4 class="text-center">
     Content:
   </h4>
-  <input type="text" name="content" class="form-control w-75 m-auto" required value="<%= conversation.content %>">
+  <textarea name="content" class="form-control w-75 m-auto" required>
+    <%= conversation.content %>
+  </textarea>
   
   <h4 class="text-center">
     Category

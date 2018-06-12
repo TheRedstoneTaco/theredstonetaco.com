@@ -13,6 +13,10 @@ html, body {
 .w-95 {
   width: 95%;
 }
+/*helper "noweight" class to make element font-weight normal*/
+.noweight {
+  font-weight: 400 !important;
+}
 
 
 
@@ -52,10 +56,6 @@ html, body {
   background-color: #fafafa !important;
   padding: 2% !important;
 }
-.contentvote {
-  display: flex;
-  justify-content: center;
-}
 .conversation_content {
   width: 75%;
 }
@@ -63,9 +63,11 @@ html, body {
   display: inline;
   font-size: 1.5rem;
 }
-.topic_date {
+.topic_date, .comment_date {
   display: inline;
   color: #cccccc;
+}
+.topic_date {
   font-size: 1.5rem;
 }
 .topic_title {
@@ -104,4 +106,17 @@ iframe {
   .conversation_content {
     width: 100% !important;
   }
+}
+
+
+/*chart*/
+#stats {
+  margin: auto;
+  width: 99vw;
+  height: 100vh;
+  position: relative;
+}
+#myChart {
+  margin: auto;
+  display: block;
 }

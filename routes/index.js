@@ -23,6 +23,8 @@ router.get("/:pageTitle", function(req, res) {
             res.send("couldn't find page!");
             return console.log("      c      ouldnt find page!");
         }
+        foundPage.views ++;
+        foundPage.save();
         // recursively populate page's nested conversation
         function recursor(obj) {
             obj.populate("conversation", function(err_2, p1) {
@@ -47,7 +49,7 @@ router.get("/:pageTitle", function(req, res) {
         setTimeout(function() {
             // render!
             doneware.render();
-        }, 500);
+        }, 750);
     });
 });
 
