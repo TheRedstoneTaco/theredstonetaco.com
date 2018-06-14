@@ -1,4 +1,3 @@
-// information about the page
 var pageData = {};
 // width, height, less, and greater of the two!
 var w, h, l, g;

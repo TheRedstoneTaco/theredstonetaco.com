@@ -156,7 +156,7 @@ html, body {
   
 }
 
-/*the landing sextion on medium minus screens*/
+/*the landing section on medium minus screens*/
 @media (max-width: 991px) {
   /*the stats and taco*/
   #landing_statstaco {
@@ -281,7 +281,7 @@ html, body {
   }
   .extras_links .carousel-cell {
     margin-right: 5vw;
-    width: 35vw;
+    width: 30vw;
     height: 74vh;
   }
   /*text*/
