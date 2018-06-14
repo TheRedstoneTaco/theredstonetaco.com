@@ -24,43 +24,30 @@ $(document).ready(function() {
   
   // computer, initialize the chart!
   initChart();
-  
-  $(".voting").css("opacity", "0");
-  
-  // computer, ovverride the display settings of semantic and default stylesheets!
-  $(".accordion .title.active").on("click", function() {
-    console.log("clicked active title");
-    console.log($(".accordion .title.active"));
-    tmp = voting;
-    var voting = $($(this).parent().children()[1]).find("> .contentvote > .voting");
-    voting.css("opacity", "0");
-  });
-  $(".accordion .title").click(function() {
-    var parent = $(this).parent();
-    var content = $(parent.children()[1]);
-    var contentvote = $(content.children()[0]);
-    var voting = $(contentvote.children()[2]);
-    if (this.active) {
-      this.active = false;
-      voting.stop();
-      voting.css("opacity", "0");
-      clearTimeout(this.timer);
-    } else {
-      this.active = true;
-      this.timer = setTimeout(function() {
-        contentvote.attr("style", "display: flex !important;");
-        voting.animate({
-        	opacity: 1
-        }, 500);
-      }, 500);
-    }
-  });
+ 
   
   // computer, hide all elements that are shy!
   $(".hideme").hide();
   
   // computer, setup the accordion dropdowns!
-  $('.ui.accordion').accordion();
+  $(".comment.accordion .voting").hide();
+  $('.ui.accordion').accordion({
+    onOpen: function() {
+      var content = $(this);
+      var contentvote = $(content.children()[0]);
+      var voting = contentvote.find("> .voting");
+      setTimeout(function() {
+        voting.show();
+        contentvote.attr("style", "display: flex !important; flex-wrap: wrap;");
+      }, 200);
+    },
+    onClosing: function() {
+      var content = $(this);
+      var contentvote = $(content.children()[0]);
+      var voting = contentvote.find("> .voting");
+      voting.hide();
+    }
+  });
   
   // computer, setup the vertical menu for clicking
   $('.ui.menu').on('click', '.item', function(e) {

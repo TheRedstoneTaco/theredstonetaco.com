@@ -103,7 +103,7 @@
           var accordionClasses;
           if (obj.category == "topic") {
             outermostClasses = "comment topic";
-            titleFontSize = 1.5 + (1 / depth);
+            titleFontSize = 1.5 + (0.8 / depth);
             titleClasses = "topic_title text-center";
             authorClasses = "topic_author";
             dateClasses = "topic_date";
@@ -111,7 +111,7 @@
             accordionClasses = "ui accordion";
           } else {
             outermostClasses = "comment";
-            titleFontSize = 1 + (0.9 / depth);
+            titleFontSize = 1 + (0.7 / depth);
             titleClasses = "";
             authorClasses = "";
             dateClasses = "comment_date";
@@ -127,16 +127,16 @@
             <i class="dropdown icon"></i>
           </h1>
           <div class="content">
-            <div class="contentvote">
-              <div class="conversation_content w-75">
-                <a class="<%= authorClasses %>" style="font-size: <%= 1 + (0.9 / depth) %>rem;">
+            <div class="contentvote w-100">
+              <div class="conversation_content w-100-xs w-75-md">
+                <a class="<%= authorClasses %>" style="font-size: <%= 1 + (0.7 / depth) %>rem;">
                   <%- obj.author.username %>
                 </a>
-                <p class="<%= dateClasses %>" style="font-size: <%= 1 + (0.9 / depth) %>rem;">
+                <p class="<%= dateClasses %>" style="font-size: <%= 1 + (0.25 / depth) %>rem;">
                   <%- obj.created %>
                 </p>
                 <div class="text">
-                  <p class="<%= contentClasses %>" style="font-size: <%= 1 + (0.8 / depth) %>rem;">
+                  <p class="<%= contentClasses %>" style="font-size: <%= 1 + (0.4 / depth) %>rem;">
                     <%- obj.content %>
                   </p>
                 </div>
@@ -144,7 +144,7 @@
                 <% if (currentUser) { %>
                   <div class="w-75 m-auto accordion">
                     <form action="/conversation/<%= obj._id %>" class="w-100" method="POST">
-                      <h1 class="blue ui button text-center title d-block m-auto w-75" style="font-size: <%= 1 + (1 / depth) %>rem;">
+                      <h1 class="blue ui button text-center title d-block m-auto w-100" style="font-size: <%= 1 + (1 / depth) %>rem;">
                         Converse
                         <i class="dropdown icon"></i>
                       </h1>
@@ -169,14 +169,14 @@
                 <br>
                 <!--actions-->
                 <% if ((currentUser && currentUser.authorization == 1) || (currentUser && obj.author._id.equals(currentUser._id))) { %>
-                  <div class="w-75 m-auto ui accordion">
-                    <h1 class="orange ui button text-center title d-block m-auto w-75" style="font-size: <%= 1 + (1 / depth)%>rem;">
+                  <div class="w-75 m-auto accordion">
+                    <h1 class="orange ui button text-center title d-block m-auto w-100" style="font-size: <%= 1 + (0.8 / depth)%>rem;">
                       Actions
                       <i class="dropdown icon"></i>
                     </h1>
                     <div class="content">
                       <div class="w-75 m-auto text-center">
-                        <a class="big yellow inverted ui button w-100" href="/conversation/<%= obj._id %>/edit?redirect=os">
+                        <a class="big yellow inverted ui button d-block m-auto w-100" href="/conversation/<%= obj._id %>/edit?redirect=os">
                           Edit
                         </a>
                       </div>
@@ -190,27 +190,22 @@
                   </div>
                 <% } %>
               </div> <!-- /content -->
-            <br>
-            <!--voting-->
-            <div class="w-25 m-auto voting">
-              <form action="/conversation/<%= obj._id %>/yes" method="POST" class="labeled ui button w-50 m-auto voting_form yesform" tabindex="0">
-                <div class="red ui button w-50 yesbutton">
-                  <i class="heart icon"></i> Yes!
-                </div>
-                <a class="basic red left pointing ui label w-50 yescounter">
-                  <%= obj.yes || "0" %>
-                </a>
-              </form>
               <br>
-              <form action="/conversation/<%= obj._id %>/no" method="POST" class="labeled ui button w-50 m-auto voting_form noform" tabindex="0">
-                <div class="blue ui button w-50 nobutton">
-                  <i class="thumbs down icon"></i> no...
-                </div>
-                <a class="basic blue left pointing ui label w-50 nocounter">
-                  <%= obj.no || "0" %>
-                </a>
-              </form>
-            </div>
+              <!--voting-->
+              <br>
+              <div class="voting w-75-xs w-25-md m-auto">
+                <form action="/conversation/<%= obj._id %>/yes" method="POST" class="labeled ui button w-75 m-auto voting_form yesform" tabindex="0">
+                  <div class="massive red ui button w-100 yesbutton">
+                    <i class="heart icon"></i> <%= obj.yes || "0" %>
+                  </div>
+                </form>
+                <br>
+                <form action="/conversation/<%= obj._id %>/no" method="POST" class="labeled ui button w-75 m-auto voting_form noform" tabindex="0">
+                  <div class="massive blue ui button w-100 nobutton">
+                    <i class="thumbs down icon"></i> <%= obj.no || "0" %>
+                  </div>
+                </form>
+              </div>
             </div> <!-- /contentvote -->
             <!--nested comments-->
             <% recursor(obj.conversation, depth + 1); %>
