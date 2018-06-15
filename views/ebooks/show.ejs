@@ -221,7 +221,7 @@
       <% } %>
       <div class="rating_col col-2">
         <p class="rating_type_count nonebox">
-          <%= ebook.ratings.filter(rating => Math.round(rating.value * 5) == i).length / ebook.ratings.length * 100; %> %
+          <%= (ebook.ratings.filter(rating => Math.round(rating.value * 5) == i).length / ebook.ratings.length * 100) || "0" %> %
         </p>
       </div>
     </div>

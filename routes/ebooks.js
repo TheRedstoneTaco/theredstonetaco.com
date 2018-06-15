@@ -35,18 +35,6 @@ router.get("/ebooks", function(req, res) {
 
 // SHOW: to show an ebook page for READING or BUYING !: D
 router.get("/ebooks/:ebookId", function(req, res) {
-    Ebook.findByIdAndUpdate(req.params.ebookId, {
-        $inc: {
-            views: 1
-        }
-    }, function(err, updatedEbook) {
-        if (err) {
-            return console.log(err);
-        }
-        if (!updatedEbook) {
-            return console.log("COULDNT UPDATE EBOOK");
-        }
-    });
     Page.findOne({
         title: "ebooks"
     }, function(err, foundPage) {
@@ -56,6 +44,9 @@ router.get("/ebooks/:ebookId", function(req, res) {
         if (!foundPage) {
             return console.log("COULDNT FIND PAGe");
         }
+        // update views for page!
+        foundPage.views ++;
+        foundPage.save();
         Ebook.findById(req.params.ebookId).populate({ path: "reviews.author" }).exec(function(err, foundEbook) {
             if (err) {
                 console.log(err);
@@ -65,6 +56,9 @@ router.get("/ebooks/:ebookId", function(req, res) {
                 console.log("couldn't find ebook");
                 return res.redirect("back");
             }
+            // update views for ebook!
+            foundEbook.views ++;
+            foundEbook.save();
             res.render("ebooks/show.ejs", {
                 page: foundPage,
                 ebook: foundEbook
