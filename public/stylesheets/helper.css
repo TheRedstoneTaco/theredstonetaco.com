@@ -1,0 +1,29 @@
+/*box manipulation*/
+.nobox {
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+/*sizing*/
+.full {
+    width: 100%;
+    height: 100%;
+}
+.wide {
+    width: 100%;
+}
+.high {
+    height: 100%;
+}
+
+/*coloring*/
+.black_text {
+    color: black;
+}
+.white_text {
+    color: white;
+}
+.red_text {
+    color: red;
+}

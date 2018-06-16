@@ -1,6 +1,6 @@
 {
   "name": "theredstonetaco",
-  "version": "2.1.5",
+  "version": "2.1.7",
   "description": "this is the code that runs theredstonetaco.com",
   "main": "app.js",
   "scripts": {

@@ -1,0 +1,35 @@
+/*you need Jesus, ask me why*/
+#youneedJesus {
+    opacity: 0;
+}
+
+/*phase 0*/
+#p0_container, #p0_square {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+#p0_square * {
+    opacity: 0;
+}
+
+/*phase 1*/
+#p1_container, #p1_square {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+#p1_main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#p1_square > div:not(#p1_main) {
+    background-color: #333333;
+}
