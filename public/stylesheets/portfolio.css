@@ -67,7 +67,7 @@ html, body {
 }
 /*views*/
 #stats_views {
-  background-color: #7905ff;
+  background-color: #f44242;
 }
 #stats_views_title, #stats_views_count {
   margin: auto; border: 0; padding: 0;
@@ -87,8 +87,7 @@ html, body {
   display: block;
   border: 0;
   outline: none;
-  border-radius: 40px 40px 0 0;
-  background-color: #05ccff;
+  background-color: #d1d1d1;
 }
 #stats_likes_title, #stats_likes_count, #stats_likes_info {
   margin: auto; border: 0; padding: 0;
@@ -175,7 +174,7 @@ html, body {
 */
 /* container */
 #about {
-  background-color: var(--brand-color);
+  background-color: #6d3939;
 }
 #about_text {
   margin: auto; border: 0; padding: 8%;
@@ -200,7 +199,7 @@ html, body {
 /* title */
 #knowledge_title {
   margin: 0 auto 8% auto;
-  border: 10px solid #2288aa;
+  border: 10px solid #394c6d;
   border-radius: 30px;
   padding: 0;
   width: 80%;
@@ -209,7 +208,7 @@ html, body {
   font-size: 5.0vw;
 }
 #knowledge_title:hover {
-  background-color: #2288aa;
+  background-color: #5376b2;
   color: white;
 }
 /* logos */
