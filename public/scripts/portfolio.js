@@ -1,3 +1,5 @@
+var knowledges = ['Semantic UI', 'Bootstrap 4', 'jQuery', 'AJAX', 'NodeJS', 'Mongoose', 'Express']
+
 // on ready
 $(document).ready(function() {
   
@@ -10,6 +12,9 @@ $(document).ready(function() {
   
   // allow people to like the page!
   initLiking();
+  
+  // knowledge section stuff
+  init_knowledge();
   
 });
 
@@ -110,5 +115,24 @@ function initLiking() {
     $(".landing_stats_likes").addClass("disabled");
     $(".landing_stats_likes_info").text("YOU HAVE LIKED THIS PAGE!").css("color", "red");
     
+  });
+}
+
+function init_knowledge() {
+  var knowledge_carousel = $(".main-carousel").flickity({
+    wrapAround: true,
+    contain: true,
+    accessibility: true,
+    pageDots: true
+  });
+  var w = $('.img-div').width();
+  var h = $('.img-div').height();
+  var lesser = ((w < h) * w) + ((w > h) * h);
+  $("#knowledge_carousel .carousel-cell .img-div img")
+    // .width(lesser)
+    // .height(lesser);
+  $('#knowledge_carousel_text').text(knowledges[0]);
+  knowledge_carousel.on('select.flickity', function(event, index) {
+    $('#knowledge_carousel_text').text(knowledges[index]);
   });
 }

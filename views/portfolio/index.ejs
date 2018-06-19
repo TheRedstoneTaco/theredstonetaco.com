@@ -4,6 +4,8 @@
 <link type="text/css" rel="stylesheet" href="/stylesheets/animate.css">
 <script type="text/javascript" src="/scripts/anime.min.js"></script>
 <script src="https://swc.cdn.skype.com/sdk/v1/sdk.min.js"></script>
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
 
 <!-- internal -->
 <link rel="stylesheet" href="stylesheets/portfolio.css">
@@ -99,110 +101,48 @@
 
   <!-- logos -->
   <div id="knowledge_logos" class="flatfull">
-
-    <!-- each logo -->
-    <div class="row justify-content around">
-
-      <div class="col col-4">
-        <div class="knowledge_logo-div">
-          <div class="knowledge_logo-img-container">
-            <img class="knowledge_logo-img" src="https://cdn-images-1.medium.com/max/1024/1*9HanDsRU11ZMsgDGJwN96w.png" alt="I use Bootstrap 4's docs like the back of my hand, the navbar is bootstrap 4">
-          </div>
-          <p class="knowledge_logo-text">
-            Responsivity
-          </p>
+    
+    <div id="knowledge_carousel" class="main-carousel">
+      <div class="carousel-cell">
+        <div class="img-div">
+          <img src="https://cdn.worldvectorlogo.com/logos/semantic-ui.svg" alt="I use Semantic UI heavily, menus, fonts, and buttons">
         </div>
       </div>
-
-      <div class="col col-4">
-        <div class="knowledge_logo-div">
-          <div class="knowledge_logo-img-container">
-            <img class="knowledge_logo-img" src="https://cdn.worldvectorlogo.com/logos/javascript-1.svg" alt="Javascript for the algorithms behind the jQuery actions">
-          </div>
-          <p class="knowledge_logo-text">
-            Algorithms
-          </p>
+      <div class="carousel-cell">
+        <div class="img-div">
+          <img src="http://agustinmalo.com/images/boot.png" alt="I use Bootstrap 4's modals, navbars, and cards">
         </div>
       </div>
-
-      <div class="col col-4">
-        <div class="knowledge_logo-div">
-          <div class="knowledge_logo-img-container">
-            <img class="knowledge_logo-img" src="https://js.foundation/wp-content/uploads/sites/33/2017/02/jquery.png" alt="I use Jquery with a grain of salt">
-          </div>
-          <p class="knowledge_logo-text">
-            UX
-          </p>
+      <div class="carousel-cell">
+        <div class="img-div">
+          <img src="https://js.foundation/wp-content/uploads/sites/33/2017/02/jquery.png" alt="I use Jquery for selecting and updating">
         </div>
       </div>
-
-      <div class="col col-4">
-        <div class="knowledge_logo-div">
-          <div class="knowledge_logo-img-container">
-            <img class="knowledge_logo-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/HTML5_Badge.svg/600px-HTML5_Badge.svg.png" alt="I use HTML5">
-          </div>
-          <p class="knowledge_logo-text">
-            Structure
-          </p>
+      <div class="carousel-cell">
+        <div class="img-div">
+          <img src="https://artandlogic.com/wp-content/uploads/2000px-AJAX_logo_by_gengns.svg_-1080x675.png" alt="I use Ajax to send request to my own server to update page statistics and other servers to pull information">
         </div>
       </div>
-
-      <div class="col col-4">
-        <div class="knowledge_logo-div">
-          <div class="knowledge_logo-img-container">
-            <img class="knowledge_logo-img" src="https://juststickers.in/wp-content/uploads/2014/05/CSS3-Mark-Shape-Cut.png" alt="User Interface with CSS">
-          </div>
-          <p class="knowledge_logo-text">
-            UI
-          </p>
+      <div class="carousel-cell">
+        <div class="img-div">
+          <img src="https://seeklogo.com/images/N/nodejs-logo-FBE122E377-seeklogo.com.png" alt="Node.js is considered the skeleton of backend machines, I use it to hold the rest of the MEAN stack up">
         </div>
       </div>
-
-      <div class="col col-4">
-        <div class="knowledge_logo-div">
-          <div class="knowledge_logo-img-container">
-            <img class="knowledge_logo-img" src="https://artandlogic.com/wp-content/uploads/2000px-AJAX_logo_by_gengns.svg_-1080x675.png" alt="I use Ajax to send request to my own server to update page statistics and other servers to pull information">
-          </div>
-          <p class="knowledge_logo-text">
-            Requesting
-          </p>
+      <div class="carousel-cell">
+        <div class="img-div">
+          <img src="https://cdn-images-1.medium.com/max/1200/1*NRCOyVBY6Jiqr4Q9A1zoaQ.png" alt="I use Mongoose and mongoDB for all the database stuffs, and more than just accounts, I store page statistics with this too">
         </div>
       </div>
-      
-      <div class="col col-4">
-        <div class="knowledge_logo-div">
-          <div class="knowledge_logo-img-container">
-            <img class="knowledge_logo-img" src="https://seeklogo.com/images/N/nodejs-logo-FBE122E377-seeklogo.com.png" alt="Node.js is considered the skeleton of backend machines, I use it to hold the rest of the MEAN stack up">
-          </div>
-          <p class="knowledge_logo-text">
-            Server Skeleton
-          </p>
+      <div class="carousel-cell">
+        <div class="img-div">
+          <img src="https://camo.githubusercontent.com/647e291a5fd52d50e01deb82f9392c462df148a6/687474703a2f2f617070732e6f63746f636f6e73756c74696e672e636f6d2f696d616765732f6578707265737349636f6e2e706e67" alt="I use Express for my core features, such as app usage and listening and routing">
         </div>
       </div>
-      
-      <div class="col col-4">
-        <div class="knowledge_logo-div">
-          <div class="knowledge_logo-img-container">
-            <img class="knowledge_logo-img" src="https://meterpreter.org/wp-content/uploads/2017/09/MongoDB.png" alt="I use mongoDB for all the database stuffs, and more than just accounts, I store page statistics with this too">
-          </div>
-          <p class="knowledge_logo-text">
-            Persistent Information
-          </p>
-        </div>
-      </div>
-      
-      <div class="col col-4">
-        <div class="knowledge_logo-div">
-          <div class="knowledge_logo-img-container">
-            <img class="knowledge_logo-img" src="https://d2eip9sf3oo6c2.cloudfront.net/tags/images/000/000/359/landscape/expressjslogo.png" alt="I use Express for my core features, such as app usage and listening and routing">
-          </div>
-          <p class="knowledge_logo-text">
-            Core + Routing
-          </p>
-        </div>
-      </div>
-
     </div>
+    
+    <br>
+    
+    <h1 id="knowledge_carousel_text" class="text-center"></h1>
 
   </div>
 
@@ -274,7 +214,7 @@
     
     <div class="col col-4">
       <div class="work_container">
-        <a href="../historyofanything/historyofanything.html" target="_blank">
+        <a href="/os" target="_blank">
           <div class="work_img-container flatfull">
             <img class="work_img" src="pictures/os.PNG" alt="the operating system forum page">
           </div>
@@ -287,7 +227,7 @@
     
     <div class="col col-4">
       <div class="work_container">
-        <a href="../../homepage.html" target="_blank">
+        <a href="/" target="_blank">
           <div class="work_img-container flatfull">
             <img class="work_img" src="pictures/homepage2.PNG" alt="my homepage">
           </div>
@@ -300,7 +240,7 @@
     
     <div class="col col-4">
       <div class="work_container">
-        <a href="../ebooks/home.html" target="_blank">
+        <a href="/ebooks" target="_blank">
           <div class="work_img-container flatfull">
             <img class="work_img" src="pictures/ebooks.PNG" alt="my ebooks">
           </div>
@@ -339,7 +279,7 @@
   </a>
 
   <!-- skype -->
-  <span class="skype-button rounded" data-contact-id="TheRedstoneTaco"></span>
+  <div id="skypebutton" class="skype-chat" data-can-close="true" data-can-collapse="true" data-bot-id="TheRedstoneTaco"></div>
 
 </div>
 
