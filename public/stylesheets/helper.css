@@ -5,6 +5,14 @@
     padding: 0;
 }
 
+/*display*/
+.block {
+    display: block;
+}
+.inline {
+    display: inline;
+}
+
 /*sizing*/
 .full {
     width: 100%;

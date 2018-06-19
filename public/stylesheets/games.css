@@ -1,0 +1,12 @@
+/*arrows*/
+.arrow {
+    font-size: 5.0vw;
+    cursor: pointer;
+    text-align: center;
+}
+
+#canvas_container, canvas {
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
