@@ -38,7 +38,7 @@ router.post("/conversation/:conversationId", function(req, res) {
 });
 
 // POST - conversation - '/conversation/:conversationId/:option': vote on a conversation (yes or no for now)
-router.post("/conversation/:conversationId/:option", function(req, res) {
+router.put("/conversation/:conversationId/:option", function(req, res) {
     var option = req.params.option;
     var updater;
     if (option == "yes") {

@@ -1,301 +1,465 @@
-<% include ../partials/header.ejs %>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/json5/0.5.1/json5.min.js"></script>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+   
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" />
 
-<!--external-->
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-
-<!--internal-->
-<link rel="stylesheet" href="stylesheets/os.css">
-<script type="text/javascript" src="scripts/os.js"></script>
-
-<!--global variables (for passing backend information to javascript files! :D)-->
-<%
-  var conversationCount = 0;
-%>
-
-<h1 class="text-center">
-  Jesus loves you guys!
-</h1>
-
-<a class="massive inverted purple ui button d-block m-auto w-50" href="mailto:ghostofmmo@gmail.com" style="font-size: 5.0rem;">
-  Join me!
-</a>
-
-<br>
-
-<!--menu-->
-<div class="m-auto w-75 massive ui pointing menu">
-  <a class="item active" href="#topics">
-    Home
-  </a>
-  <a class="item" href="#rules">
-    Rules
-  </a>
-  <a class="item" href="#stats">
-    Stats
-  </a>
-</div>
-
-<!--content-->
-<div class="w-100" id="content">
-  
-  <!--topics-->
-  <div id="topics" class="section">
+    <!--external-->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+    <link rel="icon" href="https://cdn0.iconfinder.com/data/icons/symbolicons-junk-food/28/taco-128.png">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/buttons.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
     
-    <!--to add a topic-->
-    <% if (currentUser && currentUser.authorization == 1) { %>
-      <br>
-      <div class="w-75 m-auto ui accordion">
-        <h1 id="topicAddAlert" class="text-center alert alert-success">Topic Added!</h1>
-        <form id="topicForm" action="/os/conversation" method="POST">
-          <h1 class="text-center title">
-            Add topic
-            <i class="dropdown icon"></i>
-          </h1>
-          <div class="content">
-            <h4>Title: </h4>
-            <input type="text" name="title" class="form-control" required placeholder="title...">
-            <h4>Content: </h4>
-            <input type="text" name="content" class="form-control" required placeholder="content...">
-            <h4>Category: </h4>
-            <input type="text" name="category" class="form-control" required placeholder="category...">
-            <br>
-            <button class="btn w-50 m-auto d-block btn-success">
-              <h1>Add topic!</h1>
-            </button>
-          </div>
-          <br>
-        </form>  
-      </div>
-      <br>
-    <% } %>
+    <!--internal-->
+    <link rel="stylesheet" type="text/css" href="stylesheets/os.css">
+    <script type="text/javascript" src="scripts/os.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/helper.css">
     
-    <!--to display the topics-->
-    <div id="topics-list">
-      
-      <!--each topic-->
-      <!-- Remember! EJS is synchronous! :D -->
-      <%      
-      // courtesy of: https://stackoverflow.com/questions/5432967/how-to-iterate-over-inner-objects-property-in-an-object
-      function recursor(obj, depth) {
-        // if it's an array of conversations
-        if (Array.isArray(obj)) {
-      %>
-      <div class="ui comments">
-      <%
-          obj.forEach(function(conversation) {
-            recursor(conversation, depth);
-          });
-      %>
-      </div> <!-- /comments -->
-      <%
-        // else it must be a conversation
-        } else {
-          conversationCount ++;
-          var outermostClasses;
-          var titleFontSize;
-          var titleClasses;
-          var authorClasses;
-          var dateClasses;
-          var contentClasses;
-          var accordionClasses;
-          if (obj.category == "topic") {
-            outermostClasses = "comment topic";
-            titleFontSize = 1.5 + (0.8 / depth);
-            titleClasses = "topic_title text-center";
-            authorClasses = "topic_author";
-            dateClasses = "topic_date";
-            contentClasses = "topic_content";
-            accordionClasses = "ui accordion";
-          } else {
-            outermostClasses = "comment";
-            titleFontSize = 1 + (0.7 / depth);
-            titleClasses = "";
-            authorClasses = "";
-            dateClasses = "comment_date";
-            contentClasses = "";
-            accordionClasses = "accordion";
-          }
-      %>
-        <!--main + content-->
-        <br>
-        <div class="<%= outermostClasses %> <%= accordionClasses %>">
-          <h1 class="<%= titleClasses %> title" style="font-size: <%= titleFontSize %>rem;">
-            <%- obj.title %>
-            <i class="dropdown icon"></i>
-          </h1>
-          <div class="content">
-            <div class="contentvote w-100">
-              <div class="conversation_content w-100-xs w-75-md">
-                <a class="<%= authorClasses %>" style="font-size: <%= 1 + (0.7 / depth) %>rem;">
-                  <%- obj.author.username %>
-                </a>
-                <p class="<%= dateClasses %>" style="font-size: <%= 1 + (0.25 / depth) %>rem;">
-                  <%- obj.created %>
-                </p>
-                <div class="text">
-                  <p class="<%= contentClasses %>" style="font-size: <%= 1 + (0.4 / depth) %>rem;">
-                    <%- obj.content %>
-                  </p>
-                </div>
-                <!--conversing-->
-                <% if (currentUser) { %>
-                  <div class="w-75 m-auto accordion">
-                    <form action="/conversation/<%= obj._id %>" class="w-100" method="POST">
-                      <h1 class="blue ui button text-center title d-block m-auto w-100" style="font-size: <%= 1 + (1 / depth) %>rem;">
-                        Converse
-                        <i class="dropdown icon"></i>
-                      </h1>
-                      <div class="content">
-                        <h4>Title: </h4>
-                        <input type="text" name="title" class="form-control" required placeholder="title...">
-                        <h4>Content: </h4>
-                        <textarea name="content" class="form-control" required></textarea>
-                        <input name="category" type="hidden" value="topic_conversation">
-                        <br>
-                        <button class="inverted blue ui button w-50 m-auto d-block">
-                          Conversate
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                <% } else { %>
-                    <h4 class="text-center">
-                      Please login to converse.
-                    </h4>
-                <% } %>
-                <br>
-                <!--actions-->
-                <% if ((currentUser && currentUser.authorization == 1) || (currentUser && obj.author._id.equals(currentUser._id))) { %>
-                  <div class="w-75 m-auto accordion">
-                    <h1 class="orange ui button text-center title d-block m-auto w-100" style="font-size: <%= 1 + (0.8 / depth)%>rem;">
-                      Actions
-                      <i class="dropdown icon"></i>
-                    </h1>
-                    <div class="content">
-                      <div class="w-75 m-auto text-center">
-                        <a class="big yellow inverted ui button d-block m-auto w-100" href="/conversation/<%= obj._id %>/edit?redirect=os">
-                          Edit
-                        </a>
-                      </div>
-                      <br>
-                      <div class="w-75 m-auto text-center">
-                        <a class="big red inverted ui button w-100" href="/conversation/<%= obj._id %>/delete?redirect=os">
-                          Delete
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                <% } %>
-              </div> <!-- /content -->
-              <br>
-              <!--voting-->
-              <br>
-              <div class="voting w-75-xs w-25-md m-auto">
-                <form action="/conversation/<%= obj._id %>/yes" method="POST" class="labeled ui button w-75 m-auto voting_form yesform" tabindex="0">
-                  <div class="massive red ui button w-100 yesbutton">
-                    <i class="heart icon"></i> <%= obj.yes || "0" %>
-                  </div>
-                </form>
-                <br>
-                <form action="/conversation/<%= obj._id %>/no" method="POST" class="labeled ui button w-75 m-auto voting_form noform" tabindex="0">
-                  <div class="massive blue ui button w-100 nobutton">
-                    <i class="thumbs down icon"></i> <%= obj.no || "0" %>
-                  </div>
-                </form>
-              </div>
-            </div> <!-- /contentvote -->
-            <!--nested comments-->
-            <% recursor(obj.conversation, depth + 1); %>
-          </div> <!-- /content -->
-        </div>  <!-- /comment -->
-      <%
-        }
+  </head>
+  <body>
+    
+    <!-- Variables -->
+    <%
+      var conversationCount = 0;
+      var topics = page.conversation.filter(function(conversation) { return conversation.category == "topic"; } );
+      function formatDate(date) {
+        var extracted = String(date).split(" ");
+        var formatted = extracted[0] + " - " + extracted[1] + " " + extracted[2] + ", " + extracted[3];
+        return formatted;
       }
-      var conversation = page.conversation.filter(function(conversation) { return conversation.category == "topic"; } );
-      recursor(conversation, 1);
-      %>
+    %>
+
+    <!-- Header -->
+    <nav id="header" class="navbar navbar-expand-lg navbar-light bg-light">
+      
+      <!-- brand -->
+      <a class="navbar-brand" href="#">
+        <h1>
+          OS
+        </h1>
+      </a>
+      
+      <!-- hamburger -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <!-- main content -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        
+        <!-- go home -->
+        <ul class="navbar-nav mr-auto">
+          <a href="/" id="homebutton" class="header-item button button-3d button-caution button-small">
+           <i class="fa fa-home"></i>
+           Home
+          </a>
+          <% if (currentUser && currentUser.username) { %>
+            <a id="username" class="button header-item button-glow button-border button-rounded button-primary button-small">
+              You are: <%= currentUser.username %>
+            </a>
+          <% } %>
+        </ul>
+        
+        <ul class="navbar-nav ml-auto">
+          
+          <!-- topics -->
+          <a href="#topics" class="header-item button button-3d button-action button-small">
+           <i class="fa fa-book"></i>
+           Topics
+          </a>
+          
+          <!-- rules -->
+          <a href="#rules" class="header-item button button-3d button-highlight button-small">
+           <i class="fa fa-ban"></i>
+           Rules
+          </a>
+          
+          <!-- statistics -->
+          <a id="stats_a" href="#stats" class="header-item button button-3d button-primary button-small">
+           <i class="fa fa-signal"></i>
+           Stats
+          </a>
+          
+        </ul>
+        
+      </div>
+      
+    </nav>
+    
+    <!-- Content -->
+    <div class="w-100 nobox" id="content">
+      
+      <!--topics-->
+      <div id="topics" class="section">
+        
+        <!--to add a topic-->
+        <% if (currentUser && currentUser.authorization == 1) { %>
+        <div class="w-75 m-auto ui accordion">
+          <h1 id="topicAddAlert" class="text-center alert alert-success">Topic Added!</h1>
+          <form id="topicForm" action="/os/conversation" method="POST">
+            <h1 class="text-center title">
+              Add topic
+              <i class="dropdown icon"></i>
+            </h1>
+            <div class="content">
+              <h4>Title: </h4>
+              <input type="text" name="title" class="form-control" required placeholder="title...">
+              <h4>Content: </h4>
+              <input type="text" name="content" class="form-control" required placeholder="content...">
+              <h4>Category: </h4>
+              <input type="text" name="category" class="form-control" required placeholder="category...">
+              <br>
+              <button class="btn w-50 m-auto d-block btn-success">
+                <h1>Add topic!</h1>
+              </button>
+            </div>
+            <br>
+          </form>  
+        </div>
+        <% } %>
+        
+        <!-- topic navigation -->
+        <div class="ui container">
+          <div id="topics_navigation" class="ui secondary pointing menu">
+            <% topics.forEach(function(topic, index) { %>
+              <h3 class="item topicNavigation" href="#topic<%= index %>">
+                <%= topic.title %>
+              </h3>
+            <% }); %>
+          </div>
+        </div>
+        
+        <% if (currentUser) { %>
+          <br>
+          <div class="w-75 m-auto ui accordion">
+            <h1 class="conversationAddAlert text-center alert alert-success">Conversation Added!</h1>
+            <form class="conversationForm" id="topicConversationForm" method="POST">
+              <h1 class="text-center title">
+                Add Conversation
+                <i class="dropdown icon"></i>
+              </h1>
+              <div class="content">
+                <h4>Title: </h4>
+                <input type="text" name="title" class="form-control" required placeholder="title...">
+                <h4>Content: </h4>
+                <input type="text" name="content" class="form-control" required placeholder="content...">
+                <br>
+                <button class="btn w-50 m-auto d-block btn-primary">
+                  <h1>Converse!</h1>
+                </button>
+              </div>
+            </form>  
+          </div>
+        <% } %>
+        
+        <!--to display the topics-->
+        <div id="topics-list">
+          
+          <%
+            // courtesy of: https://stackoverflow.com/questions/5432967/how-to-iterate-over-inner-objects-property-in-an-object
+            function recursor(obj, depth, topicIndex) {
+              
+              // if it's an array of conversations
+              if (Array.isArray(obj)) {
+                obj.forEach(function(conversation) {
+                  recursor(conversation, depth);
+                });
+              // else it must be a conversation
+              } else {
+                conversationCount ++;
+
+                  // ".square" conversations
+                  if (depth == 0) {
+                %>
+                  <div href="#" class="topicContent topicContent<%= topicIndex %>">
+                    <a href="#" data-toggle="modal" data-target="#modal_<%= obj._id %>">
+                      <div class="topicContent_title overflowX">
+                        <h1 class="black_text text-center">
+                          <%= obj.title %>
+                        </h1>
+                      </div>
+                      <div class="topicContent_content black_text">
+                        <h5 class="black_text">
+                          <%= obj.author.username %>
+                        </h5>
+                        <h6 class="noweight black_text">
+                          <%
+                          var extracted = String(obj.created).split(" ").splice(0, 4);
+                          var formatted = extracted[0] + " - " + extracted[1] + " " + extracted[2] + ", " + extracted[3]
+                          %>
+                          <%= formatted %>
+                        </h6>
+                        <hr>
+                        <p>
+                          <%= obj.content %>
+                        </p>
+                      </div>
+                    </a>
+                      <div class="topicContent_stats">
+                        <div>
+                          <form class="yesform w-100 nobox d-block" override="PUT" action="/conversation/<%= obj._id %>/yes" method="POST">
+                            <button type="submit" class="button button-primary button-3d button-longshadow-right button-glow button-circle">
+                              <i class="fa fa-thumbs-up"></i>
+                            </button>
+                            <h1 class="blue_text vote_info">
+                              <%= obj.yes %>
+                            </h1>
+                          </form>
+                        </div>
+                        <div>
+                          <form class="noform w-100 nobox d-block" override="PUT" action="/conversation/<%= obj._id %>/no" method="POST">
+                            <button type="submit" class="button button-caution button-3d button-longshadow-right button-glow button-circle">
+                              <i class="fa fa-thumbs-down"></i>
+                            </button>
+                            <h1 class="red_text vote_info">
+                              <%= obj.no %>
+                            </h1>
+                          </form>
+                        </div>
+                      </div>
+                    <div class="modal fade" id="modal_<%= obj._id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog deep" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title" id="exampleModalLabel">
+                              <%= obj.title %>
+                            </h1>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-header-content">
+                            <h2 class="text-muted modal-header-date noweight">
+                              <%= formatDate(obj.created); %>
+                            </h2>
+                            <h3 class="modal-header-text noweight">
+                              <%= obj.content %>
+                            </h3>
+                          </div>
+                          <div class="modal-body">
+                          <% if (currentUser && (obj._id.equals(currentUser._id) || currentUser.authorization == 1) ) { %>
+                            <br>
+                            <div class="row">
+                              <div class="col-6 text-center">
+                                <a href="/conversation/<%= obj._id %>/edit?redirect=os" class="button button-raised button-highlight">
+                                  Edit
+                                </a>
+                              </div>
+                              <div class="col-6 text-center">
+                                <a href="/conversation/<%= obj._id %>/delete?redirect=os" class="button button-raised button-inverse">
+                                  Delete
+                                </a>
+                              </div>
+                            </div>
+                          <% } %>
+                          <br>
+                <%
+                  recursor(obj.conversation, depth + 1, topicIndex);
+                %>
+                            <h4 class="text-center text-muted">
+                              End of Conversation
+                            </h4>
+                          </div> <!-- ./modal-body -->
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          </div>
+                        </div> <!-- ./modal-content -->
+                      </div> <!-- ./modal-dialog -->
+                    </div> <!-- ./modal -->
+                  </div> <!-- /.topicContent -->
+                <%
+                }
+                // conversations of the "topicContent" conversations
+                else {
+              %>
+                        <div class="card">
+                          <div class="card-body">
+                              <h5 class="card-title">
+                                <%= obj.title %>
+                              </h5>
+                              <h6 class="card-subtitle mb-2 text-muted">
+                                <%= formatDate(obj.created); %>
+                              </h6>
+                              <br>
+                              <p class="card-text">
+                                <%= obj.content %>
+                              </p>
+                              <div class="row">
+                                <div class="col-6">
+                                  <form class="yesform w-100 nobox d-block" override="PUT" action="/conversation/<%= obj._id %>/yes" method="POST">
+                                    <button type="submit" class="button button-primary button-3d button-pill">
+                                      <i class="fa fa-thumbs-up"></i>
+                                    </button>
+                                    <h1 class="blue_text vote_info">
+                                      <%= obj.yes %>
+                                    </h1>
+                                  </form>
+                                </div>
+                                <div class="col-6">
+                                  <form class="noform w-100 nobox d-block" override="PUT" action="/conversation/<%= obj._id %>/no" method="POST">
+                                    <button type="submit" class="button button-caution button-3d button-pill">
+                                      <i class="fa fa-thumbs-down"></i>
+                                    </button>
+                                    <h1 class="red_text vote_info">
+                                      <%= obj.no %>
+                                    </h1>
+                                  </form>
+                                </div>
+                              </div>
+                              <% if (currentUser && (obj._id.equals(currentUser._id) || currentUser.authorization == 1) ) { %>
+                                <br>
+                                <div class="row">
+                                  <div class="col-6 text-center">
+                                    <a href="/conversation/<%= obj._id %>/edit?redirect=os" class="button button-raised button-highlight">
+                                      Edit
+                                    </a>
+                                  </div>
+                                  <div class="col-6 text-center">
+                                    <a href="/conversation/<%= obj._id %>/delete?redirect=os" class="button button-raised button-inverse">
+                                      Delete
+                                    </a>
+                                  </div>
+                                </div>
+                              <% } %>
+                              <% if (currentUser) { %>
+                                <div class="w-100 m-auto ui accordion">
+                                  <h1 class="conversationAddAlert text-center alert alert-success">Topic Added!</h1>
+                                  <form class="conversationForm" action="/conversation/<%= obj._id %>" method="POST">
+                                    <h1 class="text-center title">
+                                      Converse
+                                      <i class="dropdown icon"></i>
+                                    </h1>
+                                    <div class="content">
+                                      <h4>Title: </h4>
+                                      <input type="text" name="title" class="form-control" required placeholder="title...">
+                                      <h4>Content: </h4>
+                                      <input type="text" name="content" class="form-control" required placeholder="content...">
+                                      <br>
+                                      <button class="btn w-100 m-auto d-block btn-success">
+                                        <h1>Talk</h1>
+                                      </button>
+                                    </div>
+                                    <br>
+                                  </form>  
+                                </div>
+                                <% } %>
+                            <%
+                              recursor(obj.conversation, depth + 1, topicIndex);
+                            %>
+                          </div> <!-- ./card-body -->
+                        </div> <!-- ./card -->
+                        <br>
+              <%
+                }
+              }
+            }
+          %>
+          
+          <%
+            // recurse through each topic
+            topics.forEach(function(topic, index) {
+              topic.conversation.forEach(function(conversation) {
+                recursor(conversation, 0, index);
+              });
+            });
+          %>
+          
+        </div>
+        
+      </div>
+    
+    
+    
+      <div id="rules" class="section hideme container">
+        <h1 class="text-center">
+          Yes, we have rules!
+        </h1>
+        
+        <!--the rules-->
+        <h1 class="ui top attached header">
+          Keep it G for Godly!
+          <br>
+          Godly means:
+        </h1>
+        <div class="ui attached segment">
+          <h2 class="noweight">
+            Respect
+          </h2>
+          <h2 class="noweight">
+            Clean speech
+          </h2>
+          <h2 class="noweight">
+            Jesus-oriented or nothing-oriented
+          </h2>
+        </div>
+        
+        <h1 class="ui top attached header">
+          Keep it either relevant or in the "unrelated"
+        </h1>
+        
+        <h1 class="ui top attached header">
+          No trolling, which includes:
+        </h1>
+        <div class="ui attached segment">
+          <h2 class="noweight">
+            Session stealing
+          </h2>
+          <h2 class="noweight">
+            Information stealing
+          </h2>
+          <h2 class="noweight">
+            Breaking the app if I'm not cool with it (but not handsome, I'm always handsome)
+          </h2>
+          <h2 class="noweight">
+            Trying to/Successfully bypass/ing a ban in any way to get back your banned priveleges
+          </h2>
+          <h2 class="noweight">
+            Purposeful unhelpful information
+          </h2>
+          <h2 class="noweight">
+            snackpack sticks and cheese dip thingies
+          </h2>
+          <h2 class="noweight">
+            Well, I think that's it, but uh just be respectful and stuff and don't try to pull off any shenanigans or anything :/
+          </h2>
+        </div>
+    
+      </div>
+      
+      
+    
+      <div id="stats" class="section hideme">
+        
+        <canvas id="myChart"></canvas>
+        
+      </div>
+    
     </div>
     
-  </div>
-
-
-
-  <div id="rules" class="section hideme container">
-    <h1 class="text-center">
-      Yes, we have rules!
-    </h1>
-    
-    <!--the rules-->
-    <h1 class="ui top attached header">
-      Keep it G for Godly!
-      <br>
-      Godly means:
-    </h1>
-    <div class="ui attached segment">
-      <h2 class="noweight">
-        Respect
-      </h2>
-      <h2 class="noweight">
-        Clean speech
-      </h2>
-      <h2 class="noweight">
-        Jesus-oriented or nothing-oriented
-      </h2>
-    </div>
-    
-    <h1 class="ui top attached header">
-      Keep it either relevant or in the "unrelated"
-    </h1>
-    
-    <h1 class="ui top attached header">
-      No trolling, which includes:
-    </h1>
-    <div class="ui attached segment">
-      <h2 class="noweight">
-        Session stealing
-      </h2>
-      <h2 class="noweight">
-        Information stealing
-      </h2>
-      <h2 class="noweight">
-        Breaking the app if I'm not cool with it (but not handsome, I'm always handsome)
-      </h2>
-      <h2 class="noweight">
-        Trying to/Successfully bypass/ing a ban in any way to get back your banned priveleges
-      </h2>
-      <h2 class="noweight">
-        Purposeful unhelpful information
-      </h2>
-      <h2 class="noweight">
-        snackpack sticks and cheese dip thingies
-      </h2>
-      <h2 class="noweight">
-        Well, I think that's it, but uh just be respectful and stuff and don't try to pull off any shenanigans or anything :/
-      </h2>
-    </div>
-
-  </div>
+    <!--
+      page XML (for front-end retreival)
+      comments where whitespace needs dealing with
+    -->
+    <page>
+      <views>
+        <%= page.views %>
+      </views>
+      <conversationCount>
+        <%= conversationCount %>
+      </conversationCount>
+      <topicIds><!--
+        --><% topics.forEach(function(topic) { %><!--
+          --><%= String(topic._id).trim() %>,<!--
+        --><% }); %><!--
+   --></topicIds>
+    </page>
   
-  
-
-  <div id="stats" class="section hideme">
-    
-    <canvas id="myChart"></canvas>
-    
-  </div>
-
-</div>
-
-<pageJSON>
-  <views>
-    <%= page.views %>
-  </views>
-  <conversation>
-    <%= conversationCount %>
-  </conversation>
-</pageJSON>
-
-<% include ../partials/footer.ejs %>
+  </body>
+</html>

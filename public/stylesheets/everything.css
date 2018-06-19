@@ -30,6 +30,19 @@
     justify-content: center;
     align-items: center;
 }
-#p1_square > div:not(#p1_main) {
-    background-color: #333333;
+
+/*phase 2*/
+#p2_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#p2_square {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+#p2_square > div {
+    width: 20%;
+    height: 20%;
 }

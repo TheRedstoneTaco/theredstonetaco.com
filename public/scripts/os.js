@@ -1,6 +1,7 @@
-var pageData = {};
 // width, height, less, and greater of the two!
 var w, h, l, g;
+// other page info
+var pageData;
 // chart stuff
 var ctx, chartStuff, myChart;
 // for testing
@@ -9,78 +10,116 @@ var tmp = "";
 // on ready
 $(document).ready(function() {
   
-  // computer, grab window information!
+  init_sizing();
+  
+  init_page();
+  
+  init_forms();
+  
+  init_header();
+  
+  init_topics();
+  
+  initChart();
+  
+});
+
+function init_sizing() {
   w = $(window).width();
   h = $(window).height();
   l = ((h < w) * h) + ((w < h) * w);
   g = ((w > h) * w) + ((h > w) * h);
+}
+
+function init_page() {
   
-  // computer, grab the page's backend info so we can do stuff!
-  pageData = {
-    views: $("pageJSON > views").text().trim() || -1,
-    conversationCount: $("pageJSON > conversation").text().trim() || -1
-  };
-  $("pageJSON").remove();
-  
-  // computer, initialize the chart!
-  initChart();
- 
-  
-  // computer, hide all elements that are shy!
+  // hide stuff
   $(".hideme").hide();
   
-  // computer, setup the accordion dropdowns!
-  $(".comment.accordion .voting").hide();
-  $('.ui.accordion').accordion({
-    onOpen: function() {
-      var content = $(this);
-      var contentvote = $(content.children()[0]);
-      var voting = contentvote.find("> .voting");
-      setTimeout(function() {
-        voting.show();
-        contentvote.attr("style", "display: flex !important; flex-wrap: wrap;");
-      }, 200);
-    },
-    onClosing: function() {
-      var content = $(this);
-      var contentvote = $(content.children()[0]);
-      var voting = contentvote.find("> .voting");
-      voting.hide();
-    }
-  });
+  // accordions
+  $(".ui.accordion").accordion();
   
-  // computer, setup the vertical menu for clicking
-  $('.ui.menu').on('click', '.item', function(e) {
-    $(this)
-      .addClass('active')
-      .siblings('.item')
-      .removeClass('active');
-    $(".section").hide();
-    $($(this).attr("href")).show();
-    e.preventDefault();
-  });
+  // grab page info
+  pageData = {};
+  pageData.views = $("page > views").text();
+  pageData.conversationCount = $("page > conversationCount").text();
+  var topicIds = $('page > topicIds').text();
+  topicIds = topicIds.substr(0, topicIds.length - 1).split(',');
+  pageData.topicIds = topicIds;
+  $("page").remove();
+  
+}
+
+function init_forms() {
   
   // computer, stop topic form from redirecting us! (also intialize animations)
   $("#topicAddAlert").hide();
   $("#topicForm").submit(ajaxSubmit);
-  $("#topicForm").submit(function(event) {
+  $("#topicForm").submit(function() {
     $("#topicAddAlert").show();
-    $("#topicForm").hide();
+    $("#topicForm").remove();
   });
   
   // computer, enable all the voting functionality!
-  $(".yesform, .noform").click(function() {
-    $(this).submit();
-  });
-  $(".yesform").click(function() {
-    $(this).replaceWith("<h1 class=\"alert alert-danger\">YES! :D</h1>");
-  });
-  $(".noform").click(function() {
-    $(this).replaceWith("<h1 class=\"alert alert-primary\">no :(</h1>");
-  });
   $(".yesform, .noform").submit(ajaxSubmit);
+  $(".yesform").submit(function() {
+    $(this).replaceWith("<h1 class=\"alert alert-primary\">YES :D</h1>");
+  });
+  $(".noform").submit(function() {
+    $(this).replaceWith("<h1 class=\"alert alert-danger\">NO :(</h1>");
+  });
   
-});
+  // enable conversing
+  $(".conversationAddAlert").hide();
+  $(".conversationForm").submit(ajaxSubmit);
+  $(".conversationForm").submit(function() {
+    $($(this).parent().children()[0]).show();
+    $(this).remove();
+  });
+  
+}
+
+function init_header() {
+  
+  // when header items are clicked
+  $('.header-item:not(#homebutton):not(#username)').on('click', function(event) {
+  
+    // don't scroll down
+    event.preventDefault();
+  
+    // hide other header's items and targets
+    $(".navbar-collapse").collapse('hide');
+    $('.header-item').each(function(index) {
+      if (index != 0 && index != 1) {
+        $($(this).attr('href')).hide(); 
+      }
+    });
+  
+    // show this header item's target
+    $($(this).attr('href')).show();
+  
+  });
+  
+}
+
+function init_topics() {
+  
+  // setup navigation for topics
+  function topic(index) {
+    $('.topicContent').hide();
+    $('.topicNavigation').removeClass('active');
+    $($('.topicNavigation')[index]).addClass('active');
+    $('.topicContent' + index).show();
+    $("#topicConversationForm").attr('action', '/conversation/' + pageData.topicIds[index]);
+  }
+  topic(0);
+  $('.topicNavigation').click(function() {
+    var target = $(this).attr('href');
+    var index = target.slice("#topic".length, target.length);
+    topic(index);
+  });
+  
+}
 
 function initChart() {
   // do chart stuff
@@ -171,7 +210,7 @@ function initChart() {
     }
   }
   // render chart even if it changes
-  $("a").click(function() {
+  $("#stats_a").click(function() {
     setTimeout(function() {
       if (myChart) {
         myChart.destroy();
@@ -185,9 +224,10 @@ function ajaxSubmit(event) {
   // dont reload the page
   event.preventDefault();
   // but still submit! :)
+  var method = $(this).attr("override") || "POST";
   $.ajax({
       url: $(this).attr("action"),
-      type: "POST",
+      type: method,
       error: function (jXHR, textStatus, errorThrown) {
           console.log(errorThrown);
       },

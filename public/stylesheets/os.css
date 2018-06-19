@@ -1,131 +1,168 @@
-/* boilerplate */
+/*
+  Helper Stuff
+*/
+/*to make all the stuff fit just like I want*/
 html, body {
-  /* sizing */
+  margin: 0;
   border: 0;
   padding: 0;
   height: 100%;
   width: 100%;
-  /* positioning */
-  margin: 0;
 }
-
-/*helper "w-95" class to make the stuff 95% width*/
+* {
+  box-sizing: border-box;
+}
+/*overrides for inconvenient bootstrap*/
+.row {
+  max-width: 100%;
+}
+/*w-95 class for cards*/
 .w-95 {
   width: 95%;
 }
-/*helper "noweight" class to make element font-weight normal*/
-.noweight {
-  font-weight: 400 !important;
+
+
+/*
+  header
+*/
+#header {
+  background-color: white !important;
 }
-/*helper sizing classes*/
-.w-25-xs {
-  width: 25%;
+.header-item {
+  margin-right: 5vw;
 }
-.w-75-xs {
-  width: 75%;
-}
-.w-100-xs {
-  width: 100%;
-}
-@media (min-width: 992px) {
-  .w-25-md {
-    width: 25%;
+@media (max-width: 991px) {
+  .header-item {
+    margin-top: 1vh;
+    margin-bottom: 1vh;
   }
 }
 
 
 
-/*preferences*/
-.ui.button {
-  padding: 0.5rem !important;
+/*
+  content
+*/
+#content {
+  margin: 0;
+  border: 0;
+  padding: 0; padding-top: 10vh;
 }
 
 
 
 
-/*menu*/
-#menu {
-  width: auto;
-}
 
 
-
-
-
-
-
-
-
-/*topics*/
+/*
+  topics
+*/
+/*List*/
 #topics-list {
   margin: auto;
   width: 90%;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
-.topic {
-  margin-bottom: 10vh !important;
+/*Navigation*/
+#topicsNavigation {
+  overflow: auto;
 }
-.ui.comments {
-  max-width: 100% !important;
+.topicNavigation {
+  cursor: pointer;
 }
-.comment {
-  background-color: #fafafa !important;
-  padding: 2% !important;
+/*topicConversation*/
+.topicContent {
+  margin-top: 5vh;
+  border: 5px solid black;
+  padding: 0;
+  display: block;
 }
-.conversation_content {
-  width: 75%;
-  padding-bottom: 2%;
+.topicContent_title {
+  margin: 0;
+  border: 0; border-bottom: 5px solid black;
+  padding: 0;
+  width: 100%;
+  height: 20%;
+  background-color: #eeeeee;
+  overflow: auto;
+  cursor: pointer;
 }
-.topic_author {
+.topicContent_content {
+  padding: 10px;
+  width: 100%;
+  height: 60%;
+  overflow: auto;
+  cursor: pointer;
+}
+.topicContent_stats {
+  margin: 0;
+  border: 0; border-top: 5px solid black;
+  padding: 0;
+  width: 100%;
+  height: 20%;
+  background-color: #eeeeee;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  cursor: pointer;
+}
+.topicContent_stats > div {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@media (max-width: 767px) {
+  .topicContent {
+    width: 95%;
+    height: 70vh;
+  }
+}
+@media (min-width: 768px) {
+  .topicContent {
+    width: 48%;
+    height: 60vh;
+  }
+}
+@media (min-width: 992px) {
+  .topicContent {
+    width: 24%;
+    height: 50vh;
+  }
+}
+/*Voting*/
+.yesform, .noform {
+  text-align: center;
+}
+.vote_info {
   display: inline;
-  font-size: 1.5rem;
 }
-.topic_date, .comment_date {
-  display: inline;
-  color: #cccccc;
+/*Modal*/
+.deep {
+  background-color: white;
+  max-width: 90%;
+  height: 95%;
 }
-.topic_date {
-  font-size: 1.5rem;
+.modal-header {
+  border: 0;
 }
-.topic_title {
-  font-size: 1.4rem;
-}
-.topic_content {
-  font-size: 1.3rem;
-}
-.comment, .comments {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-}
-.topic > .comments {
-  height: 50vh;
-  overflow-y: scroll;
-}
-/*voting*/
-.voting {
+.modal-header-content {
   padding: 2%;
 }
-.voting_form {
-  display: flex !important;
-  justify-content: center;
+.modal-header-text {
+  border-bottom: solid 1px #e9ecef;
+}
+.modal-content {
+  height: 95%;
+}
+.modal-body {
+  height: 95%;
+  overflow: auto;
 }
 
-
-iframe {
-  max-width: 100% !important;
-}
-
-/*responsive*/
-@media (max-width: 799px) {
-  .contentvote {
-    display: block;
-  }
-  .voting {
-    width: 100% !important;
-  }
-  .conversation_content {
-    width: 100% !important;
-  }
-}
 
 
 /*chart*/
