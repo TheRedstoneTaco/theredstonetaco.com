@@ -17,7 +17,9 @@ router.get("/ebooks", function(req, res) {
             console.log("couldn't find page!");
             return res.redirect("back");
         }
-        Ebook.find({}, function(err2, foundEbooks) {
+        foundPage.views ++;
+        foundPage.save();
+        Ebook.find({}).populate('reviews.author').exec(function(err2, foundEbooks) {
             if (err2) {
                 console.log(err2);
                 return res.redirect("back");
@@ -85,8 +87,8 @@ router.get("/ebooks/:ebookId/read", function(req, res) {
     });
 });
 
-// UPDATE: to like an ebook
-router.put("/ebooks/:ebookId/like", function(req, res) {
+// CREATE: to like an ebook
+router.post("/ebooks/:ebookId/like", function(req, res) {
     Ebook.findById(req.params.ebookId, function(err, foundEbook) {
         if (err) {
             return console.log(err);
@@ -94,6 +96,7 @@ router.put("/ebooks/:ebookId/like", function(req, res) {
         foundEbook.likes ++;
         foundEbook.save();
     });
+    res.redirect('back');
 });
 
 // CREATE: to rate an ebook
@@ -111,7 +114,6 @@ router.post("/ebooks/:ebookId/ratings", middleware.isLoggedIn, function(req, res
             value: req.body.value / 5.0,
             author: req.user._id
         });
-        console.log("BEFORE PUTTING RATING: " + foundEbook);
         // update ebook's average rating
         var sum = 0;
         for (var i = 0; i < foundEbook.ratings.length; i++) {
@@ -121,12 +123,12 @@ router.post("/ebooks/:ebookId/ratings", middleware.isLoggedIn, function(req, res
         foundEbook.rating = avg;
         // save an ebook
         foundEbook.save();
-        console.log("AFTER PUTTING RATING: " + foundEbook);
+        res.redirect('back');
     });
 });
 
 // UPDATE: to update an ebook rating
-router.post("/ebooks/:ebookId/ratings/:userId/edit", function(req, res) {
+router.put("/ebooks/:ebookId/ratings", middleware.isLoggedIn, function(req, res) {
     // find ebook
     Ebook.findById(req.params.ebookId, function(err, foundEbook) {
         if (err) {
@@ -136,17 +138,7 @@ router.post("/ebooks/:ebookId/ratings/:userId/edit", function(req, res) {
             return console.log("Ccouldn't find Ebook");
         }
         // update that one individual rating
-        var whichRating = -1;
-        for (var i = 0; i < foundEbook.ratings.length; i++) {
-            if (foundEbook.ratings[i].author.equals(req.user._id)) {
-                whichRating = i;
-                break;
-            }
-        }
-        if (whichRating == -1) {
-            return console.log("unauthorized rating edit by: " + req.user._id);
-        }
-        foundEbook.ratings[whichRating].value = parseInt(req.body.value) / 5.0;
+        foundEbook.ratings.filter((rating) => { return rating.author.equals(req.user._id); })[0].value = (req.body.value / 5.0);
         // update ebook's average rating
         var sum = 0;
         for (var i = 0; i < foundEbook.ratings.length; i++) {
@@ -156,6 +148,7 @@ router.post("/ebooks/:ebookId/ratings/:userId/edit", function(req, res) {
         foundEbook.rating = avg;
         // save ebook
         foundEbook.save();
+        res.redirect('back');
     });
 });
 
@@ -177,11 +170,12 @@ router.post("/ebooks/:ebookId/reviews", middleware.isLoggedIn, function(req, res
         }
         foundEbook.reviews.push(newReview);
         foundEbook.save();
+        res.redirect('back');
     });
 });
 
 // UPDATE: to update a review
-router.put("/ebooks/:ebookId/reviews", function(req, res) {
+router.put("/ebooks/:ebookId/reviews", middleware.isLoggedIn, function(req, res) {
     // find ebook to update review on
     Ebook.findById(req.params.ebookId, function(err, foundEbook) {
         if (err) {
@@ -197,6 +191,7 @@ router.put("/ebooks/:ebookId/reviews", function(req, res) {
         // update necessary review
         foundEbook.reviews.filter(review => review.author.equals(req.user._id))[0].content = req.body.content;
         foundEbook.save();
+        res.redirect('back');
     });
 });
 

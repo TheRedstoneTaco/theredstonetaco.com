@@ -247,7 +247,7 @@
     <p id="rating_edit_text">
       Edit Rating:
     </p>
-    <form id="rating_edit" class="nonebox" action="/ebooks/<%= ebook._id %>/ratings/<%= currentUser._id %>/edit" method="POST">
+    <form id="rating_edit" class="nonebox" action="/ebooks/<%= ebook._id %>/ratings" method="POST">
       <input id="rating_edit_input" class="form-control" name="value" type="text" placeholder="5"> / 5
     </form>
   <% } %>

@@ -1,96 +1,391 @@
-<% include ../partials/header.ejs %>
-
-<link rel="stylesheet" href="stylesheets/ebooks.css">
-
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  
+  <head>
+   
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" />
+    
+    <% if (page) { %>
+      <title>
+        <%= page.title %>
+      </title>
+    <% } else { %>
+      <title>
+        TheRedstoneTaco
+      </title>
+    <% } %>
+    
+    <!--external-->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+    <link rel="icon" href="https://cdn0.iconfinder.com/data/icons/symbolicons-junk-food/28/taco-128.png">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.2/semantic.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.2/semantic.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/buttons.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    
+    <!--internal-->
+    <link type="text/css" rel="stylesheet" href="/stylesheets/preferences.css">
+    <link rel="stylesheet" href="stylesheets/ebooks.css">
+    <script type="text/javascript" src="/scripts/ebooks.js"></script>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/helper.css">
+    
   </head>
-  <body>
 
-    <div id="page-container">
-
-      <!-- the title! -->
-      <p id="title">
-        Dustin's Ebooks!
-        <span class="fa fa-book"></span>
-      </p>
-
-      <!-- a lil bout me :) -->
-      <p id="about">
-        Hi! I'm Dustin, Computer
-        Scientist, Full-Stack Web Developer, aspiring Operating
-        System Engineer, and researcher. These E-books
-        are some of the research I have. I love Jesus,
-        I'm 15, I do calculus (diff is fun!), and
-        live in America. :) If you want to, especially
-        to talk about the books, contact ghostofmmo@gmail.com
-        Make sure to drop by my <a href="/portfolio">Portfolio</a>
-        for my qualifications!
-      </p>
-
-      <!-- divider -->
-      <hr>
-
-      <!-- tell them the ebooks are here! -->
-      <p id="books_title">
-        Yay! Here are my Ebooks:
-      </p>
-
-      <!-- time for the ebooks! -->
-      <% if (ebooks) { %>
-        <% for (var i = 0; i < ebooks.length; i++) { %>
-          <div class="ebook_div">
-            <p class="ebook_part ebook_title">
-              <%= ebooks[i]["title"] %>
-            </p>
-            <p class="ebook_part ebook_read">
-              <a href="/ebooks/<%= ebooks[i]["_id"] %>/read">
-                <span class="fa fa-search"></span>
-                -Read
-              </a>
-            </p>
-            <p class="ebook_part ebook_view">
-              <a href="/ebooks/<%= ebooks[i]["_id"] %>">
-                <span class="fa fa-eye"></span>
-                -View
-              </a>
-            </p>
-          </div>
-          <br><br>
-        <% } %>
-      <% } %>
-
-      <!-- divider -->
-      <hr>
-
-      <a id="to-homepage" class="btn btn-danger" href="/" target="_blank">
-        Back to Homepage!
+  <body style="background-color: white !important;">
+    
+    <!--global variables and functions-->
+    <%
+      // "Dustin's Research" Ebook
+      var dr = ebooks.filter((ebook) => { return ebook.title == "Dustin's Research" })[0];
+      // to formate a date
+      function formatDate(date) {
+        var extracted = String(date).split(" ");
+        var formatted = extracted[0] + " - " + extracted[1] + " " + extracted[2] + ", " + extracted[3];
+        return formatted;
+      }
+    %>
+    <!--
+      L.
+      o. (yes, o)
+      ...
+      L. (:/)
+    -->
+    <pageData><!--
+    --><views><!--
+      --><%= page.views %><!--
+    --></views><!--
+    --><likes><!--
+      --><%= page.likes %><!--
+    --></likes><!--
+  --><ebooks><!--
+      --><R><!--
+        --><views><!--
+          --><%= dr.views %><!--
+        --></views><!--
+        --><ratings><!--
+          --><%= dr.ratings.length %><!--
+        --></ratings><!--
+        --><reviews><!--
+          --><%= dr.reviews.length %><!--
+        --></reviews><!--
+        --><likes><!--
+          --><%= dr.likes %><!--
+        --></likes><!--
+      --></R><!--
+    --></ebooks><!--
+  --></pageData>
+  
+    
+    <div id="hamburger">
+      <img src="https://itknowledgeexchange.techtarget.com/overheard/files/2016/08/hamburger-icon.png">
+    </div>
+    
+    <div id="sidebar" class="ui left demo vertical sidebar labeled menu">
+      <a href="/" class="item">
+        <i class='fa fa-arrow-left'></i> Exit
       </a>
-
-    </div> <!-- /page-contianer -->
-
-
-
-    <!-- bottom -->
-    <div id="bottom" class="bottom">
-      <div class="row">
-
-        <div class="col col-xs-12 col-md-6">
-          <p id="bottom_signature">- Dustin West</p>
+      <a href="#home" class="navigator item active">
+        <i class='fa fa-home'></i> Home
+      </a>
+      <a id="stats_a" href="#stats" class="navigator item">
+        <i class="fa fa-signal"></i> Stats
+      </a>
+      <a href="#R" class="navigator item">
+        <i class='fa fa-book'></i> R
+      </a>
+    </div>
+    
+    <div id="content" class="pusher">
+      
+      <!-- Home -->
+      <div id="home">
+        
+        <!--Introduction-->
+        <div id="introduction">
+          <br>
+          <h1 class="text-center">
+            <i class="fa fa-book"></i> Ebooks
+          </h1>
+          <br>
+          <h3 id="intro_text" class="noweight w-95 m-auto">
+            Hi, I'm Dustin. Computer Scientist, Web Developer, Critical Thinker,
+            Jesus follower, and generally changed person. These Ebooks are me
+            putting my thoughts down, publicly!
+          </h3>
+          <br>
+          <hr class="d-block w-75 m-auto">
+          <br>
+          <h1 class="text-center w-75 m-auto">
+            Check Out
+          </h1>
+          <h3 class='text-center w-75 m-auto'>
+            (the first one)
+          </h3>
+          <br>
+          <a id="R_a" href="#" class="ebookButton d-block m-auto w-75 button button-3d button-caution">
+            Dustin's Research
+          </a>
+          <br>
+          <br>
         </div>
-
-        <div id="bottom_cards" class="col col-xs-12 col-md-6">
-          <a class="card" href="https://www.facebook.com/profile.php?id=100008840418552" target="_blank">
-            <img class="card-img-top" src="/pictures/facebooklogo.png" alt="the facebook logo, it goes to my facebook profile">
-          </a>
-          <a class="card" href="https://courses.edx.org/u/ghostofmmo" target="_blank">
-            <img class="card-img-top" src="/pictures/edxlogo.png" alt="the ed x logo, it goes to my ed x profile">
-          </a>
-          <a class="card" href="https://www.udemy.com/user/dustin-west-2/" target="_blank">
-            <img class="card-img-top" src="/pictures/udemylogo.png" alt="a picture of the you deh me logo, it links to my you deh me profile">
-          </a>
+        
+        <!-- About -->
+        <div id="about" class="wide">
+          <div id="about_me" class="w-75 m-auto">
+            <div id="about_me_img_div">
+              <img class="block" id="about_me_img" src="http://cliparting.com/wp-content/uploads/2018/03/cartoon-taco-2018-9.png">
+            </div>
+            <div id="about_me_text_div">
+              <p id="about_me_text">
+                  I do Algorithms and Data Structures. Critical thinking and
+                  understanding the deeper truths. Jesus has changed my life.
+              </p>
+            </div>
+          </div>
+          <hr class="w-75 m-auto block">
         </div>
-
+        
+        <!-- bottom -->
+        <div id="bottom" class="flatfull">
+        
+          <!-- signature -->
+          <p id="bottom_signature" class="flatfull">
+            - Dustin West, 6/20/2018
+          </p>
+        
+          <!-- logos -->
+          <div class="row justify-content-center">
+        
+            <div class="col col-3">
+              <a class="bottom_icon-a" href="https://github.com/TheRedstoneTaco" target="_blank">
+                <img class="bottom_icon" src="https://image.flaticon.com/icons/svg/25/25231.svg" alt="my github">
+              </a>
+            </div>
+            <div class="col col-3">
+              <a class="bottom_icon-a" href="https://www.freecodecamp.org/theredstonetaco" target="_blank">
+                <img class="bottom_icon" src="http://bethqiang.com/img/community/freecodecamp-logo.png" alt="my freecodecamp profile">
+              </a>
+            </div>
+            <div class="col col-3">
+              <a class="bottom_icon-a" href="https://www.codecademy.com/TheRedstoneTaco" target="_blank">
+                <img class="bottom_icon" src="https://lh3.googleusercontent.com/7xnknS4cRsXfsWF4Fzhaf7lBtI-xW6fkWJE1I5ThdCWFVNO_aAPAsEClN8leleJ1lnBf53MRxA=w128-h128-e365" alt="my codecademy profile">
+              </a>
+            </div>
+            <div class="col col-3">
+              <a class="bottom_icon-a" href="https://www.linkedin.com/in/theredstonetaco/" target="_blank">
+                <img class="bottom_icon" src="https://www.shareicon.net/data/128x128/2017/06/28/888041_logo_512x512.png" alt="my linkedin profile">
+              </a>
+            </div>
+            <div class="col col-3">
+              <a class="bottom_icon-a" href="https://www.fiverr.com/theredstonetaco" target="_blank">
+                <img class="bottom_icon" src="https://cdn6.aptoide.com/imgs/8/b/2/8b2134c6194a5ff035ce22b2c8799153_icon.png?w=120" alt="my fiverr profile">
+              </a>
+            </div>
+            <div class="col col-3">
+              <a class="bottom_icon-a" href="https://codepen.io/TheRedstoneTaco/" target="_blank">
+                <img class="bottom_icon" src="https://www.shareicon.net/data/128x128/2015/08/10/82807_codepen_4096x4096.png" alt="my codepen profile">
+              </a>
+            </div>
+            <div class="col col-3">
+              <a class="bottom_icon-a" href="https://discordapp.com/channels/193569411645308928" target="_blank">
+                <img class="bottom_icon" src="https://cdn.iconscout.com/public/images/icon/free/png-256/discord-logo-39d3600a80352a05-256x256.png" alt="my discord">
+              </a>
+            </div>
+            <div class="col col-3">
+              <a class="bottom_icon-a" href="#" target="_blank">
+                <img class="bottom_icon" src="http://moocrec.com/wp-content/uploads/2015/10/edXLogo.png" alt="my edx profile">
+              </a>
+            </div>
+            <div class="col col-3">
+              <a class="bottom_icon-a" href="https://www.udemy.com/user/dustin-west-2/" target="_blank">
+                <img class="bottom_icon" src="https://crunchbase-production-res.cloudinary.com/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/x9lmuabarbbk6slwbwnm" alt="my udemy profile">
+              </a>
+            </div>
+        
+          </div>
+        
+        </div>
+      
       </div>
-    </div> <!-- bottom -->
-
-
-<% include ../partials/footer.ejs %>
+      
+      <!-- Stats -->
+      <div id="stats" class="row">
+        <div class="row">
+          <div class="col-12 col-md-6 row">
+            <div class="col-12">
+              <h1 class="w-95 m-auto text-center white_text">
+                <i class="fa fa-signal"></i> Home
+              </h1>
+            </div>
+            <div class="col-12">
+              <div class="w-95 m-auto" id="canvas_page_container">
+                <canvas id="canvas_page"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 row">
+            <div class="col-12">
+              <h1 class="w-95 m-auto text-center white_text">
+                <i class="fa fa-book"></i> R
+              </h1>
+            </div>
+            <div class="col-12">
+              <h1 class="w-95 m-auto text-center white_text">
+                <div class="w-95 m-auto" id="canvas_R_container">
+                  <canvas id="canvas_R"></canvas>
+                </div>
+              </h1>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Dustin's Research -->
+      <div id="R">
+        
+        <h1 id="R_title" class="w-75 m-auto text-center">
+          Dustin's Research
+        </h1>
+        <div id="R_intro" class="w-100">
+          <a href="/ebooks/<%= dr._id %>/read" class="button button-giant button-3d button-inverse">
+            <i class="fa fa-search"></i> Read it
+          </a>
+        </div>
+        
+        <br>
+        
+        <div id="R_info">
+          
+          <h1 id="R_info_description" class="w-75 noweight m-auto">
+            Intelligence, Women, Patterns, Jesus, Tacos, Calculus, Computer Science, Movies, Awesomeness. In one ebook.
+          </h1>
+          
+          <br>
+          <br>
+          
+          <div id="R_stats" class="row">
+            <!--Likes-->
+            <div id="R_likes" class="col-12 col-md-6">
+              <a id="R_likes_counter" class="button button-inverse button-box button-giant button-longshadow-right button-longshadow-expand">
+                <%= dr.likes %>
+              </a>
+              <h1>|</h1>
+              <h1>|</h1>
+              <h1>|</h1>
+              <h1>|</h1>
+              <h1>|</h1>
+              <form class="inline" action="/ebooks/<%= dr._id %>/like" method="POST">
+                <button class="button button-3d button-caution button-circle button-jumbo">
+                  <i class="fa fa-thumbs-up"></i>
+                </button>
+              </form>
+            </div>
+            <!--Ratings-->
+            <div class="col col-12 col-md-6 row">
+              <div class="col-12">
+                <h1 id="R_ratings_title" class="text-center w-95">
+                  Rating
+                </h1>
+              </div>
+              <% for (var i = 0; i < (dr.rating * 5); i++) { %>
+                <div class="col col-2 R_rating_div">
+                  <!-- license: https://creativecommons.org/licenses/by/3.0/  author: https://www.iconfinder.com/Squid.ink -->
+                  <img src="https://cdn2.iconfinder.com/data/icons/thesquid-ink-40-free-flat-icon-pack/64/space-rocket-512.png">
+                </div>
+              <% } %>
+              <% for (var i = 0; i < 5 - (dr.rating * 5); i++) { %>
+                <div class="col col-2 R_rating_div">
+                  <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/13581-200.png">
+                </div>
+              <% } %>
+              <div class="col col-12">
+                <br>
+              </div>
+              <!--if they haven't rated and are logged in -->
+              <% if (currentUser && dr.ratings.filter((rating) => { return rating.author.equals(currentUser._id); }).length < 1) { %>
+                <form action="/ebooks/<%= dr._id %>/ratings" method="POST" class="w-100">
+                  <input name="value" placeholder="0 - 5" type="number" min="0" max="5" class="form-control w-100 m-auto block">
+                </form>
+              <% }
+              // if they have rated
+              else if (currentUser) {
+              %>
+                <form action="/ebooks/<%= dr._id %>/ratings?_method=PUT" method="POST" class="w-100">
+                  <input name="value" value="<%= dr.ratings.filter((rating) => { return rating.author.equals(currentUser._id); })[0].value * 5.0 %>" placeholder="0 - 5" type="number" min="0" max="5" class="form-control w-100 m-auto block">
+                </form>
+              <% } %>
+            </div>
+          </div>
+          
+          <br>
+          <br>
+          
+          <a href="/ebooks/<%= dr._id %>/read" class="block m-auto button button-pill button-giant button-3d button-caution">
+            <i class="fa fa-search"></i> Read it
+          </a>
+          
+        </div>
+        
+        <!--Reviews-->
+        <div id="R_reviews">
+          <h1 id="R_reviews_title" class="w-95 text-center">
+            Reviews <span class="badge badge-danger"><%= dr.reviews.length %></span>
+          </h1>
+          <% if (currentUser && dr.reviews.filter((review) => { return review.author.equals(currentUser._id); }).length < 1) { %>
+            <form action="/ebooks/<%= dr._id %>/reviews" method="POST">
+              <textarea name="content" type="text" class="form-control w-75 m-auto"></textarea>
+              <br>
+              <button class="block w-75 m-auto btn btn-secondary">
+                Review
+              </button>
+            </form>
+          <% } else if (currentUser) { %>
+            <form action="/ebooks/<%= dr._id %>/reviews?_method=PUT" method="POST">
+              <textarea name="content" type="text" class="form-control w-75 m-auto">
+                <%= dr.reviews.filter((review) => { return review.author.equals(currentUser._id); })[0].content; %>
+              </textarea>
+              <br>
+              <button class="block w-75 m-auto btn btn-dark">
+                Review
+              </button>
+            </form>
+          <% } %>
+          <% dr.reviews.forEach(function(review) { %>
+            <br>
+            <div class="card text-white bg-dark w-75 m-auto">
+              <div class="card-header">
+                <h3>
+                  <%= review.author.username %>
+                </h3>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">
+                  <%= formatDate(review.created); %>
+                </h5>
+                <h4 class="card-text noweight">
+                  <%= review.content %>
+                </h4>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+        
+        
+        
+            
+        
+        
+      </div>
+      
+    </div>
+      
+  </body>
+  
+</html>

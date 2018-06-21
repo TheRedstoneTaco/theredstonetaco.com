@@ -90,7 +90,7 @@ function init_header() {
     // hide other header's items and targets
     $(".navbar-collapse").collapse('hide');
     $('.header-item').each(function(index) {
-      if (index != 0 && index != 1) {
+      if (index != 0) {
         $($(this).attr('href')).hide(); 
       }
     });

@@ -5,11 +5,12 @@
 
 <%
 
-// determine whether visitor has bought the book or not
-var bought = currentUser && currentUser._id && ebook && ebook.users && ebook.users.filter(function(user) { return currentUser._id.equals(user)}).length == 1;
-
-// decide what to put in ebook
-var optional1 = false;
+  // determine whether visitor has bought the book or not
+  var bought = currentUser && currentUser._id && ebook && ebook.users && ebook.users.filter(function(user) { return currentUser._id.equals(user)}).length == 1;
+  bought = true;
+  
+  // decide what to put in ebook
+  var optional1 = false;
 
 %>
 

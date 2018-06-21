@@ -3,6 +3,13 @@
 <!--internal-->
 <link href="https://fonts.googleapis.com/css?family=Allan|Averia+Serif+Libre:400,700|Baloo+Paaji|Bowlby+One|Karla|Lobster|Oswald:200|Poppins:200i|Roboto+Mono:300|Satisfy" rel="stylesheet">
 
+<%
+  // determine whether visitor has bought the book or not
+  var bought = currentUser && currentUser._id && ebook && ebook.users && ebook.users.filter(function(user) { return currentUser._id.equals(user)}).length == 1;
+  // it's transformed from an ebook!
+  bought = true;
+%>
+
 <!-- index -->
 <div class="index">
   <div class="row">
@@ -20,8 +27,9 @@
           Introduction
         </a>
 
+        <% if (bought) { %>
+        
         <a
-        title="Please buy this content to use it!"
         href="#criticalthinkingwithmultithreadinginc_content"
         id="criticalthinkingwithmultithreadinginc_a"
         aria-controls="critical thinking with multhreading in c"
@@ -32,7 +40,6 @@
         </a>
 
         <a
-        title="Please buy this content to use it!"
         href="#criticalthinkingwithcwhileloops_content"
         id="criticalthinkingwithcwhileloops_a"
         aria-controls="critical thinking with c while loops"
@@ -43,7 +50,6 @@
         </a>
 
         <a
-        title="Please buy this content to use it!"
         href="#reverseengineeringjavascriptclickevents_content"
         id="reverseengineeringjavascriptclickevents_a"
         aria-controls="Reverse Engineering JavaScript Click Events"
@@ -54,7 +60,6 @@
         </a>
 
         <a
-        title="Please buy this content to use it!"
         href="#reverseengineeringpythonlists_content"
         id="reverseengineeringpythonlists_a"
         aria-controls="Reverse Engineering Python Lists"
@@ -65,7 +70,6 @@
         </a>
 
         <a
-        title="Please buy this content to use it!"
         href="#storingnumbersoutsidethebox_content"
         id="storingnumbersoutsidethebox_a"
         aria-controls="Storing Number Outside the Box"
@@ -74,6 +78,8 @@
         class="list-group-item list-group-item-action">
           Storing Numbers Outside the Box
         </a>
+        
+        <% } %>
 
       </div>
     </div>
@@ -135,7 +141,7 @@
 
 
 
-
+      <% if (bought) { %>
       <!-- Critical thinking with multithreading in C -->
       <div id="criticalthinkingwithmultithreadinginc_content"
       arialabelledby="criticalthinkingwithmultithreadinginc_a"
@@ -1032,6 +1038,8 @@
           </li>
         </ul>
       </div>
+      
+      <% } %>
 
     </div>
   </div>

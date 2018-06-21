@@ -12,6 +12,12 @@
 .inline {
     display: inline;
 }
+break { /* https://codepen.io/hrgdavor/pen/waXEqz */
+  flex-basis: 100%;
+  width: 0px; 
+  height: 0px; 
+  overflow: hidden;
+}
 
 /*sizing*/
 .full {
@@ -23,6 +29,9 @@
 }
 .high {
     height: 100%;
+}
+.w-95 {
+    width: 95%;
 }
 
 /*coloring*/
