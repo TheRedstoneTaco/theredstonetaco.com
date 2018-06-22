@@ -78,7 +78,7 @@ function init_nav() {
         navigate($(this).index() - 1);
         toggle();
     });
-    navigate(2);
+    navigate(0);
 }
 
 function init_stats() {
