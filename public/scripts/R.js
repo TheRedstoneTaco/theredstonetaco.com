@@ -26,7 +26,7 @@ function init_navigation() {
         event.preventDefault();
         navigate($(this).index());
     });
-    navigate(1);
+    navigate(3);
     
 }
 

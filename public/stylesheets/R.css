@@ -9,7 +9,7 @@ body {
 }
 
 #navigator_container {
-    margin: auto; margin-top: 5vh;
+    margin: 5vh auto 5vh auto;
     width: 90%;
     overflow-x: auto;
 }
