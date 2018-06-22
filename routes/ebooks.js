@@ -80,8 +80,12 @@ router.get("/ebooks/:ebookId/read", function(req, res) {
             console.log("coulddndt find ebook");
             return res.redirect("back");
         }
-        var initials = foundEbook.title.split(" ").map((n)=>n[0].toLowerCase()).join("");
-        res.render("ebooks/" + initials + "/index.ejs", {
+        foundEbook.views ++;
+        foundEbook.save();
+        var toShorthand = {
+            'Dustin\'s Research': 'R'
+        };
+        res.render("ebooks/" + toShorthand[foundEbook.title] + "/index.ejs", {
             ebook: foundEbook
         });
     });

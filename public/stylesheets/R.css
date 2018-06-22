@@ -1,0 +1,20 @@
+html, body {
+    margin: 0; border: 0; padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    padding-top: 70px;
+}
+
+#navigator_container {
+    margin: auto; margin-top: 5vh;
+    width: 90%;
+    overflow-x: auto;
+}
+#navigator > .item {
+    min-width: 20%;
+    text-align: center;
+    display: block;
+}
