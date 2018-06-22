@@ -47,6 +47,7 @@ input {
   height: 10vh;
   position: absolute;
   z-index: 2;
+  cursor: pointer;
 }
 #hamburger > img {
   width: 100%;
@@ -190,7 +191,7 @@ input {
 #stats {
   width: 100%;
   height: 100vh;
-  background-color: #333333;
+  background-color: #222222;
   overflow-y: auto;
 } 
 #stats .row {
@@ -205,12 +206,8 @@ input {
 **/
 #R {
   margin: auto;
-  width: 99vw;
+  width: 100%;
   height: 99vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
   overflow: auto;
 }
 #R_intro {
@@ -248,16 +245,21 @@ input {
   background-color: #222222;
   color: white;
 }
-#R_info {
-  width: 95%;
-  border-radius: 50px;
-  padding: 2%; padding-bottom: 10%;
-  background-color: #363636;
+#R_purple {
+  background-color: #8C43FF;
 }
-#R_info_description {
-  padding-top: 10vh;
+#R_description {
+  box-sizing: border-box;
+  padding-bottom: 50vh;
+  border-bottom: 3px solid #cccccc;
+}
+#R_description > .ui.header {
   color: white;
-  font-size: 4.0vh;
+}
+#R_stats {
+  margin-top: -45vh !important;
+  background-color: #222222;
+  color: white;
 }
 #R_likes {
   display: flex;
@@ -265,11 +267,17 @@ input {
   align-items: center;
   flex-wrap: wrap;
 }
-#R_likes > * {
-  font-size: 5.0vh;
+.super_button {
+  width: 90px !important;
+  height: 90px !important;
 }
-#R_likes_counter {
-  color: white;
+.super_text {
+  width: 100%;
+  height: 100%;
+  font-size: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 #R_ratings {
   display: flex;
@@ -278,9 +286,9 @@ input {
 #R_ratings_title {
   color: white;
 }
-.R_rating_div > img {
-  width: 75%;
-  height: auto;
+#R_rating {
+  width: 100%;
+  height: 40vh;
 }
 #R_reviews {
   width: 95%;

@@ -78,7 +78,7 @@ function init_nav() {
         navigate($(this).index() - 1);
         toggle();
     });
-    navigate(0);
+    navigate(2);
 }
 
 function init_stats() {
@@ -228,6 +228,7 @@ function init_stats() {
 
 function init_R() {
   
+  // like counter
   var likes = $('#R_likes_counter').text();
   var tmpLikes = 0;
   var likeUpdater = setInterval(function() {
@@ -237,5 +238,6 @@ function init_R() {
     }
     $('#R_likes_counter').text(tmpLikes);
   }, (2000 / likes));
+  
   
 }

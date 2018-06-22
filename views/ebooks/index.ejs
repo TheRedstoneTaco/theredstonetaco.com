@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/stylesheets/buttons.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/loading-bar.css"/>
+    <script type="text/javascript" src="/scripts/loading-bar.js"></script>
     
     <!--internal-->
     <link type="text/css" rel="stylesheet" href="/stylesheets/preferences.css">
@@ -48,6 +50,11 @@
         var extracted = String(date).split(" ");
         var formatted = extracted[0] + " - " + extracted[1] + " " + extracted[2] + ", " + extracted[3];
         return formatted;
+      }
+      // to do stuff with themes
+      var themes = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
+      function randomTheme() {
+        return themes[Math.floor((Math.random() * themes.length) + 1)];
       }
     %>
     <!--
@@ -250,94 +257,132 @@
       <!-- Dustin's Research -->
       <div id="R">
         
-        <h1 id="R_title" class="w-75 m-auto text-center">
+        <h1 class="ui header w-75 m-auto text-center">
           Dustin's Research
         </h1>
+        <h3 id="R_title" class="ui header disabled text-center w-75 m-auto">
+          6/22/18
+        </h3>
         <div id="R_intro" class="w-100">
-          <a href="/ebooks/<%= dr._id %>/read" class="button button-giant button-3d button-inverse">
+          <a href="/ebooks/<%= dr._id %>/read" class="button button-giant button-3d button-highlight">
             <i class="fa fa-search"></i> Read it
           </a>
         </div>
         
         <br>
-        
-        <div id="R_info">
+
+        <div id="R_purple">
           
-          <h1 id="R_info_description" class="w-75 noweight m-auto">
-            Intelligence, Women, Patterns, Jesus, Tacos, Calculus, Computer Science, Movies, Awesomeness. In one ebook.
-          </h1>
+          <br><br>
           
-          <br>
-          <br>
-          
-          <div id="R_stats" class="row">
-            <!--Likes-->
-            <div id="R_likes" class="col-12 col-md-6">
-              <a id="R_likes_counter" class="button button-inverse button-box button-giant button-longshadow-right button-longshadow-expand">
-                <%= dr.likes %>
-              </a>
-              <h1>|</h1>
-              <h1>|</h1>
-              <h1>|</h1>
-              <h1>|</h1>
-              <h1>|</h1>
-              <form class="inline" action="/ebooks/<%= dr._id %>/like" method="POST">
-                <button class="button button-3d button-caution button-circle button-jumbo">
-                  <i class="fa fa-thumbs-up"></i>
-                </button>
-              </form>
+          <div id="R_description" class="w-95 m-auto">
+            
+            <div class="ui segment">
+              <h2 class="noweight">
+                My Research, my history, explanation, and practical use of Critical Thinking,
+                observation and data on interesting problems.
+              </h2>
+              <h2 class="ui sub header disabled">
+                - Dustin West
+              </h2>
             </div>
-            <!--Ratings-->
-            <div class="col col-12 col-md-6 row">
-              <div class="col-12">
-                <h1 id="R_ratings_title" class="text-center w-95">
-                  Rating
-                </h1>
-              </div>
-              <% for (var i = 0; i < (dr.rating * 5); i++) { %>
-                <div class="col col-2 R_rating_div">
-                  <!-- license: https://creativecommons.org/licenses/by/3.0/  author: https://www.iconfinder.com/Squid.ink -->
-                  <img src="https://cdn2.iconfinder.com/data/icons/thesquid-ink-40-free-flat-icon-pack/64/space-rocket-512.png">
-                </div>
-              <% } %>
-              <% for (var i = 0; i < 5 - (dr.rating * 5); i++) { %>
-                <div class="col col-2 R_rating_div">
-                  <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/13581-200.png">
-                </div>
-              <% } %>
-              <div class="col col-12">
-                <br>
-              </div>
-              <!--if they haven't rated and are logged in -->
-              <% if (currentUser && dr.ratings.filter((rating) => { return rating.author.equals(currentUser._id); }).length < 1) { %>
-                <form action="/ebooks/<%= dr._id %>/ratings" method="POST" class="w-100">
-                  <input name="value" placeholder="0 - 5" type="number" min="0" max="5" class="form-control w-100 m-auto block">
-                </form>
-              <% }
-              // if they have rated
-              else if (currentUser) {
-              %>
-                <form action="/ebooks/<%= dr._id %>/ratings?_method=PUT" method="POST" class="w-100">
-                  <input name="value" value="<%= dr.ratings.filter((rating) => { return rating.author.equals(currentUser._id); })[0].value * 5.0 %>" placeholder="0 - 5" type="number" min="0" max="5" class="form-control w-100 m-auto block">
-                </form>
-              <% } %>
-            </div>
+            
+            <h1 class="ui header left aligned">
+              <i class="address book outline icon"></i> It's 5 chapters.
+            </h1>
+            <h1 class="ui header center aligned">
+              <i class="heart icon"></i> Heavy Semantic UI
+            </h1>
+            <h1 class="ui header right aligned">
+              <i class="book icon"></i> Bible-based
+            </h1>
+            <h1 class="ui header left aligned">
+              <i class="snapchat icon"></i> Pop culture
+            </h1>
+            <h1 class="ui header center aligned">
+              <i class="signal icon"></i> Observations
+            </h1>
+            <h1 class="ui header right aligned">
+              <i class="tablet alternate icon"></i> Responsive
+            </h1>
+            
           </div>
-          
-          <br>
-          <br>
-          
-          <a href="/ebooks/<%= dr._id %>/read" class="block m-auto button button-pill button-giant button-3d button-caution">
-            <i class="fa fa-search"></i> Read it
-          </a>
           
         </div>
         
+        <div id="R_stats" class="row w-75 m-auto">
+        
+            <!--Likes-->
+            <div id="R_likes" class="col-12 row">
+              <div class="col-12"><h1></h1><h1></h1></div>
+              <div class="col-6 text-center">
+                <a id="R_likes_counter_a" class="super_button button button-glow button-border button-box button-royal">
+                  <div id="R_likes_counter" class="super_text text_white">
+                    <%= dr.likes %>
+                  </div>
+                </a>
+              </div>
+              <div class="col-6 text-center">
+                <form class="inline" action="/ebooks/<%= dr._id %>/like" method="POST">
+                  <button class="super_button button button-3d button-caution button-circle button-giant">
+                    <div class="super_text">
+                      <i class="fa fa-thumbs-up"></i>
+                    </div>
+                  </button>
+                </form>
+              </div>
+            </div>
+            
+            <!--Ratings-->
+            <div id="R_ratings" class="col-12 d-block">
+              <h1 id="R_ratings_title" class="text-center w-95">
+                Rating
+              </h1>
+              <div id="R_rating" class="ui inverted progress success">
+                <div
+                  class="ldBar label-center"
+                  style="width: auto; height: 100%; margin:auto"
+                  data-value="<%= dr.rating * 100 %>"
+                  data-preset="circle"
+                  data-type="stroke"
+                  data-stroke="data:ldbar/res,gradient(0,1,#3f3,#3ff)"
+                  data-stroke-width="3"
+                  data-stroke-trail="black"
+                  data-stroke-trail-width="7"
+                ></div>
+              </div>
+              <% if (currentUser && dr.ratings.filter((rating) => { return rating.author.equals(currentUser._id); }).length == 0) { %>
+                <form action="/ebooks/<%= dr._id %>/ratings" method="POST">
+                  <input name="value" type="number" min="0" max="5" class="form-control w-75 m-auto">
+                  <br>
+                  <button class="block w-75 m-auto btn btn-secondary">
+                    Rate
+                  </button>
+                </form>
+              <% } else if (currentUser) { %>
+                <form action="/ebooks/<%= dr._id %>/ratings?_method=PUT" method="POST">
+                  <input type="number" min="0" max="5" name="value" class="form-control w-75 m-auto" value="<%= dr.ratings.filter((rating) => { return rating.author.equals(currentUser._id); })[0].value * 5.0; %>">
+                  <br>
+                  <button class="block w-75 m-auto btn btn-dark">
+                    Rate
+                  </button>
+                </form>
+              <% } %>
+              <br>
+            </div>
+            
+        </div>
+        
+        <br>
+        <br>
+        
         <!--Reviews-->
         <div id="R_reviews">
+          
           <h1 id="R_reviews_title" class="w-95 text-center">
             Reviews <span class="badge badge-danger"><%= dr.reviews.length %></span>
           </h1>
+          
           <% if (currentUser && dr.reviews.filter((review) => { return review.author.equals(currentUser._id); }).length < 1) { %>
             <form action="/ebooks/<%= dr._id %>/reviews" method="POST">
               <textarea name="content" type="text" class="form-control w-75 m-auto"></textarea>
@@ -357,9 +402,10 @@
               </button>
             </form>
           <% } %>
+          
           <% dr.reviews.forEach(function(review) { %>
             <br>
-            <div class="card text-white bg-dark w-75 m-auto">
+            <div class="card text-white bg-<%= randomTheme(); %> w-75 m-auto">
               <div class="card-header">
                 <h3>
                   <%= review.author.username %>
@@ -376,11 +422,6 @@
             </div>
           <% }); %>
         </div>
-        
-        
-        
-            
-        
         
       </div>
       
