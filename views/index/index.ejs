@@ -1,364 +1,208 @@
 <% include ../partials/header.ejs %>
 
-<!--external-->
-<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
-<link rel="stylesheet" href="/stylesheets/animate.css">
-<link href="https://fonts.googleapis.com/css?family=Exo|IBM+Plex+Mono|Lobster|Pangolin|Play|Russo+One|Titan+One" rel="stylesheet">
+  <!--external-->
+  <script type='text/javascript' src='https://unpkg.com/tippy.js@2.5.3/dist/tippy.all.min.js'></script>
+  <script type='text/javascript' src="https://cdn.jsdelivr.net/npm/lettering@0.4.1/dist/lettering.min.js"></script>
+  <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/textillate/0.4.0/jquery.textillate.min.js'></script>
+  <link rel='stylesheet' type='text/css' href='/stylesheets/helper.css'>
+  <link rel='stylesheet' type='text/css' href='https://cdn.rawgit.com/vaakash/socializer/a96468a5/css/socializer.min.css'>
+  <link rel='stylesheet' type='text/css' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css'>
 
-<!--internal-->
-<link type="text/css" rel="stylesheet" href="/stylesheets/index.css">
-<script type="text/javascript" src="/scripts/index.js"></script>
+  <!--internal-->
+  <link rel='stylesheet' type='text/css' href='/stylesheets/index.css'>
+  <script type='text/javascript' src='/scripts/index.js'></script>
 
-<!--landing section-->
-<div id="landing" class="nonebox">
-  
-  <!--show this on large+ devices-->
-  <div id="landing_lgplus" class="lgplus nonebox">
-    
-    <div id="landing_statstacotext" class="nonebox">
-      
-      <!--the stats-->
-      <div class="landing_stats" class="nonebox">
-        <div class="landing_stats_views" class="nonebox">
-          <p class="landing_stats_views_text" class="nonebox">
-            Views: <span class="landing_stats_views_count"><%= page.views %></span>
-          </p>
-        </div>
-        <form class="like-form" action="/index/like" method="POST">
-          <button href="#" class="landing_stats_likes" class="nonebox">
-            <p class="landing_stats_likes_text" class="nonebox">
-              Likes: <span class="landing_stats_likes_count"><%= page.likes %></span>
-            </p>
-            <p class="landing_stats_likes_info">
-              (click to like this page!)
-            </p>
-          </button>
-        </form>
+  <!--Loader-->
+  <div id='loader' class='w-100 h-100'>
+    <div class='ui active dimmer'>
+      <div class='ui massive text loader'>
+        Grabbing Tacos 🌮
       </div>
-      
-      <!--the taco-->
-      <div class="landing_taco" class="nonebox">
-        <img src="http://pixelartmaker.com/art/c2825a310898079.png">
-        <img src="http://www.emoji.co.uk/files/phantom-open-emojis/food-drink-phantom/12570-burrito.png">
-        <img src="http://producemomentum.com/wp-content/uploads/2015/11/The-Whole-Enchilada.png">
-        <img src="https://vignette.wikia.nocookie.net/clubpenguin/images/1/12/FestiveSombrero.png">
-      </div>
-      
-      <!--the text-->
-      <div class="landing_text" class="nonebox">
-        <p class="landing_text_text">
-          Hi! I'm Dustin, I love Jesus, I'm 15. Scroll down for more webpages, social media,
-          info, all dat stuff!
-        </p>
-      </div>
-      
     </div>
-    
-    <!--the arrows-->
-    <div class="landing_arrows" class="nonebox">
-      <p class="landing_arrow landing_arrows_0">V</p>
-      <p class="landing_arrow landing_arrows_1">V</p>
-      <p class="landing_arrow landing_arrows_2">V</p>
-      <p class="landing_arrow landing_arrows_3">V</p>
-      <p class="landing_arrow landing_arrows_4">V</p>
-    </div>
-    
   </div>
   
+  <!--Title-->
+  <h1 id='title' class='ui huge header cozycenter'>
+    <span class="tlt">Dustin West</span>
+    <h4 id='secondary' class='ui huge sub header disabled cozycenter'>
+      I love Jesus.
+    </h4>
+  </h1>
   
+  <!--this is just responsive hr's-->
+  <hr class='d-none d-md-block w-50 m-auto'>
+  <hr class='d-xs-block d-md-none w-95'>
+  <br>
   
-  <!--show this on medium- devices-->
-  <div id="landing_mdminus" class="mdminus nonebox">
-    
-    <!--the stats and taco-->
-    <div id="landing_statstaco" class="nonebox">
-      
-      <!--the stats-->
-      <div class="landing_stats" class="nonebox">
-        <div class="landing_stats_views" class="nonebox">
-          <p class="landing_stats_views_text" class="nonebox">
-            Views: <span class="landing_stats_views_count"><%= page.views %></span>
-          </p>
+  <!--Intro-->
+  <div class='ui container'>
+    <div class='ui items'>
+      <div class='item'>
+        <div class='image'>
+          <img src='pictures/newme.jpg'>
         </div>
-        <form class="like-form" action="/index/like" method="POST">
-          <button href="#" class="landing_stats_likes" class="nonebox">
-            <p class="landing_stats_likes_text" class="nonebox">
-              Likes: <span class="landing_stats_likes_count"><%= page.likes %></span>
-            </p>
-            <p class="landing_stats_likes_info">
-              (click to like this page!)
-            </p>
-          </button>
-        </form>
-      </div>
-      
-      <!--the taco-->
-      <div class="landing_taco" class="nonebox">
-        <img src="http://pixelartmaker.com/art/c2825a310898079.png">
-        <img src="http://www.emoji.co.uk/files/phantom-open-emojis/food-drink-phantom/12570-burrito.png">
-        <img src="http://producemomentum.com/wp-content/uploads/2015/11/The-Whole-Enchilada.png">
-        <img src="https://vignette.wikia.nocookie.net/clubpenguin/images/1/12/FestiveSombrero.png">
-      </div>
-    </div>
-    
-    <!--the text and arrows-->
-    <div id="landing_textarrows" class="nonebox">
-      
-      <!--the text-->
-      <div class="landing_text" class="nonebox">
-        <p class="landing_text_text">
-          Hi! I'm Dustin, I love Jesus, I'm 15. Scroll down for more webpages, social media,
-          info, all dat stuff!
-        </p>
-      </div>
-      
-      <!--the arrow-->
-      <div class="landing_arrows" class="nonebox">
-        <p class="landing_arrow landing_arrows_0">V</p>
-        <p class="landing_arrow landing_arrows_1">V</p>
-        <p class="landing_arrow landing_arrows_2">V</p>
-        <p class="landing_arrow landing_arrows_3">V</p>
-        <p class="landing_arrow landing_arrows_4">V</p>
-      </div>
-      
-    </div>
-    
-  </div>
-  
-</div>
-
-
-<!--extras section-->
-<div id="extras" class="nonebox">
-  
-  <div id="extras_lgplus" class="lgplus nonebox">
-    
-    <!--social-->
-    <div class="extras_social nonebox carousel">
-      <div class="carousel-cell">
-        <a href="https://www.facebook.com/profile.php?id=100008840418552">
-          <img src="https://www.shareicon.net/data/2017/07/08/888091_logo_512x512.png">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://youtube.com/theredstonetaco">
-          <img src="https://www.freepnglogos.com/uploads/youtube-logo-png-images-0.png">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://github.com/TheRedstoneTaco">
-          <img src="https://assets-cdn.github.com/images/modules/logos_page/Octocat.png">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://www.freecodecamp.org/theredstonetaco">
-          <img src="https://secure.meetupstatic.com/photos/event/5/5/9/f/600_460401919.jpeg">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://twitter.com/Dustin_haz_taco">
-          <img src="https://logos-download.com/wp-content/uploads/2016/02/Twitter_logo_bird_transparent_png.png">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://courses.edx.org/u/ghostofmmo">
-          <img src="https://www.edx.org/sites/default/files/edx-logo-registered.png">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://www.udemy.com/user/dustin-west-2/">
-          <img src="https://www.onlinecoursecoupons.com/wp-content/uploads/2017/11/Large-Vertical-TM@2x.png">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://www.reddit.com/user/TheRedstoneTaco">
-          <img src="https://i.redditmedia.com/ehnslkWbYD-IhV7_EHU9RlvxPozZHX947RFxinxBeD0.png?s=090450d39ba3cc56b30fc0ddb3e23956">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://stackoverflow.com/users/7460350/theredstonetaco">
-          <img src="https://www.shareicon.net/data/128x128/2017/06/21/887494_logo_512x512.png">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://www.codecademy.com/TheRedstoneTaco">
-          <img src="https://d2e111jq13me73.cloudfront.net/sites/default/files/styles/share_link_image_large/public/product-images/csm-website/codecademy.png?itok=q7T-FGJP">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://www.linkedin.com/in/theredstonetaco/">
-          <img src="http://pndblog.typepad.com/.a/6a00e0099631d0883301bb09d01edf970d-800wi">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://www.fiverr.com/theredstonetaco">
-          <img src="http://www.sevenfigureagency.com/wp-content/themes/OptimizePress/timthumb.php?src=http://sevenfigureagency.com/wp-content/uploads/2015/11/fiverrlogo.png&h=200&w=200&zc=1">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://codepen.io/TheRedstoneTaco/">
-          <img src="https://cdn0.iconfinder.com/data/icons/social-network-27/32/codepen_logo_html_code_css_javascript_programming-256.png">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://discord.gg/pB47vX">
-          <img src="https://pbs.twimg.com/media/DAmTGsGXcAArQPB.png">
-        </a>
-      </div>
-    </div>
-    
-    <!--links and text-->
-    <div id="extras_linkstext" class="nonebox">
-      
-      <!--links-->
-      <div class="extras_links nonebox carousel">
-        <div class="carousel-cell">
-          <a href="/ebooks">
-            <img src="pictures/ebooks.PNG">
-          </a>
-        </div>
-        <div class="carousel-cell">
-          <a href="/portfolio">
-            <img src="pictures/portfolio.PNG">
-          </a>
-        </div>
-        <div class="carousel-cell">
-          <a href="/games">
-            <img src="pictures/games.PNG">
-          </a>
-        </div>
-        <div class="carousel-cell">
-          <a href="/os">
-            <img src="pictures/os.PNG">
+        <div class='content'>
+          <h1 class='ui header'>About me</h1>
+          <div class='meta'>
+            <h3 class='ui header disabled'>6/23/18</h3>
+          </div>
+          <div class='description'>
+            <h1 class='noweight'>
+              I'm Dustin. I'm <u title='<h1>September 13, 2002</h1'>15</u> years old.
+              <u title='<h1>Jesus, the Word of God, the Son of God, my Savior</h1>'>Jesus</u> has changed my life,
+              I make and record research. I'm a
+              <u title='<h1>I make full featured websites</h1>'>Full-Stack</u>
+              Web Developer.
+            </h1>
+          </div>
+          <a href='#stuffhere' class='extra'>
+            <h4>
+              Scroll down
+            </h4>
           </a>
         </div>
       </div>
+    </div>
+  </div>
+  
+  <br>
+  <hr class='d-none d-md-block w-75 m-auto'>
+  <hr class='d-xs-block d-md-none w-95'>
+  <br>
+  
+  <!--Stuff-->
+  <span id='stuffhere'></span>
+  <div class='ui container'>
+    <div class='row'>
       
-      <!--text-->
-      <div class="extras_text nonebox">
-        <p class="extras_text_text nonebox">
-          I'm a full stack web developer and operating system studyer (studier?), I like tacos, I play occasional video games,
-          Jesus is really what my life is about, it's all about Him. Maybe click some of those links and visit my webpages and
-          social media :) I like girls, I'm a guy, I've got all sorts of stuff for u to check out. 🔥
-        </p>
+      <!--OS-->
+      <div class='col-12 col-md-6'>
+        <div class='card w-100'>
+          <a href='/os'>
+            <img class='card-img-top' src='/pictures/os.PNG' alt='Operating Systems Forum'>
+          </a>
+          <div class='card-body'>
+            <h2 class='card-title'>Code Forum</h2>
+            <h3 class='card-text noweight'>
+              Full-Stack <u title='<h1>Online conversation</h1>'>forum</u> for talking about Operating Systems or
+              looking at fancy <u title='<h1>I've got a nice bar chart!</h1>'>charts</u>!
+            </h3>
+            <a href='/os' class='btn btn-success'>
+              <h2>
+                Go there
+              </h2>
+            </a>
+          </div>
+        </div>
       </div>
-    
+      
+      <!--Portfolio-->
+      <div class='col-12 col-md-6'>
+        <div class='card w-100 bg-dark'>
+          <a href='/portfolio'>
+            <img class='card-img-top' src='/pictures/portfolio.PNG' alt='Portfolio'>
+          </a>
+          <div class='card-body'>
+            <h2 class='card-title white_text'>Web Portfolio</h2>
+            <h3 class='card-text noweight white_text'>
+              My Full-Stack, junior Web Development <u title='<h1>An interactive resume</h1>'>portfolio</u>, with links.
+            </h3>
+            <a href='/portfolio' class='btn btn-danger'>
+              <h2>
+                Take me
+              </h2>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!--break-->
+      <div class='col-12'>
+        <br><br>
+      </div>
+      
+      <!--Ebooks-->
+      <div class='col-12 col-md-6'>
+        <div class='card w-100'>
+          <a href='/ebooks'>
+            <img class='card-img-top' src='/pictures/ebooks.PNG' alt='Ebooks'>
+          </a>
+          <div class='card-body'>
+            <h2 class='card-title'>Ebooks</h2>
+            <h3 class='card-text noweight'>
+              My <u title="<h1>My first one is: Dustin's Research</h1>">Ebooks!</u> Read them!
+            </h3>
+            <a href='/ebooks' class='btn btn-warning'>
+              <h2>
+                Yes Diggity
+              </h2>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!--Games-->
+      <div class='col-12 col-md-6'>
+        <div class='card w-100'>
+          <a href='/games'>
+            <img class='card-img-top' src='/pictures/games.PNG' alt='A couple little animations'>
+          </a>
+          <div class='card-body'>
+            <h2 class='card-title'>Games</h2>
+            <h3 class='card-text noweight'>
+              Some <u title="<h1>they're pretty small</h1>">compact</u> games to play
+            </h3>
+            <a href='/games' class='btn btn-primary'>
+              <h2>
+                Go now
+              </h2>
+            </a>
+          </div>
+        </div>
+      </div>
+      
     </div>
-    
   </div>
   
-  <div id="extras_mdminus" class="mdminus nonebox">
-    
-    <!--social-->
-    <div class="extras_social nonebox carousel">
-      <div class="carousel-cell">
-        <a href="https://www.facebook.com/profile.php?id=100008840418552">
-          <img src="https://www.shareicon.net/data/2017/07/08/888091_logo_512x512.png">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://youtube.com/theredstonetaco">
-          <img src="https://www.freepnglogos.com/uploads/youtube-logo-png-images-0.png">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://github.com/TheRedstoneTaco">
-          <img src="https://assets-cdn.github.com/images/modules/logos_page/Octocat.png">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://www.freecodecamp.org/theredstonetaco">
-          <img src="https://secure.meetupstatic.com/photos/event/5/5/9/f/600_460401919.jpeg">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://twitter.com/Dustin_haz_taco">
-          <img src="https://logos-download.com/wp-content/uploads/2016/02/Twitter_logo_bird_transparent_png.png">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://courses.edx.org/u/ghostofmmo">
-          <img src="https://www.edx.org/sites/default/files/edx-logo-registered.png">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://www.udemy.com/user/dustin-west-2/">
-          <img src="https://www.onlinecoursecoupons.com/wp-content/uploads/2017/11/Large-Vertical-TM@2x.png">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://www.reddit.com/user/TheRedstoneTaco">
-          <img src="https://i.redditmedia.com/ehnslkWbYD-IhV7_EHU9RlvxPozZHX947RFxinxBeD0.png?s=090450d39ba3cc56b30fc0ddb3e23956">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://stackoverflow.com/users/7460350/theredstonetaco">
-          <img src="https://www.shareicon.net/data/128x128/2017/06/21/887494_logo_512x512.png">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://www.codecademy.com/TheRedstoneTaco">
-          <img src="https://d2e111jq13me73.cloudfront.net/sites/default/files/styles/share_link_image_large/public/product-images/csm-website/codecademy.png?itok=q7T-FGJP">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://www.linkedin.com/in/theredstonetaco/">
-          <img src="http://pndblog.typepad.com/.a/6a00e0099631d0883301bb09d01edf970d-800wi">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://www.fiverr.com/theredstonetaco">
-          <img src="http://www.sevenfigureagency.com/wp-content/themes/OptimizePress/timthumb.php?src=http://sevenfigureagency.com/wp-content/uploads/2015/11/fiverrlogo.png&h=200&w=200&zc=1">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://codepen.io/TheRedstoneTaco/">
-          <img src="https://cdn0.iconfinder.com/data/icons/social-network-27/32/codepen_logo_html_code_css_javascript_programming-256.png">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="https://discord.gg/pB47vX">
-          <img src="https://pbs.twimg.com/media/DAmTGsGXcAArQPB.png">
-        </a>
-      </div>
-    </div>
-    
-    <!--text-->
-    <div class="extras_text nonebox">
-      <p class="extras_text_text nonebox">
-        I'm a full stack web developer and operating system studyer (studier?), I like tacos, I play occasional video games,
-        Jesus is really what my life is about, it's all about Him. Maybe click some of those links and visit my webpages and
-        social media :) I like girls, I'm a guy, I've got all sorts of stuff for u to check out. 🔥
-      </p>
-    </div>
-    
-    <!--links-->
-    <div class="extras_links nonebox carousel">
-      <div class="carousel-cell">
-        <a href="/ebooks">
-          <img src="pictures/ebooks.PNG">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="/portfolio">
-          <img src="pictures/portfolio.PNG">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="/games">
-          <img src="pictures/games.PNG">
-        </a>
-      </div>
-      <div class="carousel-cell">
-        <a href="/os">
-          <img src="pictures/os.PNG">
-        </a>
-      </div>
-    </div>
+  <br>
+  <hr class='d-none d-md-block w-75 m-auto'>
+  <hr class='d-xs-block d-md-none w-95'>
+  <br>
   
+  <!--Social and More info-->
+  <div class='ui container'>
+    <div class='socializer a sr-32px sr-squircle-2 sr-rotate sr-bdr-md sr-bdr-dark sr-bg-white sr-sw-2 sr-pad'>
+      <span class='sr-facebook sr-text-hover'>
+        <a href='https://www.facebook.com/profile.php?id=100008840418552' title='Facebook'>
+          <i class='fa fa-facebook'></i>
+        </a>
+        <span class='text'>Facebook</span>
+      </span>
+      <span class='sr-youtube sr-text-hover'>
+        <a href='https://www.youtube.com/channel/UCztmbBQYWIaeW-FZc3ur5iA?view_as=subscriber' title='Youtube'>
+          <i class='fa fa-youtube-play'></i>
+        </a>
+        <span class='text'>Youtube</span>
+      </span>
+      <span class='sr-email sr-text-hover'>
+      	<a href='https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&source=mailto&to=ghostofmmo@gmail.com' title='Email'>
+          <i class='fa fa-envelope'></i>
+        </a>
+        <span class='text'>Email</span>
+      </span>
+      <span class='sr-github sr-text-hover'>
+        <a href='https://github.com/TheRedstoneTaco' title='Github'>
+          <i class='fa fa-github'></i>
+        </a>
+        <span class='text'>Github</span>
+      </span>
+      <span class='sr-paypal sr-text-hover'>
+        <a href='https://paypal.me/JesusAndTacos' title='PayPal'>
+          <i class='fa fa-paypal'></i>
+        </a>
+        <span class='text'>PayPal</span>
+      </span>
+    </div>
   </div>
   
-</div>
-
 <% include ../partials/footer.ejs %>
