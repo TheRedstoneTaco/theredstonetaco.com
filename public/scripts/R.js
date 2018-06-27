@@ -26,7 +26,7 @@ function init_navigation() {
         event.preventDefault();
         navigate($(this).index());
     });
-    navigate(1);
+    navigate(2);
     
 }
 
@@ -35,5 +35,18 @@ function init() {
     // animate 'Doctor Who' text
     $('#doctor_extras_search').keydown(function() {
         window.scrollTo(0, $('#doctor_extras').offset().top);
-    })
+    });
+    
+    // tooltip
+    tippy('u', {
+        allowTitleHTML: true,
+        animateFill: true,
+        arrow: true,
+        arrowType: 'sharp',
+        flip: true,
+        size: 'large',
+        duration: 200,
+        animation: 'scale'
+    });
+    
 }

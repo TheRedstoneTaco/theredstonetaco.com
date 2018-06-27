@@ -8,3 +8,18 @@ html, body {
   width: 95%;
   text-align: center;
 }
+
+/*social*/
+#social_overlay {
+  padding-left: 5vw;
+  height: 98.5vh;
+  position: fixed;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/*stuff*/
+#stuff > .row > .col {
+  margin-bottom: 5vh;
+}

@@ -284,8 +284,8 @@ html, body {
 #certs_title-2 {
   margin: 0 auto 10vh auto;
   border: solid 5px white;
-  padding: 0;
-  width: 30vw;
+  padding: 2%;
+  min-width: 30vw;
   display: block;
   text-align: center;
   color: white;
