@@ -61,8 +61,12 @@
            Home
           </a>
           <% if (currentUser && currentUser.username) { %>
-            <a id="username" class="button header-item button-glow button-border button-rounded button-primary button-small">
+            <a id="username" href='/account' class="button header-item button-glow button-border button-rounded button-primary button-small">
               You are: <%= currentUser.username %>
+            </a>
+          <% } else { %>
+            <a id='login' href='/login' class="button header-item button-glow button-border button-rounded button-caution button-small">
+              Log in
             </a>
           <% } %>
         </ul>
@@ -168,14 +172,15 @@
               
               // if it's an array of conversations
               if (Array.isArray(obj)) {
+                // display new 'square' conversations first
                 obj.forEach(function(conversation) {
-                  recursor(conversation, depth);
+                  recursor(conversation, depth, topicIndex);
                 });
               // else it must be a conversation
               } else {
                 conversationCount ++;
 
-                  // ".square" conversations
+                  // "square" conversations
                   if (depth == 0) {
                 %>
                   <div href="#" class="topicContent topicContent<%= topicIndex %>">
@@ -200,8 +205,8 @@
                     </a>
                       <div class="topicContent_stats">
                         <div>
-                          <form class="yesform w-100 nobox d-block" override="PUT" action="/conversation/<%= obj._id %>/yes" method="POST">
-                            <button type="submit" class="button button-primary button-3d button-longshadow-right button-glow button-circle">
+                          <form class="voteform w-100 nobox d-block" override="PUT" action="/conversation/<%= obj._id %>/yes" method="POST">
+                            <button type="submit" class="yesbutton button button-3d button-longshadow-right button-glow button-circle">
                               <i class="fa fa-thumbs-up"></i>
                             </button>
                             <h1 class="blue_text vote_info">
@@ -210,8 +215,8 @@
                           </form>
                         </div>
                         <div>
-                          <form class="noform w-100 nobox d-block" override="PUT" action="/conversation/<%= obj._id %>/no" method="POST">
-                            <button type="submit" class="button button-caution button-3d button-longshadow-right button-glow button-circle">
+                          <form class="voteform w-100 nobox d-block" override="PUT" action="/conversation/<%= obj._id %>/no" method="POST">
+                            <button type="submit" class="nobutton button button-3d button-longshadow-right button-glow button-circle">
                               <i class="fa fa-thumbs-down"></i>
                             </button>
                             <h1 class="red_text vote_info">
@@ -242,23 +247,42 @@
                           <div class="modal-body">
                           <% if (currentUser && (obj._id.equals(currentUser._id) || currentUser.authorization == 1) ) { %>
                             <br>
-                            <div class="row">
-                              <div class="col-6 text-center">
-                                <a href="/conversation/<%= obj._id %>/edit?redirect=os" class="button button-raised button-highlight">
-                                  Edit
-                                </a>
-                              </div>
-                              <div class="col-6 text-center">
-                                <a href="/conversation/<%= obj._id %>/delete?redirect=os" class="button button-raised button-inverse">
-                                  Delete
-                                </a>
-                              </div>
-                            </div>
+                            <a href="/conversation/<%= obj._id %>/edit?redirect=os" class="button button-raised button-highlight">
+                              Edit
+                            </a>
+                            <a href="/conversation/<%= obj._id %>/delete?redirect=os" class="button button-raised button-inverse">
+                              Delete
+                            </a>
                           <% } %>
-                          <br>
+                          <% if (currentUser) { %>
+                            <div class="ui accordion d-inline">
+                              <form class='d-inline ui reply form' action="/conversation/<%= obj._id %>" method="POST">
+                                <h2 class="text-center title d-inline noweight ui header">
+                                  Reply
+                                </h2>
+                                <div class="content">
+                                  <div class='field'>
+                                    <h4>Title: </h4>
+                                    <input type="text" name="title" class="form-control" required placeholder="title...">
+                                  </div>
+                                  <div class='field'>
+                                    <h4>Content: </h4>
+                                    <textarea type="text" name="content" required placeholder="content..."></textarea>
+                                  </div>
+                                  <br>
+                                  <button class="d-block ui blue labeled submit icon button">
+                                    <i class="icon edit"></i> Add Reply
+                                  </button>
+                                </div>
+                              </form>  
+                            </div>  
+                          <% } %>
+                            <br>
+                            <div class='ui comments'>
                 <%
                   recursor(obj.conversation, depth + 1, topicIndex);
                 %>
+                            </div> <!-- /.ui comments -->
                             <h4 class="text-center text-muted">
                               End of Conversation
                             </h4>
@@ -275,82 +299,105 @@
                 // conversations of the "topicContent" conversations
                 else {
               %>
-                        <div class="card">
-                          <div class="card-body">
-                              <h5 class="card-title">
-                                <%- obj.title %>
-                              </h5>
-                              <h6 class="card-subtitle mb-2 text-muted">
-                                <%- formatDate(obj.created); %>
-                              </h6>
-                              <br>
-                              <p class="card-text">
-                                <%- obj.content %>
-                              </p>
-                              <div class="row">
-                                <div class="col-6">
-                                  <form class="yesform w-100 nobox d-block" override="PUT" action="/conversation/<%= obj._id %>/yes" method="POST">
-                                    <button type="submit" class="button button-primary button-3d button-pill">
-                                      <i class="fa fa-thumbs-up"></i>
-                                    </button>
-                                    <h1 class="blue_text vote_info">
-                                      <%= obj.yes %>
-                                    </h1>
-                                  </form>
-                                </div>
-                                <div class="col-6">
-                                  <form class="noform w-100 nobox d-block" override="PUT" action="/conversation/<%= obj._id %>/no" method="POST">
-                                    <button type="submit" class="button button-caution button-3d button-pill">
-                                      <i class="fa fa-thumbs-down"></i>
-                                    </button>
-                                    <h1 class="red_text vote_info">
-                                      <%= obj.no %>
-                                    </h1>
-                                  </form>
-                                </div>
-                              </div>
+                        <div class="comment">
+                          
+                          <!--avatar-->
+                          <a class="avatar">
+                            <!-- https://icons8.com/icon/21619/ios-application-placeholder -->
+                            <img src="https://png.icons8.com/ios/1600/ios-application-placeholder.png">
+                          </a>
+                          
+                          <div class="content">
+                            
+                            <!--author-->
+                            <a class="author"> <%= obj.author.username %> </a>
+                            
+                            <!--created-->
+                            <div class="metadata">
+                              <span class="date"> <%= formatDate(obj.created); %> </span>
+                            </div>
+                            
+                            <!--title-->
+                            <br>
+                            <h3 class='d-inline'>
+                              <%= obj.title %>
+                            </h3>
+                            <hr>
+                            
+                            <!--content-->
+                            <div class="text">
+                              <%- obj.content %>
+                            </div>
+                            
+                            <div class="actions">
+                              
+                              <!--yes, no-->
+                              <form class='d-inline voteform' override='PUT' action="/conversation/<%= obj._id %>/yes" method="POST">
+                                <button type="submit" class="yesbutton button">
+                                  <i class="fa fa-thumbs-up"></i>
+                                  <%= obj.yes %>
+                                </button>
+                              </form>
+                              
+                              <form class='d-inline voteform' override='PUT' action="/conversation/<%= obj._id %>/no" method="POST">
+                                <button type="submit" class="nobutton button">
+                                  <i class="fa fa-thumbs-down"></i>
+                                  <%= obj.no %>
+                                </button>
+                              </form>
+                              
+                              <a></a>
+                              
+                              <!--edit, delete-->
                               <% if (currentUser && (obj._id.equals(currentUser._id) || currentUser.authorization == 1) ) { %>
-                                <br>
-                                <div class="row">
-                                  <div class="col-6 text-center">
-                                    <a href="/conversation/<%= obj._id %>/edit?redirect=os" class="button button-raised button-highlight">
-                                      Edit
-                                    </a>
-                                  </div>
-                                  <div class="col-6 text-center">
-                                    <a href="/conversation/<%= obj._id %>/delete?redirect=os" class="button button-raised button-inverse">
-                                      Delete
-                                    </a>
-                                  </div>
+                                <div class='d-inline'>
+                                  <a href="/conversation/<%= obj._id %>/edit?redirect=os" class="button button-highlight white_text">
+                                    Edit
+                                  </a>
+                                </div>
+                                <div class='d-inline'>
+                                  <a href="/conversation/<%= obj._id %>/delete?redirect=os" class="button button-inverse white_text">
+                                    Delete
+                                  </a>
                                 </div>
                               <% } %>
+                              
+                              <a></a>
+                              
+                              <!--converse-->
                               <% if (currentUser) { %>
-                                <div class="w-100 m-auto ui accordion">
-                                  <h1 class="conversationAddAlert text-center alert alert-success">Topic Added!</h1>
-                                  <form class="conversationForm" action="/conversation/<%= obj._id %>" method="POST">
-                                    <h1 class="text-center title">
-                                      Converse
-                                      <i class="dropdown icon"></i>
-                                    </h1>
+                                <div class="ui accordion d-inline">
+                                  <form class='d-inline ui reply form' action="/conversation/<%= obj._id %>" method="POST">
+                                    <h2 class="text-center title d-inline noweight ui header">
+                                      Reply
+                                    </h2>
                                     <div class="content">
-                                      <h4>Title: </h4>
-                                      <input type="text" name="title" class="form-control" required placeholder="title...">
-                                      <h4>Content: </h4>
-                                      <input type="text" name="content" class="form-control" required placeholder="content...">
+                                      <div class='field'>
+                                        <h4>Title: </h4>
+                                        <input type="text" name="title" class="form-control" required placeholder="title...">
+                                      </div>
+                                      <div class='field'>
+                                        <h4>Content: </h4>
+                                        <textarea type="text" name="content" required placeholder="content..."></textarea>
+                                      </div>
                                       <br>
-                                      <button class="btn w-100 m-auto d-block btn-success">
-                                        <h1>Talk</h1>
+                                      <button class="d-block ui blue labeled submit icon button">
+                                        <i class="icon edit"></i> Add Reply
                                       </button>
                                     </div>
                                     <br>
                                   </form>  
                                 </div>
-                                <% } %>
+                              <% } %>
+                              
+                            </div> <!-- /.actions -->
+                            
                             <%
                               recursor(obj.conversation, depth + 1, topicIndex);
                             %>
-                          </div> <!-- ./card-body -->
-                        </div> <!-- ./card -->
+                            
+                          </div> <!-- ./content -->
+                        </div> <!-- ./comment -->
                         <br>
               <%
                 }
@@ -360,8 +407,22 @@
           
           <%
             // recurse through each topic
+            var sorted, tmp;
             topics.forEach(function(topic, index) {
-              topic.conversation.forEach(function(conversation) {
+              sorted = topic.conversation;
+              for (var i = 0; i < (sorted.length - 1); i++) {
+                for (var j = 0; j < (sorted.length - 1); j++) {
+                  if (
+                    ((sorted[j].yes || 0) - (sorted[j].no || 0)) > ((sorted[(j + 1)].yes || 0) - (sorted[(j + 1)].no || 0))
+                  ) {
+                    tmp = sorted[j];
+                    sorted[j] = sorted[(j + 1)];
+                    sorted[(j + 1)] = tmp;
+                  }
+                }
+              }
+              sorted.reverse();
+              sorted.forEach(function(conversation, index_2) {
                 recursor(conversation, 0, index);
               });
             });

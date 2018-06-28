@@ -2,8 +2,8 @@ var express = require("express");
 var router  = express.Router();
 var Page    = require("../models/page.js");
 var Conversation = require("../models/conversation.js");
+var User = require('../models/user.js');
 var middleware = require("../middleware/index.js");
-var mdp = require("mongoose-deep-populate");
 
 // GET - root route - '/': redirect to index route
 router.get("/", function(req, res) {

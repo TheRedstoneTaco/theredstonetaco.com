@@ -134,7 +134,7 @@ html, body {
   }
 }
 /*Voting*/
-.yesform, .noform {
+.voteform {
   text-align: center;
 }
 .vote_info {

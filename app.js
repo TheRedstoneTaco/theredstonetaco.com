@@ -16,9 +16,9 @@ var passportLocalMongoose   = require("passport-local-mongoose"),
 mongoose.Promise = global.Promise;
 
 // route requiring
-var authenticationRoutes    = require("./routes/authentication.js"),
+var accountRoutes           = require("./routes/account.js"),
+    authenticationRoutes    = require("./routes/authentication.js"),
     conversationRoutes      = require("./routes/conversation.js"),
-    accountRoutes           = require("./routes/account.js"),
     ebooksRoutes            = require("./routes/ebooks.js"),
     indexRoutes             = require("./routes/index.js");
     

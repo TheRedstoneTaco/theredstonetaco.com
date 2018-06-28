@@ -3,7 +3,7 @@ $(document).ready(function() {
     // remove dimmer
     setTimeout(function() {
         $('#loader').remove();
-    }, 0);
+    }, 1000);
     
     // anchor defaults
     $('a').each(function() {

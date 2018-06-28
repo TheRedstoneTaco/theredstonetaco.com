@@ -39,7 +39,7 @@ break { /* https://codepen.io/hrgdavor/pen/waXEqz */
     color: black;
 }
 .white_text {
-    color: white;
+    color: white !important;
 }
 .red_text {
     color: red;
@@ -50,5 +50,5 @@ break { /* https://codepen.io/hrgdavor/pen/waXEqz */
 
 /*text*/
 .noweight {
-  font-weight: 400;
+  font-weight: 400 !important;
 }

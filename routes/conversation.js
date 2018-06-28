@@ -5,7 +5,7 @@ var Conversation = require("../models/conversation.js");
 var middleware = require("../middleware/index.js");
 
 // CREATE - conversation - '/conversation/:conversationId': create a conversation on another conversation
-router.post("/conversation/:conversationId", function(req, res) {
+router.post("/conversation/:conversationId", middleware.isLoggedIn, function(req, res) {
     // create new conversation
     Conversation.create({
         title: req.body.title,

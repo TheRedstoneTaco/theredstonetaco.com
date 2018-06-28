@@ -7,10 +7,8 @@ var userSchema = new mongoose.Schema({
     email: String,
     password: String,
     created: String,
-    ebooks: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Ebook"
-    }],
+    photo: String,
+    likes: Number
 });
 
 // plugin passportLocalMongoose to add functionality to the model

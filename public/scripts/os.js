@@ -61,13 +61,13 @@ function init_forms() {
   });
   
   // computer, enable all the voting functionality!
-  $(".yesform, .noform").submit(ajaxSubmit);
-  $(".yesform").submit(function() {
-    $(this).replaceWith("<h1 class=\"alert alert-primary\">YES :D</h1>");
+  $('.voteform').submit(ajaxSubmit);
+  $('.yesbutton').click(function() {
+    $(this).addClass('button-primary');
   });
-  $(".noform").submit(function() {
-    $(this).replaceWith("<h1 class=\"alert alert-danger\">NO :(</h1>");
-  });
+  $('.nobutton').click(function() {
+    $(this).addClass('button-caution');
+  })
   
   // enable conversing
   $(".conversationAddAlert").hide();
@@ -82,7 +82,7 @@ function init_forms() {
 function init_header() {
   
   // when header items are clicked
-  $('.header-item:not(#homebutton):not(#username)').on('click', function(event) {
+  $('.header-item:not(#homebutton):not(#username):not(#login)').on('click', function(event) {
   
     // don't scroll down
     event.preventDefault();
