@@ -1,0 +1,73 @@
+<% include ../partials/header.ejs %>
+
+  <!--external-->
+  <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js'></script>
+
+  <!--internal-->
+  <link rel='stylesheet' type='text/css' href='stylesheets/media.css'>
+  <script type='text/javascript' src='scripts/media.js'></script>
+  
+    <span id='mediaJSON' hidden>
+      <%- JSON.stringify(page.media) %>
+    </span>
+  
+  <div id='page'>
+    
+    <div id='media' class='ui raised segment'>
+      
+      <div id='youtube_video' class="ui embed" data-source="youtube"></div>
+      
+    </div>
+    
+    <div id='menu' class='ui raised segment'>
+      
+      <div id='breadcrumbs' class="ui three mini steps">
+        <div class="step" id='crumb_categories'>
+          <i class="th list icon"></i>
+          <div class="content">
+            <div class="title">Categories</div>
+          </div>
+        </div>
+        <div class="step" id='crumb_category' category=''>
+          <i class="square full icon"></i>
+          <div class="content">
+            <div class="title" id='crumb_category_content'></div>
+          </div>
+        </div>
+        <div class="active step" id='crumb_media' category='' _id=''>
+          <i class="file icon"></i>
+          <div class="content">
+            <div class="title" id='crumb_media_content'></div>
+          </div>
+        </div>
+      </div>
+      
+      <div id='section_categories'>
+        <div class='category' category='start'>
+          <h1>
+            Start
+          </h1>
+          <hr>
+          <p>
+            Get started off on what this thing is really all about.
+          </p>
+        </div>
+      </div>
+      
+      <div id='section_category'>
+        
+      </div>
+      
+      <div id='section_media'>
+        
+      </div>
+      
+    </div>
+    
+    <div id='info'>
+      
+    </div>
+    
+  </div>
+
+<% include ../partials/footer.ejs %>

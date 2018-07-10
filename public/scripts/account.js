@@ -1,30 +1,50 @@
-var dragDiv;
+var photo, photoDragDiv, photoName, photoSize, photoType, photoData;
+var reader = new FileReader();
+var test;
 
 $(document).ready(function() {
     // initialize photo forms
-    dragDiv = document.getElementById('dragDiv');
-    dragDiv.ondragover = function () {
-        this.className = 'hover';
-        return false;
-    };
-    dragDiv.ondragend = function () {
-        this.className = '';
-        return false;
-    };
-    dragDiv.ondrop = function (e) {
-        this.className = '';
-        e.preventDefault();
-        readfiles(e.dataTransfer.files);
-    }
+    // https://stackoverflow.com/questions/8006715/drag-drop-files-into-standard-html-file-input
+    photo = $('#photo');
+    photoDragDiv = $('#photoDragDiv');
+    photoName = $('#photoName');
+    photoSize = $('#photoSize');
+    photoType = $('#photoType');
+    photoData = $('#photoData');
+    photoDragDiv.on('dragover', function(event) {
+        event.preventDefault();  
+        event.stopPropagation();
+        $('body').addClass('hover');
+    });
+    photoDragDiv.on('dragend', function(event) {
+        event.preventDefault();  
+        event.stopPropagation();
+        $('body').removeClass('hover');
+    });
+    photoDragDiv.on('drop', function(event) {
+        event.preventDefault();  
+        event.stopPropagation();
+        $('body').removeClass('hover');
+        event.dataTransfer = event.originalEvent.dataTransfer;
+        readfile(event.dataTransfer.files);
+    });
+    photoData.change(function(event) {
+    	var files = this.files;
+    	readfile(files);
+    });
 });
 
-function readfiles(files) {
-    document.getElementById('fileDragName').value = files[0].name
-    document.getElementById('fileDragSize').value = files[0].size
-    document.getElementById('fileDragType').value = files[0].type
-    var reader = new FileReader();
-    reader.addEventListener('loadend', function(event) {
-      document.getElementById('fileDragData').value = event.target.result;
-      reader.readAsDataURL(files[0]);
-    });
+function readfile(files) {
+    var file = files[0];
+    photoName.text('Name - ' + file.name);
+    photoSize.text('Size - ' + file.size + ' Bytes');
+    photoType.text('Type - ' + file.type);
+    reader = new FileReader();
+    test = reader;
+    reader.onload = function(event) {
+        photoData.attr('type', 'text');
+        photo.attr('src', event.target.result);
+        photoData.val(event.target.result);
+    };
+    reader.readAsDataURL(file);
 }

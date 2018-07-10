@@ -8,110 +8,111 @@
   <script type='text/javascript' src='scripts/account.js'></script>
 
   <br>
-
-  <div class='container'>
+  
+  <div id='photoDragDiv'>
     
-    <form method="post" action="http://example.com/">
-      <input type="file">
-      <input id="fileDragName">
-      <input id="fileDragSize">
-      <input id="fileDragType">
-      <input id="fileDragData">
-      <div id="dragDiv" style="width:200px; height:200px; border: 10px dashed #ccc">
-        
-      </div>
-    </form>
-    
-    <div class='ui items'>
-      <div class="item">
-        
-        <!--photo-->
-        <div class="image">
-          <!--https://www.freeiconspng.com/img/23485-->
-          <img src="<%= currentUser.photo || "https://www.freeiconspng.com/uploads/no-image-icon-6.png" %>">
-        </div>
-        <div class="content">
-          
-          <!--username-->
-          <a class="header">Username - <%= currentUser.username %></a>
-          
-          <!--id-->
-          <div class="meta">
-            <span>_id - <%= currentUser._id %></span>
-          </div>
+    <div id='page' class='container'>
+      
+      <div class='ui items'>
+        <div class="item">
           
           <!--photo-->
-          <div class='content'>
-            <button class='ui big primary button'>
-              Change photo <i class='fa fa-camera'></i>
-            </button>
-            <h1 class='ui sub header'>
-              <em>
-                Or Drag into the window
-              </em>
-              <hr>
-            </h1>
+          <div class="image">
+            <!--https://www.freeiconspng.com/img/23485-->
+            <img id='photo' src="<%= currentUser.photo || "https://www.freeiconspng.com/uploads/no-image-icon-6.png" %>">
           </div>
-          
+          <div class="content">
+            
+            <!--username-->
+            <a class="header">Username - <%= currentUser.username %></a>
+            
+            <!--id-->
+            <div class="meta">
+              <span>_id - <%= currentUser._id %></span>
+            </div>
+            
+            <!--Change Photo-->
+            <div class='content'>
+              <form action='/account/photo?_method=PUT' method='POST'>
+                <div class='ui raised segment'>
+                  <input required type='file' name='photo' id='photoData'>
+                  <h4 class='ui header'>
+                    <em>
+                      Or Drag a photo into the window
+                    </em>
+                  </h4>
+                  <button class='ui big primary button'>
+                    Change photo <i class='fa fa-camera'></i>
+                  </button>
+                  <hr>
+                  <h5 id='photoName' class='ui header'></h5>
+                  <h5 id='photoSize' class='ui header'></h5>
+                  <h5 id='photoType' class='ui header'></h5>
+                </div>
+              </form>
+            </div>
+            
+          </div>
         </div>
       </div>
-    </div>
-    
-    <!--Username-->
-    <h3>New Username</h3>
-    <form class='ui form' action='/account/username?_method=PUT' method='POST'>
-      <div class='ui right action input'>
-        <input type='text' name='username' value='<%= currentUser.username %>'>
+      
+      <!--Change Username-->
+      <h3>New Username</h3>
+      <form class='ui form' action='/account/username?_method=PUT' method='POST'>
+        <div class='field'>
+          <input type='text' name='username' value='<%= currentUser.username %>'>
+        </div>
         <button class='ui red button'>
           <i class='fa fa-edit'></i> &nbsp Yea
         </button>
-      </div>
-    </form>
-    
-    <br><br>
-    
-    <!--Password-->
-    <h3>New Password</h3>
-    <form class='ui form' action='/account/password?_method=PUT' method='POST'>
-      <div class='ui right action input'>
-        <input type='text' name='password' placeholder='password...'>
+      </form>
+      
+      <br><br>
+      
+      <!--Change Password-->
+      <h3>New Password</h3>
+      <form class='ui form' action='/account/password?_method=PUT' method='POST'>
+        <div class='field'>
+          <input type='text' name='password' placeholder='password...'>
+        </div>
         <button class='ui yellow button'>
           <i class='fa fa-edit'></i> &nbsp Mhm
         </button>
-      </div>
-    </form>
-    
-    <br><br>
-    
-    <div class='ui statistics'>
+      </form>
       
-      <!--Authorization-->
-      <div class="large red statistic d-block m-auto">
-        <div class="label">
-          Authorization
-        </div>
-        <br>
-        <div class="value">
-          <%= currentUser.authorization || '0' %>
-        </div>
-      </div>
+      <br><br>
       
-      <!--Likes-->
-      <div class="violet statistic d-block m-auto">
-        <div class="value">
-          <i class='fa fa-thumbs-up'></i> <%= currentUser.likes || '0' %>
+      <div class='ui statistics'>
+        
+        <!--Authorization-->
+        <div class="large red statistic d-block m-auto">
+          <div class="label">
+            Authorization
+          </div>
+          <br>
+          <div class="value">
+            <%= currentUser.authorization || '0' %>
+          </div>
         </div>
-        <br>
-        <div class="label">
-          Likes
+        
+        <!--Likes-->
+        <div class="violet statistic d-block m-auto">
+          <div class="value">
+            <i class='fa fa-thumbs-up'></i> <%= currentUser.likes || '0' %>
+          </div>
+          <br>
+          <div class="label">
+            Likes
+          </div>
+          <h3 class='ui sub header disabled text-center'>
+            (coming soon)
+          </h3>
         </div>
-        <h3 class='ui sub header disabled text-center'>
-          (coming soon)
-        </h3>
+        
       </div>
       
     </div>
-    
+
   </div>
 
 <% include ../partials/footer.ejs %>

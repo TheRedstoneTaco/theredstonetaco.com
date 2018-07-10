@@ -4,6 +4,7 @@ var Page    = require("../models/page.js");
 var Conversation = require("../models/conversation.js");
 var User = require('../models/user.js');
 var middleware = require("../middleware/index.js");
+var dirtyJSON = require('dirty-json');
 
 // GET - root route - '/': redirect to index route
 router.get("/", function(req, res) {
@@ -25,7 +26,7 @@ router.get("/:pageTitle", function(req, res) {
         }
         foundPage.views ++;
         foundPage.save();
-        // recursively populate page's nested conversation
+        // recursive population function
         function recursor(obj) {
             obj.populate("conversation", function(err_2, p1) {
                 obj.populate("author", function(err_3, p2) {
@@ -35,21 +36,19 @@ router.get("/:pageTitle", function(req, res) {
                 });
             });
         }
+        // recursively populate the page's nested conversation array
         recursor(foundPage);
-        var doneware = {
-            req: req,
-            res: res,
-            render: function() {
-                this.res.render(this.req.params.pageTitle + "/index.ejs", {
-                    page: foundPage
-                });
-            }
-        };
         // when we are PROBABLY finished grabbing and populating from the database
         setTimeout(function() {
-            // render!
-            doneware.render();
-        }, 750);
+            foundPage.populate('media', function(err_2, mediaPopulatedPage) {
+                // render!
+                var finalPage = mediaPopulatedPage;
+                finalPage.media = dirtyJSON.parse(finalPage.media);
+                res.render(req.params.pageTitle + "/index.ejs", {
+                    page: finalPage
+                });
+            });
+        }, 750, req, res);
     });
 });
 

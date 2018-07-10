@@ -19,10 +19,12 @@
   "homepage": "https://github.com/TheRedstoneTaco/theredstonetaco.com#readme",
   "dependencies": {
     "async": "^2.6.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "confetti-js": "0.0.11",
     "connect-flash": "^0.1.1",
     "date-time": "^2.1.0",
+    "dirty-json": "^0.6.0",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "express-session": "^1.15.6",

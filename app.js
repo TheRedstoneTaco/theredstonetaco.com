@@ -7,18 +7,16 @@ var passportLocalMongoose   = require("passport-local-mongoose"),
     passport                = require("passport"),
     mongoose                = require("mongoose"),
     express                 = require("express"),
+    Media                   = require('./models/media.js'),
     Ebook                   = require("./models/ebook.js"),
     User                    = require("./models/user.js"),
     Page                    = require("./models/page.js"),
     app                     = express();
 
-// this stuff :(
-mongoose.Promise = global.Promise;
-
 // route requiring
-var accountRoutes           = require("./routes/account.js"),
-    authenticationRoutes    = require("./routes/authentication.js"),
+var authenticationRoutes    = require("./routes/authentication.js"),
     conversationRoutes      = require("./routes/conversation.js"),
+    accountRoutes           = require("./routes/account.js"),
     ebooksRoutes            = require("./routes/ebooks.js"),
     indexRoutes             = require("./routes/index.js");
     
@@ -87,8 +85,8 @@ app.use(methodOverride("_method"));
 app.use(accountRoutes);
 app.use(authenticationRoutes);
 app.use(ebooksRoutes);
-app.use(indexRoutes);
 app.use(conversationRoutes);
+app.use(indexRoutes);
 
 // listen
 app.listen(process.env.PORT, process.env.IP, function() {
