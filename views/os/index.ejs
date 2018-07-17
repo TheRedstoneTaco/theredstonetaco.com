@@ -25,17 +25,14 @@
   </head>
   <body>
     
-    <!-- Variables -->
-    <%
-      var conversationCount = 0;
-      var topics = page.conversation.filter(function(conversation) { return conversation.category == "topic"; } );
-      function formatDate(date) {
-        var extracted = String(date).split(" ");
-        var formatted = extracted[0] + " - " + extracted[1] + " " + extracted[2] + ", " + extracted[3];
-        return formatted;
-      }
-    %>
-
+    <span id='pageJSON' hidden>
+      <%= JSON.stringify(page); %>
+    </span>
+    
+    <span id='userJSON' hidden>
+      <%= JSON.stringify(currentUser); %>
+    </span>
+    
     <!-- Header -->
     <nav id="header" class="navbar navbar-expand-lg navbar-light bg-light">
       
@@ -103,336 +100,17 @@
       <!--topics-->
       <div id="topics" class="section">
         
-        <!--to add a topic-->
-        <% if (currentUser && currentUser.authorization == 1) { %>
-        <div class="w-75 m-auto ui accordion">
-          <h1 id="topicAddAlert" class="text-center alert alert-success">Topic Added!</h1>
-          <form id="topicForm" action="/os/conversation" method="POST">
-            <h1 class="text-center title">
-              Add topic
-              <i class="dropdown icon"></i>
-            </h1>
-            <div class="content">
-              <h4>Title: </h4>
-              <input type="text" name="title" class="form-control" required placeholder="title...">
-              <h4>Content: </h4>
-              <input type="text" name="content" class="form-control" required placeholder="content...">
-              <h4>Category: </h4>
-              <input type="text" name="category" class="form-control" required placeholder="category...">
-              <br>
-              <button class="btn w-50 m-auto d-block btn-success">
-                <h1>Add topic!</h1>
-              </button>
-            </div>
-            <br>
-          </form>  
+        <!--topic navigation-->
+        <div id='topic-navigation'>
+          
         </div>
-        <% } %>
-        
-        <!-- topic navigation -->
-        <div class="ui container">
-          <div id="topics_navigation" class="ui secondary pointing menu">
-            <% topics.forEach(function(topic, index) { %>
-              <h3 class="item topicNavigation" href="#topic<%= index %>">
-                <%= topic.title %>
-              </h3>
-            <% }); %>
-          </div>
-        </div>
-        
-        <% if (currentUser) { %>
-          <br>
-          <div class="w-75 m-auto ui accordion">
-            <h1 class="conversationAddAlert text-center alert alert-success">Conversation Added!</h1>
-            <form class="conversationForm" id="topicConversationForm" method="POST">
-              <h1 class="text-center title">
-                Add Conversation
-                <i class="dropdown icon"></i>
-              </h1>
-              <div class="content">
-                <h4>Title: </h4>
-                <input type="text" name="title" class="form-control" required placeholder="title...">
-                <h4>Content: </h4>
-                <input type="text" name="content" class="form-control" required placeholder="content...">
-                <br>
-                <button class="btn w-50 m-auto d-block btn-primary">
-                  <h1>Converse!</h1>
-                </button>
-              </div>
-            </form>  
-          </div>
-        <% } %>
         
         <!--to display the topics-->
-        <div id="topics-list">
-          
-          <%
-            // courtesy of: https://stackoverflow.com/questions/5432967/how-to-iterate-over-inner-objects-property-in-an-object
-            function recursor(obj, depth, topicIndex) {
-              
-              // if it's an array of conversations
-              if (Array.isArray(obj)) {
-                // display new 'square' conversations first
-                obj.forEach(function(conversation) {
-                  recursor(conversation, depth, topicIndex);
-                });
-              // else it must be a conversation
-              } else {
-                conversationCount ++;
-
-                  // "square" conversations
-                  if (depth == 0) {
-                %>
-                  <div href="#" class="topicContent topicContent<%= topicIndex %>">
-                    <a href="#" data-toggle="modal" data-target="#modal_<%= obj._id %>">
-                      <div class="topicContent_title overflowX">
-                        <h1 class="black_text text-center">
-                          <%= obj.title %>
-                        </h1>
-                      </div>
-                      <div class="topicContent_content black_text">
-                        <h5 class="black_text">
-                          <%- obj.author.username %>
-                        </h5>
-                        <h6 class="noweight black_text">
-                          <%- formatDate(obj.created) %>
-                        </h6>
-                        <hr>
-                        <p>
-                          <%- obj.content %>
-                        </p>
-                      </div>
-                    </a>
-                      <div class="topicContent_stats">
-                        <div>
-                          <form class="voteform w-100 nobox d-block" override="PUT" action="/conversation/<%= obj._id %>/yes" method="POST">
-                            <button type="submit" class="yesbutton button button-3d button-longshadow-right button-glow button-circle">
-                              <i class="fa fa-thumbs-up"></i>
-                            </button>
-                            <h1 class="blue_text vote_info">
-                              <%- obj.yes %>
-                            </h1>
-                          </form>
-                        </div>
-                        <div>
-                          <form class="voteform w-100 nobox d-block" override="PUT" action="/conversation/<%= obj._id %>/no" method="POST">
-                            <button type="submit" class="nobutton button button-3d button-longshadow-right button-glow button-circle">
-                              <i class="fa fa-thumbs-down"></i>
-                            </button>
-                            <h1 class="red_text vote_info">
-                              <%- obj.no %>
-                            </h1>
-                          </form>
-                        </div>
-                      </div>
-                    <div class="modal fade" id="modal_<%= obj._id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog deep" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h1 class="modal-title" id="exampleModalLabel">
-                              <%- obj.title %>
-                            </h1>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-header-content">
-                            <h2 class="text-muted modal-header-date noweight">
-                              <%- formatDate(obj.created); %>
-                            </h2>
-                            <h3 class="modal-header-text noweight">
-                              <%- obj.content %>
-                            </h3>
-                          </div>
-                          <div class="modal-body">
-                          <% if (currentUser && (obj._id.equals(currentUser._id) || currentUser.authorization == 1) ) { %>
-                            <br>
-                            <a href="/conversation/<%= obj._id %>/edit?redirect=os" class="button button-raised button-highlight">
-                              Edit
-                            </a>
-                            <a href="/conversation/<%= obj._id %>/delete?redirect=os" class="button button-raised button-inverse">
-                              Delete
-                            </a>
-                          <% } %>
-                          <% if (currentUser) { %>
-                            <div class="ui accordion d-inline">
-                              <form class='d-inline ui reply form' action="/conversation/<%= obj._id %>" method="POST">
-                                <h2 class="text-center title d-inline noweight ui header">
-                                  Reply
-                                </h2>
-                                <div class="content">
-                                  <div class='field'>
-                                    <h4>Title: </h4>
-                                    <input type="text" name="title" class="form-control" required placeholder="title...">
-                                  </div>
-                                  <div class='field'>
-                                    <h4>Content: </h4>
-                                    <textarea type="text" name="content" required placeholder="content..."></textarea>
-                                  </div>
-                                  <br>
-                                  <button class="d-block ui blue labeled submit icon button">
-                                    <i class="icon edit"></i> Add Reply
-                                  </button>
-                                </div>
-                              </form>  
-                            </div>  
-                          <% } %>
-                            <br>
-                            <div class='ui comments'>
-                <%
-                  recursor(obj.conversation, depth + 1, topicIndex);
-                %>
-                            </div> <!-- /.ui comments -->
-                            <h4 class="text-center text-muted">
-                              End of Conversation
-                            </h4>
-                          </div> <!-- ./modal-body -->
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          </div>
-                        </div> <!-- ./modal-content -->
-                      </div> <!-- ./modal-dialog -->
-                    </div> <!-- ./modal -->
-                  </div> <!-- /.topicContent -->
-                <%
-                }
-                // conversations of the "topicContent" conversations
-                else {
-              %>
-                        <div class="comment">
-                          
-                          <!--avatar-->
-                          <a class="avatar">
-                            <!-- https://icons8.com/icon/21619/ios-application-placeholder -->
-                            <img src="https://png.icons8.com/ios/1600/ios-application-placeholder.png">
-                          </a>
-                          
-                          <div class="content">
-                            
-                            <!--author-->
-                            <a class="author"> <%= obj.author.username %> </a>
-                            
-                            <!--created-->
-                            <div class="metadata">
-                              <span class="date"> <%= formatDate(obj.created); %> </span>
-                            </div>
-                            
-                            <!--title-->
-                            <br>
-                            <h3 class='d-inline'>
-                              <%= obj.title %>
-                            </h3>
-                            <hr>
-                            
-                            <!--content-->
-                            <div class="text">
-                              <%- obj.content %>
-                            </div>
-                            
-                            <div class="actions">
-                              
-                              <!--yes, no-->
-                              <form class='d-inline voteform' override='PUT' action="/conversation/<%= obj._id %>/yes" method="POST">
-                                <button type="submit" class="yesbutton button">
-                                  <i class="fa fa-thumbs-up"></i>
-                                  <%= obj.yes %>
-                                </button>
-                              </form>
-                              
-                              <form class='d-inline voteform' override='PUT' action="/conversation/<%= obj._id %>/no" method="POST">
-                                <button type="submit" class="nobutton button">
-                                  <i class="fa fa-thumbs-down"></i>
-                                  <%= obj.no %>
-                                </button>
-                              </form>
-                              
-                              <a></a>
-                              
-                              <!--edit, delete-->
-                              <% if (currentUser && (obj._id.equals(currentUser._id) || currentUser.authorization == 1) ) { %>
-                                <div class='d-inline'>
-                                  <a href="/conversation/<%= obj._id %>/edit?redirect=os" class="button button-highlight white_text">
-                                    Edit
-                                  </a>
-                                </div>
-                                <div class='d-inline'>
-                                  <a href="/conversation/<%= obj._id %>/delete?redirect=os" class="button button-inverse white_text">
-                                    Delete
-                                  </a>
-                                </div>
-                              <% } %>
-                              
-                              <a></a>
-                              
-                              <!--converse-->
-                              <% if (currentUser) { %>
-                                <div class="ui accordion d-inline">
-                                  <form class='d-inline ui reply form' action="/conversation/<%= obj._id %>" method="POST">
-                                    <h2 class="text-center title d-inline noweight ui header">
-                                      Reply
-                                    </h2>
-                                    <div class="content">
-                                      <div class='field'>
-                                        <h4>Title: </h4>
-                                        <input type="text" name="title" class="form-control" required placeholder="title...">
-                                      </div>
-                                      <div class='field'>
-                                        <h4>Content: </h4>
-                                        <textarea type="text" name="content" required placeholder="content..."></textarea>
-                                      </div>
-                                      <br>
-                                      <button class="d-block ui blue labeled submit icon button">
-                                        <i class="icon edit"></i> Add Reply
-                                      </button>
-                                    </div>
-                                    <br>
-                                  </form>  
-                                </div>
-                              <% } %>
-                              
-                            </div> <!-- /.actions -->
-                            
-                            <%
-                              recursor(obj.conversation, depth + 1, topicIndex);
-                            %>
-                            
-                          </div> <!-- ./content -->
-                        </div> <!-- ./comment -->
-                        <br>
-              <%
-                }
-              }
-            }
-          %>
-          
-          <%
-            // recurse through each topic
-            var sorted, tmp;
-            topics.forEach(function(topic, index) {
-              sorted = topic.conversation;
-              for (var i = 0; i < (sorted.length - 1); i++) {
-                for (var j = 0; j < (sorted.length - 1); j++) {
-                  if (
-                    ((sorted[j].yes || 0) - (sorted[j].no || 0)) > ((sorted[(j + 1)].yes || 0) - (sorted[(j + 1)].no || 0))
-                  ) {
-                    tmp = sorted[j];
-                    sorted[j] = sorted[(j + 1)];
-                    sorted[(j + 1)] = tmp;
-                  }
-                }
-              }
-              sorted.reverse();
-              sorted.forEach(function(conversation, index_2) {
-                recursor(conversation, 0, index);
-              });
-            });
-          %>
+        <div id="topic-display">
           
         </div>
         
       </div>
-    
-    
     
       <div id="rules" class="section hideme container">
         <h1 class="text-center">
@@ -490,8 +168,6 @@
     
       </div>
       
-      
-    
       <div id="stats" class="section hideme">
         
         <canvas id="myChart"></canvas>
@@ -500,23 +176,5 @@
     
     </div>
     
-    <!--
-      page XML (for front-end retreival)
-      comments where whitespace needs dealing with
-    -->
-    <page>
-      <views>
-        <%= page.views %>
-      </views>
-      <conversationCount>
-        <%= conversationCount %>
-      </conversationCount>
-      <topicIds><!--
-        --><% topics.forEach(function(topic) { %><!--
-          --><%= String(topic._id).trim() %>,<!--
-        --><% }); %><!--
-   --></topicIds>
-    </page>
-  
   </body>
 </html>

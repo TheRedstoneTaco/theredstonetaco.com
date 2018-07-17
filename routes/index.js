@@ -43,7 +43,11 @@ router.get("/:pageTitle", function(req, res) {
             foundPage.populate('media', function(err_2, mediaPopulatedPage) {
                 // render!
                 var finalPage = mediaPopulatedPage;
-                finalPage.media = dirtyJSON.parse(finalPage.media);
+                if (finalPage.media.length > 0) {
+                    finalPage.media = dirtyJSON.parse(finalPage.media);
+                } else {
+                    finalPage.media = [];
+                }
                 res.render(req.params.pageTitle + "/index.ejs", {
                     page: finalPage
                 });

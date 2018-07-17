@@ -1,0 +1,61 @@
+
+
+/*
+    Header
+*/
+/** meta **/
+#header_meta {
+    margin: 0; border: 0; padding: 10px;
+    width: 100%;
+    height: 10vh;
+    background-color: #444444;
+}
+#header_logo {
+    display: block;
+    max-height: 100%;
+}
+#jointimes {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+#join {
+    padding: 5px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 2.0rem;
+    color: white;
+}
+#header_times {
+    padding: 5px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 1.0rem;
+    color: white;
+}
+/** menu **/
+#header_menu .item.active {
+    background-color: #22ffff;
+    color: white;
+}
+
+/**
+
+    About
+
+**/
+#about_sticky {
+    padding-top: 10vh;
+}
+
+/**
+
+    Children
+
+**/
+#yeah {
+    overflow-x: auto;
+    font-size: 5.0rem;
+}

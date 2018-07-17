@@ -3,6 +3,13 @@ $(document).ready(function() {
     // remove dimmer
     setTimeout(function() {
         $('#loader').remove();
+        $('#modal')
+            .modal({
+    			transition: 'horizontal flip',
+    			duration: 2000,
+                blurring: true
+            })
+            .modal('show');
     }, 1000);
     
     // anchor defaults

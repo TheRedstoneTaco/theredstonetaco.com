@@ -30,6 +30,7 @@ html, body {
 }
 .header-item {
   margin-right: 5vw;
+  cursor: pointer;
 }
 @media (max-width: 991px) {
   .header-item {
@@ -58,7 +59,7 @@ html, body {
   topics
 */
 /*List*/
-#topics-list {
+#topic-display {
   margin: auto;
   width: 90%;
   display: flex;
@@ -73,13 +74,13 @@ html, body {
   cursor: pointer;
 }
 /*topicConversation*/
-.topicContent {
+.c {
   margin-top: 5vh;
   border: 5px solid black;
   padding: 0;
   display: block;
 }
-.topicContent_title {
+.c_title {
   margin: 0;
   border: 0; border-bottom: 5px solid black;
   padding: 0;
@@ -89,14 +90,14 @@ html, body {
   overflow: auto;
   cursor: pointer;
 }
-.topicContent_content {
+.c_content {
   padding: 10px;
   width: 100%;
   height: 60%;
   overflow: auto;
   cursor: pointer;
 }
-.topicContent_stats {
+.c_stats {
   margin: 0;
   border: 0; border-top: 5px solid black;
   padding: 0;
@@ -108,7 +109,7 @@ html, body {
   flex-wrap: wrap;
   cursor: pointer;
 }
-.topicContent_stats > div {
+.c_stats > div {
   width: 50%;
   height: 100%;
   display: flex;
@@ -116,19 +117,19 @@ html, body {
   align-items: center;
 }
 @media (max-width: 767px) {
-  .topicContent {
+  .c {
     width: 95%;
     height: 70vh;
   }
 }
 @media (min-width: 768px) {
-  .topicContent {
+  .c {
     width: 48%;
     height: 60vh;
   }
 }
 @media (min-width: 992px) {
-  .topicContent {
+  .c {
     width: 24%;
     height: 50vh;
   }

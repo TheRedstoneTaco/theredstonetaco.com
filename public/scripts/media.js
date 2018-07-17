@@ -7,7 +7,8 @@ var youtube_video;
 var section_categories, section_category, section_media;
 var crumb_categories, crumb_category, crumb_media;
 var crumb_categories_content, crumb_category_content, crumb_media_content;
-var bootstrapColors = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
+var info;
+var info_title, info_views, info_likes;
 
 $(window).ready(function() {
   
@@ -19,7 +20,7 @@ $(window).ready(function() {
   mediaJSON = JSON.parse($('#mediaJSON').text());
   youtube_video = $('#youtube_video');
   section_categories = $('#section_categories');
-  section_category = $('#section_category')
+  section_category = $('#section_category');
   section_media = $('#section_media');
   crumb_categories = $('#crumb_categories');
   crumb_categories_content = $('#crumb_categories_content');
@@ -27,6 +28,10 @@ $(window).ready(function() {
   crumb_category_content = $('#crumb_category_content');
   crumb_media = $('#crumb_media');
   crumb_media_content = $('#crumb_media_content');
+  info_title = $('#info_title');
+  info_views = $('#info_views');
+  info_likes = $('#info_likes');
+  info = $('#info');
   
   // responsiveness
   $('#page').height(leftover);
@@ -61,6 +66,11 @@ $(window).ready(function() {
     })[0]);
   });
   
+  // info
+  $('#prev').click(prev);
+  $('#replay').click(replay);
+  $('#next').click(next);
+  
 });
 
 function navigate(section, category, media) {
@@ -72,6 +82,7 @@ function navigate(section, category, media) {
   crumb_category.hide().removeClass('active');
   section_media.hide().html('');
   crumb_media.hide().removeClass('active');
+  info.find('*').css('opacity', 0);
   
   // show precise content and play first part of precise crumb
   if (section == 'categories') {
@@ -108,7 +119,7 @@ function navigate(section, category, media) {
     // add category content
     var html = '';
     html += `<div class='ui items'>`;
-    json[category].forEach(function(tmpMedia) {
+    (json[category] || []).forEach(function(tmpMedia) {
       html +=
       `
         <div class='item media_card' category='` + tmpMedia.category + `' _id='` + tmpMedia._id + `'>
@@ -126,8 +137,9 @@ function navigate(section, category, media) {
               Category - ` + tmpMedia.category + `
             </h4>
             <div class='extra'>
-              <img src='https://www.facebook.com/images/emoji.php/v9/fea/1/16/1f453.png'></img>&nbsp` + tmpMedia.views + `&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-              <img src='https://i1.wp.com/www.facebook.com/images/emoji.php/v9/z83/1/16/1f60e.png?resize=816%2C9999&ssl=1&zoom=2'>&nbsp` + tmpMedia.likes + `
+              <!-- Source - http://www.iconarchive.com/show/swarm-icons-by-sonya/Nerd-Glasses-icon.html , Artist - http://www.iconarchive.com/artist/sonya.html -->
+              ` + tmpMedia.views + `&nbsp&nbsp&nbsp&nbsp Views &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+              <img class='emoji-16' src='https://cdn.pixabay.com/photo/2017/08/17/15/49/like-2651767_960_720.png'></img>&nbsp&nbsp&nbsp&nbsp` + tmpMedia.likes + `
             </div>
           </div>
         </div>
@@ -137,6 +149,7 @@ function navigate(section, category, media) {
     section_category.html(html);
   }
   if (section == 'media') {
+    
     // embed
     if (media.type == 'youtube_video') {
       youtube_video
@@ -144,41 +157,82 @@ function navigate(section, category, media) {
         .attr('data-id', media.src)
         .embed();
     }
+    
     // modify content
+    var validValues = 0;
     var html = `
-    <table id='section_media_table' class="ui very basic large padded collapsible selectable sortable celled table">
-      <thead>
-        <tr>
-          <th>Attribute</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <tbody>
+    <div id='section_media_table_wrapper'>
+      <table id='section_media_table' class="ui sortable large padded collapsible selectable celled table">
+        <thead>
+          <tr>
+            <th class='sorted descending'>Attribute</th>
+            <th class='sorted descending'>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+        `;
+      
+      Object.keys(media).forEach(function(key) {
+        html += `
+          <tr>
+            <td>
+              ` + key + `
+            </td>
+            <td>
+              ` + media[key] + `
+            </td>
+          </tr>
         `
+        if (media[key]) {
+          validValues ++;
+        }
+      });
         
-        `
-      </tbody>
-      <tfoot>
-        <tr>
-          <th>7 Attributes</th>
-          <th>7 Values</th>
-        </tr>
-      </tfoot>
-    </table>
+      html +=  `
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>` + Object.keys(media).length + ` Attributes</th>
+            <th>` + validValues + ` Values</th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
     `;
     section_media.html(html);
+    $('#section_media_table').tablesort();
     
     // modify info
+    info.find('*').css('opacity', 1);
+    info_title.text(media.title);
+    info_views.html(`
+      <h1 class='d-inline'>
+        ` + media.views + `&nbsp&nbsp&nbsp&nbspViews
+      </h1>
+    `);
+    info_likes.html(`
+      <h1 class='d-inline'>
+        ` + media.likes + `&nbsp&nbsp&nbsp&nbsp<i class='far fa-thumbs-up'></i>
+      </h1>
+    `);
+    
   }
   
 }
 
-// custom random function
-function random(min, max) {
-  return min + Math.floor(Math.random() * (max - min + 1));
+function prev() {
+  
 }
 
-// random bootstrap color
-function rbc() {
-  return bootstrapColors[random(0, bootstrapColors.length)];
+function replay() {
+  var category = crumb_media.attr('category');
+  var _id = crumb_media.attr('_id');
+  var media = json[category].filter(function(item) {
+    return _id == item._id;
+  })[0];
+  navigate('media', category, media);
+}
+
+function next() {
+  
 }
